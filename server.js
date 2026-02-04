@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 10000;
 
 // Enable CORS for your GitHub Pages site
 app.use(cors({
-    origin: ['https://kingkliffsbury.github.io', 'http://localhost:3000'],
+    origin: ['https://ttuboat.github.io', 'http://localhost:3000'],
     credentials: true
 }));
 
