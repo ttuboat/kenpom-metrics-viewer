@@ -222,386 +222,353 @@
     </div>
 
     <script>
-        // Configuration
-        const CONFIG = {
-            API_KEY: '235a7b7c499cff912c8e0e24f60a030df670f3a946bd0b1aa9ef0780ddf26c7a', // Replace with your actual API key
-            API_BASE: 'https://kenpom.com/api.php',
-            SEASON_START_MONTH: 10, // November (0-indexed)
-            SEASON_END_MONTH: 2, // March (0-indexed)
-        };
+    // Configuration - UPDATE THIS AFTER DEPLOYING TO RENDER
+    const CONFIG = {
+        BACKEND_URL: 'http://localhost:10000', // Change this to your Render URL after deployment
+        SEASON_START_MONTH: 10,
+        SEASON_END_MONTH: 2,
+    };
 
-        // State
-        let currentData = null;
-        let currentChart = null;
-        let showingRankings = false;
+    // State
+    let currentData = null;
+    let currentChart = null;
+    let showingRankings = false;
 
-        // D1 Basketball Teams (Major conferences + mid-majors)
-        const teams = [
-            // ACC
-            "Clemson", "Duke", "Florida St.", "Georgia Tech", "Louisville", "Miami FL",
-            "North Carolina", "NC State", "Notre Dame", "Pittsburgh", "Syracuse", "Virginia",
-            "Virginia Tech", "Wake Forest", "Boston College",
-            
-            // Big 12
-            "Baylor", "BYU", "Cincinnati", "Houston", "Iowa St.", "Kansas", "Kansas St.",
-            "Oklahoma St.", "TCU", "Texas Tech", "UCF", "West Virginia",
-            
-            // Big East
-            "Butler", "Creighton", "DePaul", "Georgetown", "Marquette", "Providence",
-            "Seton Hall", "St. John's", "Villanova", "Xavier", "UConn",
-            
-            // Big Ten
-            "Illinois", "Indiana", "Iowa", "Maryland", "Michigan", "Michigan St.",
-            "Minnesota", "Nebraska", "Northwestern", "Ohio St.", "Penn St.", "Purdue",
-            "Rutgers", "Wisconsin", "UCLA", "USC", "Oregon", "Washington",
-            
-            // SEC
-            "Alabama", "Arkansas", "Auburn", "Florida", "Georgia", "Kentucky",
-            "LSU", "Mississippi St.", "Missouri", "Ole Miss", "South Carolina",
-            "Tennessee", "Texas A&M", "Vanderbilt", "Oklahoma", "Texas",
-            
-            // Pac-12
-            "Arizona", "Arizona St.", "California", "Colorado", "Oregon St.",
-            "Stanford", "Utah", "Washington St.",
-            
-            // American
-            "Charlotte", "East Carolina", "FAU", "Memphis", "Navy", "North Texas",
-            "Rice", "SMU", "South Florida", "Temple", "Tulane", "Tulsa", "UAB", "UTSA",
-            
-            // Mountain West
-            "Air Force", "Boise St.", "Colorado St.", "Fresno St.", "Nevada",
-            "New Mexico", "San Diego St.", "San Jose St.", "UNLV", "Utah St.", "Wyoming",
-            
-            // WCC
-            "Gonzaga", "Loyola Marymount", "Pacific", "Pepperdine", "Portland",
-            "Saint Mary's", "San Diego", "San Francisco", "Santa Clara",
-            
-            // Atlantic 10
-            "Davidson", "Dayton", "Duquesne", "Fordham", "George Mason", "George Washington",
-            "La Salle", "UMass", "Rhode Island", "Richmond", "Saint Joseph's", "St. Bonaventure",
-            "Saint Louis", "VCU",
-            
-            // Other notable programs
-            "Belmont", "Chattanooga", "College of Charleston", "Drake", "Grand Canyon",
-            "Iona", "Liberty", "Murray St.", "New Mexico St.", "Northern Iowa",
-            "Saint Peter's", "South Dakota St.", "Stephen F. Austin", "Vermont", "Winthrop"
-        ].sort();
+    // D1 Basketball Teams
+    const teams = [
+        "Air Force", "Akron", "Alabama", "Alabama A&M", "Alabama St.", "Albany NY",
+        "Alcorn St.", "American", "Appalachian St.", "Arizona", "Arizona St.", "Arkansas",
+        "Arkansas Pine Bluff", "Arkansas St.", "Army", "Auburn", "Austin Peay", "Ball St.",
+        "Baylor", "Belmont", "Binghamton", "Boise St.", "Boston College", "Boston University",
+        "Bowling Green", "Bradley", "Brown", "Bryant", "Bucknell", "Buffalo", "Butler",
+        "BYU", "California", "Cal Poly", "Cal St. Bakersfield", "Cal St. Fullerton",
+        "Cal St. Northridge", "Campbell", "Canisius", "Central Arkansas", "Central Connecticut",
+        "Central Michigan", "Charleston Southern", "Charlotte", "Chattanooga", "Chicago St.",
+        "Cincinnati", "Clemson", "Cleveland St.", "Coastal Carolina", "Colgate",
+        "College of Charleston", "Colorado", "Colorado St.", "Columbia", "Connecticut",
+        "Coppin St.", "Cornell", "Creighton", "Dartmouth", "Davidson", "Dayton", "Delaware",
+        "Delaware St.", "Denver", "DePaul", "Detroit", "Drake", "Drexel", "Duke", "Duquesne",
+        "East Carolina", "East Tennessee St.", "Eastern Illinois", "Eastern Kentucky",
+        "Eastern Michigan", "Eastern Washington", "Elon", "Evansville", "Fairfield",
+        "Fairleigh Dickinson", "FAU", "FIU", "Florida", "Florida A&M", "Florida Atlantic",
+        "Florida Gulf Coast", "Florida St.", "Fordham", "Fresno St.", "Furman",
+        "Gardner Webb", "George Mason", "George Washington", "Georgetown", "Georgia",
+        "Georgia Southern", "Georgia St.", "Georgia Tech", "Gonzaga", "Grambling St.",
+        "Grand Canyon", "Green Bay", "Hampton", "Harvard", "Hawaii", "High Point",
+        "Hofstra", "Holy Cross", "Houston", "Houston Baptist", "Howard", "Idaho",
+        "Idaho St.", "Illinois", "Illinois Chicago", "Illinois St.", "Incarnate Word",
+        "Indiana", "Indiana St.", "Iona", "Iowa", "Iowa St.", "IPFW", "IUPUI",
+        "Jackson St.", "Jacksonville", "Jacksonville St.", "James Madison", "Kansas",
+        "Kansas St.", "Kennesaw St.", "Kent St.", "Kentucky", "La Salle", "Lafayette",
+        "Lamar", "Lehigh", "Liberty", "Lipscomb", "LIU Brooklyn", "Long Beach St.",
+        "Longwood", "Louisiana Lafayette", "Louisiana Monroe", "Louisiana Tech",
+        "Louisville", "Loyola Chicago", "Loyola Marymount", "Loyola MD", "LSU",
+        "Maine", "Manhattan", "Marist", "Marquette", "Marshall", "Maryland",
+        "Maryland Eastern Shore", "Massachusetts", "McNeese St.", "Memphis", "Mercer",
+        "Miami FL", "Miami OH", "Michigan", "Michigan St.", "Middle Tennessee",
+        "Milwaukee", "Minnesota", "Mississippi", "Mississippi St.", "Mississippi Valley St.",
+        "Missouri", "Missouri St.", "Monmouth", "Montana", "Montana St.", "Morehead St.",
+        "Morgan St.", "Mount St. Mary's", "Murray St.", "Navy", "Nebraska", "Nebraska Omaha",
+        "Nevada", "New Hampshire", "New Mexico", "New Mexico St.", "New Orleans",
+        "Niagara", "Nicholls St.", "NJIT", "Norfolk St.", "North Carolina", "North Carolina A&T",
+        "North Carolina Central", "North Carolina St.", "North Dakota", "North Dakota St.",
+        "North Florida", "North Texas", "Northeastern", "Northern Arizona", "Northern Colorado",
+        "Northern Illinois", "Northern Iowa", "Northern Kentucky", "Northwestern",
+        "Northwestern St.", "Notre Dame", "Oakland", "Ohio", "Ohio St.", "Oklahoma",
+        "Oklahoma St.", "Old Dominion", "Ole Miss", "Oral Roberts", "Oregon", "Oregon St.",
+        "Pacific", "Penn", "Penn St.", "Pepperdine", "Pittsburgh", "Portland", "Portland St.",
+        "Prairie View A&M", "Presbyterian", "Princeton", "Providence", "Purdue",
+        "Quinnipiac", "Radford", "Rhode Island", "Rice", "Richmond", "Rider", "Robert Morris",
+        "Rutgers", "Sacramento St.", "Sacred Heart", "Saint Joseph's", "Saint Louis",
+        "Saint Mary's", "Saint Peter's", "Sam Houston St.", "Samford", "San Diego",
+        "San Diego St.", "San Francisco", "San Jose St.", "Santa Clara", "Savannah St.",
+        "Seattle", "Seton Hall", "Siena", "South Alabama", "South Carolina", "South Carolina St.",
+        "South Carolina Upstate", "South Dakota", "South Dakota St.", "South Florida",
+        "Southeast Missouri St.", "Southeastern Louisiana", "Southern", "Southern Illinois",
+        "Southern Miss", "Southern Utah", "St. Bonaventure", "St. Francis NY", "St. Francis PA",
+        "St. John's", "Stanford", "Stephen F. Austin", "Stetson", "Stony Brook", "Syracuse",
+        "TCU", "Temple", "Tennessee", "Tennessee Martin", "Tennessee St.", "Tennessee Tech",
+        "Texas", "Texas A&M", "Texas A&M Corpus Chris", "Texas Arlington", "Texas El Paso",
+        "Texas San Antonio", "Texas Southern", "Texas St.", "Texas Tech", "Toledo", "Towson",
+        "Troy", "Tulane", "Tulsa", "UAB", "UC Davis", "UC Irvine", "UC Riverside",
+        "UC Santa Barbara", "UCF", "UCLA", "UConn", "UIC", "UMass", "UMass Lowell",
+        "UMBC", "UMKC", "UNC Asheville", "UNC Greensboro", "UNC Wilmington", "UNLV",
+        "USC", "USC Upstate", "UT Rio Grande Valley", "Utah", "Utah St.", "Utah Valley",
+        "UTEP", "UTSA", "Valparaiso", "Vanderbilt", "VCU", "Vermont", "Villanova",
+        "Virginia", "Virginia Tech", "VMI", "Wagner", "Wake Forest", "Washington",
+        "Washington St.", "Weber St.", "West Virginia", "Western Carolina", "Western Illinois",
+        "Western Kentucky", "Western Michigan", "Wichita St.", "William & Mary", "Winthrop",
+        "Wisconsin", "Wofford", "Wright St.", "Wyoming", "Xavier", "Yale", "Youngstown St."
+    ].sort();
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', init);
+    // Initialize
+    document.addEventListener('DOMContentLoaded', init);
 
-        function init() {
-            populateTeams();
-            setupEventListeners();
+    function init() {
+        populateTeams();
+        setupEventListeners();
+    }
+
+    function populateTeams() {
+        const select = document.getElementById('teamSelect');
+        teams.forEach(team => {
+            const option = document.createElement('option');
+            option.value = team;
+            option.textContent = team;
+            select.appendChild(option);
+        });
+    }
+
+    function setupEventListeners() {
+        document.getElementById('fetchBtn').addEventListener('click', fetchSeasonData);
+        document.getElementById('toggleBtn').addEventListener('click', toggleView);
+    }
+
+    function getSundaysInSeason(year) {
+        const sundays = [];
+        const startDate = new Date(year - 1, CONFIG.SEASON_START_MONTH, 1);
+        const endDate = new Date(year, CONFIG.SEASON_END_MONTH, 31);
+        
+        let current = new Date(startDate);
+        while (current.getDay() !== 0) {
+            current.setDate(current.getDate() + 1);
         }
-
-        function populateTeams() {
-            const select = document.getElementById('teamSelect');
-            teams.forEach(team => {
-                const option = document.createElement('option');
-                option.value = team;
-                option.textContent = team;
-                select.appendChild(option);
-            });
+        
+        while (current <= endDate) {
+            sundays.push(new Date(current));
+            current.setDate(current.getDate() + 7);
         }
+        
+        return sundays;
+    }
 
-        function setupEventListeners() {
-            document.getElementById('fetchBtn').addEventListener('click', fetchSeasonData);
-            document.getElementById('toggleBtn').addEventListener('click', toggleView);
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    async function fetchSeasonData() {
+        const team = document.getElementById('teamSelect').value;
+        const year = parseInt(document.getElementById('yearSelect').value);
+        
+        if (!team) {
+            showError('Please select a team');
+            return;
         }
-
-        function getSundaysInSeason(year) {
-            const sundays = [];
-            const startDate = new Date(year - 1, CONFIG.SEASON_START_MONTH, 1);
-            const endDate = new Date(year, CONFIG.SEASON_END_MONTH, 31);
+        
+        document.getElementById('loading').classList.add('active');
+        document.getElementById('errorMessage').classList.remove('active');
+        document.getElementById('chartContainer').classList.remove('active');
+        document.getElementById('fetchBtn').disabled = true;
+        
+        try {
+            const sundays = getSundaysInSeason(year);
+            const dataPoints = [];
             
-            // Find first Sunday
-            let current = new Date(startDate);
-            while (current.getDay() !== 0) {
-                current.setDate(current.getDate() + 1);
+            for (const sunday of sundays) {
+                const dateStr = formatDate(sunday);
+                const data = await fetchKenPomData(dateStr, year, team);
+                
+                if (data) {
+                    dataPoints.push({
+                        date: sunday,
+                        dateStr: dateStr,
+                        ...data
+                    });
+                }
             }
             
-            // Collect all Sundays
-            while (current <= endDate) {
-                sundays.push(new Date(current));
-                current.setDate(current.getDate() + 7);
-            }
-            
-            return sundays;
-        }
-
-        function formatDate(date) {
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
-        }
-
-        async function fetchSeasonData() {
-            const team = document.getElementById('teamSelect').value;
-            const year = parseInt(document.getElementById('yearSelect').value);
-            
-            if (!team) {
-                showError('Please select a team');
+            if (dataPoints.length === 0) {
+                showError('No data found for this team and season.');
                 return;
             }
             
-            // Show loading
-            document.getElementById('loading').classList.add('active');
-            document.getElementById('errorMessage').classList.remove('active');
-            document.getElementById('chartContainer').classList.remove('active');
-            document.getElementById('fetchBtn').disabled = true;
+            currentData = { team, year, dataPoints };
+            displayChart();
             
-            try {
-                const sundays = getSundaysInSeason(year);
-                const dataPoints = [];
-                
-                // Fetch data for each Sunday
-                for (const sunday of sundays) {
-                    const dateStr = formatDate(sunday);
-                    const data = await fetchKenPomData(dateStr, year, team);
-                    
-                    if (data) {
-                        dataPoints.push({
-                            date: sunday,
-                            dateStr: dateStr,
-                            ...data
-                        });
-                    }
-                }
-                
-                if (dataPoints.length === 0) {
-                    showError('No data found for this team and season. The season may not have started yet, or the team name may not match.');
-                    return;
-                }
-                
-                currentData = { team, year, dataPoints };
-                displayChart();
-                
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                showError(`Error loading data: ${error.message}`);
-            } finally {
-                document.getElementById('loading').classList.remove('active');
-                document.getElementById('fetchBtn').disabled = false;
-            }
+        } catch (error) {
+            console.error('Error:', error);
+            showError(`Error: ${error.message}`);
+        } finally {
+            document.getElementById('loading').classList.remove('active');
+            document.getElementById('fetchBtn').disabled = false;
         }
+    }
 
-        async function fetchKenPomData(date, year, team) {
-            const url = `${CONFIG.API_BASE}?endpoint=archive&d=${date}&y=${year}`;
+    async function fetchKenPomData(date, year, team) {
+        const url = `${CONFIG.BACKEND_URL}/api/archive?d=${date}&y=${year}&team=${encodeURIComponent(team)}`;
+        
+        try {
+            const response = await fetch(url);
             
-            try {
-                const response = await fetch(url, {
-                    headers: {
-                        'Authorization': `Bearer ${CONFIG.API_KEY}`
-                    }
-                });
-                
-                if (!response.ok) {
-                    console.warn(`Failed to fetch data for ${date}`);
+            if (!response.ok) {
+                if (response.status === 404) {
                     return null;
                 }
-                
-                const data = await response.json();
-                
-                // Find the team in the response
-                const teamData = data.find(t => t.TeamName === team);
-                
-                if (!teamData) {
-                    return null;
-                }
-                
-                return {
-                    adjO: teamData.AdjOE,
-                    adjD: teamData.AdjDE,
-                    adjEM: teamData.AdjEM,
-                    rankAdjO: teamData.RankAdjOE,
-                    rankAdjD: teamData.RankAdjDE,
-                    rankAdjEM: teamData.RankAdjEM
-                };
-                
-            } catch (error) {
-                console.warn(`Error fetching data for ${date}:`, error);
-                return null;
+                throw new Error('Failed to fetch data');
             }
+            
+            const teamData = await response.json();
+            
+            return {
+                adjO: teamData.AdjOE,
+                adjD: teamData.AdjDE,
+                adjEM: teamData.AdjEM,
+                rankAdjO: teamData.RankAdjOE,
+                rankAdjD: teamData.RankAdjDE,
+                rankAdjEM: teamData.RankAdjEM
+            };
+            
+        } catch (error) {
+            console.warn(`Could not fetch data for ${date}:`, error);
+            return null;
         }
+    }
 
-        function displayChart() {
-            if (!currentData || currentData.dataPoints.length === 0) {
-                return;
-            }
-            
-            const { team, dataPoints } = currentData;
-            
-            // Update stats summary
-            const latest = dataPoints[dataPoints.length - 1];
-            const summary = document.getElementById('statsSummary');
-            summary.innerHTML = `
-                <div class="stat-card">
-                    <div class="stat-label">Latest AdjO</div>
-                    <div class="stat-value">${latest.adjO.toFixed(1)}</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Latest AdjD</div>
-                    <div class="stat-value">${latest.adjD.toFixed(1)}</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Latest Net Rating</div>
-                    <div class="stat-value">${latest.adjEM.toFixed(1)}</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Overall Rank</div>
-                    <div class="stat-value">#${latest.rankAdjEM}</div>
-                </div>
-            `;
-            
-            // Create chart
-            createChart();
-            
-            // Show container
-            document.getElementById('chartContainer').classList.add('active');
-            document.getElementById('toggleBtn').disabled = false;
+    function displayChart() {
+        if (!currentData || currentData.dataPoints.length === 0) {
+            return;
         }
+        
+        const { team, dataPoints } = currentData;
+        const latest = dataPoints[dataPoints.length - 1];
+        const summary = document.getElementById('statsSummary');
+        
+        summary.innerHTML = `
+            <div class="stat-card">
+                <div class="stat-label">Latest AdjO</div>
+                <div class="stat-value">${latest.adjO.toFixed(1)}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Latest AdjD</div>
+                <div class="stat-value">${latest.adjD.toFixed(1)}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Latest Net Rating</div>
+                <div class="stat-value">${latest.adjEM.toFixed(1)}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Overall Rank</div>
+                <div class="stat-value">#${latest.rankAdjEM}</div>
+            </div>
+        `;
+        
+        createChart();
+        document.getElementById('chartContainer').classList.add('active');
+        document.getElementById('toggleBtn').disabled = false;
+    }
 
-        function createChart() {
-            const ctx = document.getElementById('trendsChart').getContext('2d');
-            const { team, dataPoints } = currentData;
-            
-            // Destroy existing chart
-            if (currentChart) {
-                currentChart.destroy();
+    function createChart() {
+        const ctx = document.getElementById('trendsChart').getContext('2d');
+        const { team, dataPoints } = currentData;
+        
+        if (currentChart) {
+            currentChart.destroy();
+        }
+        
+        const labels = dataPoints.map(d => {
+            const date = new Date(d.date);
+            return `${date.getMonth() + 1}/${date.getDate()}`;
+        });
+        
+        const datasets = showingRankings ? [
+            {
+                label: 'Offensive Rank',
+                data: dataPoints.map(d => d.rankAdjO),
+                borderColor: 'rgb(102, 126, 234)',
+                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                tension: 0.3
+            },
+            {
+                label: 'Defensive Rank',
+                data: dataPoints.map(d => d.rankAdjD),
+                borderColor: 'rgb(237, 100, 166)',
+                backgroundColor: 'rgba(237, 100, 166, 0.1)',
+                tension: 0.3
+            },
+            {
+                label: 'Overall Rank',
+                data: dataPoints.map(d => d.rankAdjEM),
+                borderColor: 'rgb(118, 75, 162)',
+                backgroundColor: 'rgba(118, 75, 162, 0.1)',
+                tension: 0.3
             }
-            
-            const labels = dataPoints.map(d => {
-                const date = new Date(d.date);
-                return `${date.getMonth() + 1}/${date.getDate()}`;
-            });
-            
-            const datasets = showingRankings ? [
-                {
-                    label: 'Offensive Rank',
-                    data: dataPoints.map(d => d.rankAdjO),
-                    borderColor: 'rgb(102, 126, 234)',
-                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                    tension: 0.3
+        ] : [
+            {
+                label: 'Adjusted Offense',
+                data: dataPoints.map(d => d.adjO),
+                borderColor: 'rgb(102, 126, 234)',
+                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                tension: 0.3
+            },
+            {
+                label: 'Adjusted Defense',
+                data: dataPoints.map(d => d.adjD),
+                borderColor: 'rgb(237, 100, 166)',
+                backgroundColor: 'rgba(237, 100, 166, 0.1)',
+                tension: 0.3
+            },
+            {
+                label: 'Net Rating',
+                data: dataPoints.map(d => d.adjEM),
+                borderColor: 'rgb(118, 75, 162)',
+                backgroundColor: 'rgba(118, 75, 162, 0.1)',
+                tension: 0.3
+            }
+        ];
+        
+        currentChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
                 },
-                {
-                    label: 'Defensive Rank',
-                    data: dataPoints.map(d => d.rankAdjD),
-                    borderColor: 'rgb(237, 100, 166)',
-                    backgroundColor: 'rgba(237, 100, 166, 0.1)',
-                    tension: 0.3
-                },
-                {
-                    label: 'Overall Rank',
-                    data: dataPoints.map(d => d.rankAdjEM),
-                    borderColor: 'rgb(118, 75, 162)',
-                    backgroundColor: 'rgba(118, 75, 162, 0.1)',
-                    tension: 0.3
-                }
-            ] : [
-                {
-                    label: 'Adjusted Offense',
-                    data: dataPoints.map(d => d.adjO),
-                    borderColor: 'rgb(102, 126, 234)',
-                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                    tension: 0.3
-                },
-                {
-                    label: 'Adjusted Defense',
-                    data: dataPoints.map(d => d.adjD),
-                    borderColor: 'rgb(237, 100, 166)',
-                    backgroundColor: 'rgba(237, 100, 166, 0.1)',
-                    tension: 0.3
-                },
-                {
-                    label: 'Net Rating (AdjEM)',
-                    data: dataPoints.map(d => d.adjEM),
-                    borderColor: 'rgb(118, 75, 162)',
-                    backgroundColor: 'rgba(118, 75, 162, 0.1)',
-                    tension: 0.3
-                }
-            ];
-            
-            currentChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: datasets
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: {
-                        mode: 'index',
-                        intersect: false
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
                     },
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top'
-                        },
-                        title: {
-                            display: true,
-                            text: `${team} - ${showingRankings ? 'Rankings' : 'Metrics'} Trend`,
-                            font: {
-                                size: 18,
-                                weight: 'bold'
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    if (showingRankings) {
-                                        label += '#' + Math.round(context.parsed.y);
-                                    } else {
-                                        label += context.parsed.y.toFixed(1);
-                                    }
-                                    return label;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            reverse: showingRankings,
-                            beginAtZero: false,
-                            grid: {
-                                color: 'rgba(0, 0, 0, 0.05)'
-                            },
-                            ticks: {
-                                callback: function(value) {
-                                    return showingRankings ? '#' + value : value.toFixed(0);
-                                }
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            }
+                    title: {
+                        display: true,
+                        text: `${team} - ${showingRankings ? 'Rankings' : 'Metrics'} Trend`,
+                        font: {
+                            size: 18,
+                            weight: 'bold'
                         }
                     }
+                },
+                scales: {
+                    y: {
+                        reverse: showingRankings,
+                        beginAtZero: false
+                    }
                 }
-            });
-        }
+            }
+        });
+    }
 
-        function toggleView() {
-            showingRankings = !showingRankings;
-            document.getElementById('toggleBtn').textContent = 
-                showingRankings ? 'Show Raw Values' : 'Show Rankings';
-            document.getElementById('toggleBtn').classList.toggle('active');
-            createChart();
-        }
+    function toggleView() {
+        showingRankings = !showingRankings;
+        document.getElementById('toggleBtn').textContent = 
+            showingRankings ? 'Show Raw Values' : 'Show Rankings';
+        document.getElementById('toggleBtn').classList.toggle('active');
+        createChart();
+    }
 
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.textContent = message;
-            errorDiv.classList.add('active');
-        }
-    </script>
+    function showError(message) {
+        const errorDiv = document.getElementById('errorMessage');
+        errorDiv.textContent = message;
+        errorDiv.classList.add('active');
+    }
+</script>
 </body>
 </html>
