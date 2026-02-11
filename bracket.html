@@ -325,14 +325,19 @@
     }
 
     function parseTeams(csvText) {
-        const lines = csvText.trim().split('\n');
+    const lines = csvText.trim().split('\n');
+    
+    for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].split(',');
+        const teamId = parseInt(values[0]);
+        const season = values[1];
+        const seedStr = values[2];
+        const region = values[3];
+        const teamName = values[4] || 'Unknown';
         
-        for (let i = 1; i < lines.length; i++) {
-            const values = lines[i].split(',');
-            const teamId = parseInt(values[0]);
-            const seed = parseInt(values[1]);
-            const region = values[2];
-            const teamName = values[3] || 'Unknown';
+        // Only include teams with seed data (tournament teams)
+        if (season && seedStr && region) {
+            const seed = parseFloat(seedStr);
             
             teams[teamId] = {
                 id: teamId,
@@ -341,9 +346,10 @@
                 region: region
             };
         }
-        
-        console.log(`Loaded ${Object.keys(teams).length} teams`);
     }
+    
+    console.log(`Loaded ${Object.keys(teams).length} tournament teams`);
+}
 
     function getPrediction(team1Id, team2Id) {
         const key = `${team1Id}_${team2Id}`;
