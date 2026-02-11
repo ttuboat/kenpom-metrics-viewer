@@ -270,149 +270,272 @@
     </div>
 
     <script>
-        // Configuration
-        const PREDICTIONS_URL = 'predictions_2025_all_matchups.csv';
-        const TEAMS_URL = 'teams_2025_with_seeds.csv';
+    // Configuration
+    const PREDICTIONS_URL = 'predictions_2025_all_matchups.csv';
+    const TEAMS_URL = 'teams_2025_with_seeds.csv';
 
-        let predictions = {};
-        let teams = {};
-        let bracketData = {};
-        let showProbabilities = false;
-        let userOverrides = {};
+    let predictions = {};
+    let teams = {};
+    let showProbabilities = false;
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', init);
+    // Initialize
+    document.addEventListener('DOMContentLoaded', init);
 
-        async function init() {
-            try {
-                await loadData();
-                buildBracket();
-                setupEventListeners();
-            } catch (error) {
-                console.error('Error initializing bracket:', error);
-                document.getElementById('loading').textContent = 'Error loading bracket data. Please try again.';
-            }
+    async function init() {
+        try {
+            await loadData();
+            buildBracket();
+            setupEventListeners();
+        } catch (error) {
+            console.error('Error initializing bracket:', error);
+            document.getElementById('loading').textContent = 'Error loading bracket data. Please try again.';
         }
+    }
 
-        async function loadData() {
-            // Load predictions CSV
-            const predResponse = await fetch(PREDICTIONS_URL);
-            const predText = await predResponse.text();
-            parsePredictions(predText);
+    async function loadData() {
+        // Load predictions CSV
+        const predResponse = await fetch(PREDICTIONS_URL);
+        const predText = await predResponse.text();
+        parsePredictions(predText);
 
-            // Load teams CSV
-            const teamsResponse = await fetch(TEAMS_URL);
-            const teamsText = await teamsResponse.text();
-            parseTeams(teamsText);
-        }
+        // Load teams CSV
+        const teamsResponse = await fetch(TEAMS_URL);
+        const teamsText = await teamsResponse.text();
+        parseTeams(teamsText);
+    }
 
-        function parsePredictions(csvText) {
-            const lines = csvText.trim().split('\n');
-            const headers = lines[0].split(',');
+    function parsePredictions(csvText) {
+        const lines = csvText.trim().split('\n');
+        
+        for (let i = 1; i < lines.length; i++) {
+            const values = lines[i].split(',');
+            const id = values[0]; // Format: "2025_1234_5678"
+            const pred = parseFloat(values[1]);
             
-            for (let i = 1; i < lines.length; i++) {
-                const values = lines[i].split(',');
-                const id = values[0]; // Format: "2025_1234_5678"
-                const pred = parseFloat(values[1]);
-                
-                const parts = id.split('_');
-                const team1 = parseInt(parts[1]);
-                const team2 = parseInt(parts[2]);
-                
-                // Store both directions
-                predictions[`${team1}_${team2}`] = pred;
-                predictions[`${team2}_${team1}`] = 1 - pred;
-            }
-        }
-
-        function parseTeams(csvText) {
-            const lines = csvText.trim().split('\n');
-            const headers = lines[0].split(',');
+            const parts = id.split('_');
+            const team1 = parseInt(parts[1]);
+            const team2 = parseInt(parts[2]);
             
-            for (let i = 1; i < lines.length; i++) {
-                const values = lines[i].split(',');
-                const teamId = parseInt(values[0]);
-                const seed = parseInt(values[1]);
-                const region = values[2];
-                const teamName = values[3];
-                
-                teams[teamId] = {
-                    id: teamId,
-                    name: teamName,
-                    seed: seed,
-                    region: region
-                };
-            }
+            // Store both directions
+            predictions[`${team1}_${team2}`] = pred;
+            predictions[`${team2}_${team1}`] = 1 - pred;
         }
+        
+        console.log(`Loaded ${Object.keys(predictions).length / 2} matchup predictions`);
+    }
 
-        function getPrediction(team1Id, team2Id) {
-            // Check for user override first
-            const overrideKey = `${team1Id}_${team2Id}`;
-            if (userOverrides[overrideKey] !== undefined) {
-                return userOverrides[overrideKey];
-            }
+    function parseTeams(csvText) {
+        const lines = csvText.trim().split('\n');
+        
+        for (let i = 1; i < lines.length; i++) {
+            const values = lines[i].split(',');
+            const teamId = parseInt(values[0]);
+            const seed = parseInt(values[1]);
+            const region = values[2];
+            const teamName = values[3] || 'Unknown';
             
-            const key = `${team1Id}_${team2Id}`;
-            return predictions[key] || 0.5;
-        }
-
-        function buildBracket() {
-            // For demo purposes, create a simplified bracket structure
-            // In production, you'd parse the actual tournament bracket
-            
-            // Get teams by region and seed
-            const regions = ['W', 'X', 'Y', 'Z']; // West, East, South, Midwest
-            const regionNames = {
-                'W': 'West Region',
-                'X': 'East Region', 
-                'Y': 'South Region',
-                'Z': 'Midwest Region'
+            teams[teamId] = {
+                id: teamId,
+                name: teamName,
+                seed: seed,
+                region: region
             };
-            
-            const bracket = document.getElementById('bracket');
-            bracket.innerHTML = '';
-            
-            // This is a simplified example - you'd need the actual bracket structure
-            // For now, show a message
-            bracket.innerHTML = `
-                <div style="text-align: center; padding: 40px; width: 100%;">
-                    <h2>Bracket Visualization Coming Soon</h2>
-                    <p style="margin-top: 20px; color: #666;">
-                        The model has generated predictions for all ${Object.keys(predictions).length / 2} possible matchups.
-                        Full interactive bracket visualization will be added next.
-                    </p>
-                    <p style="margin-top: 10px; color: #666;">
-                        For now, you can see predictions by checking the CSV file or the comparison tools.
-                    </p>
+        }
+        
+        console.log(`Loaded ${Object.keys(teams).length} teams`);
+    }
+
+    function getPrediction(team1Id, team2Id) {
+        const key = `${team1Id}_${team2Id}`;
+        return predictions[key] || 0.5;
+    }
+
+    function buildBracket() {
+        // Get the four #1 seeds (Final Four teams in 2025)
+        const oneSeeds = Object.values(teams).filter(t => t.seed === 1);
+        
+        if (oneSeeds.length < 4) {
+            document.getElementById('bracket').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <p>Error: Could not find all #1 seeds. Found ${oneSeeds.length} teams.</p>
                 </div>
             `;
-            
             document.getElementById('loading').style.display = 'none';
-            bracket.style.display = 'flex';
+            document.getElementById('bracket').style.display = 'block';
+            return;
         }
 
-        function setupEventListeners() {
-            document.getElementById('probToggle').addEventListener('click', toggleProbabilities);
-            document.getElementById('resetBtn').addEventListener('click', resetBracket);
-        }
+        // Sort by region for consistency
+        oneSeeds.sort((a, b) => a.region.localeCompare(b.region));
+        
+        console.log('Final Four teams:', oneSeeds);
 
-        function toggleProbabilities() {
-            showProbabilities = !showProbabilities;
-            const btn = document.getElementById('probToggle');
-            btn.textContent = showProbabilities ? 'Hide Probabilities' : 'Show Probabilities';
-            btn.classList.toggle('active');
-            
-            // Update display
-            document.querySelectorAll('.probability').forEach(el => {
-                el.classList.toggle('show', showProbabilities);
-                el.classList.toggle('hide', !showProbabilities);
-            });
-        }
+        // Matchup 1: First two #1 seeds
+        const semi1Team1 = oneSeeds[0];
+        const semi1Team2 = oneSeeds[1];
+        const semi1Prob = getPrediction(semi1Team1.id, semi1Team2.id);
+        const semi1Winner = semi1Prob > 0.5 ? semi1Team1 : semi1Team2;
 
-        function resetBracket() {
-            userOverrides = {};
-            buildBracket();
-        }
-    </script>
+        // Matchup 2: Last two #1 seeds
+        const semi2Team1 = oneSeeds[2];
+        const semi2Team2 = oneSeeds[3];
+        const semi2Prob = getPrediction(semi2Team1.id, semi2Team2.id);
+        const semi2Winner = semi2Prob > 0.5 ? semi2Team1 : semi2Team2;
+
+        // Championship
+        const champProb = getPrediction(semi1Winner.id, semi2Winner.id);
+        const champion = champProb > 0.5 ? semi1Winner : semi2Winner;
+
+        const bracket = document.getElementById('bracket');
+        bracket.innerHTML = `
+            <div style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 30px;">
+                
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <h2 style="color: #333; margin-bottom: 10px;">2025 Final Four Predictions</h2>
+                    <p style="color: #666;">All four #1 seeds made the Final Four (Florida, Duke, Houston, Auburn)</p>
+                </div>
+
+                <!-- Semifinals -->
+                <div style="display: flex; gap: 50px; justify-content: center; width: 100%;">
+                    
+                    <!-- Semifinal 1 -->
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; min-width: 350px;">
+                        <h3 style="text-align: center; margin-bottom: 15px; color: #667eea;">Semifinal 1</h3>
+                        
+                        <div class="team ${semi1Prob > 0.5 ? 'predicted-winner' : ''}" style="margin-bottom: 10px;">
+                            <div class="team-info">
+                                <span class="seed">#${semi1Team1.seed}</span>
+                                <span class="team-name">${semi1Team1.name}</span>
+                            </div>
+                            <span class="probability ${showProbabilities ? 'show' : 'hide'}">
+                                ${(semi1Prob * 100).toFixed(1)}%
+                            </span>
+                        </div>
+
+                        <div style="text-align: center; color: #999; margin: 5px 0;">vs</div>
+
+                        <div class="team ${semi1Prob <= 0.5 ? 'predicted-winner' : ''}">
+                            <div class="team-info">
+                                <span class="seed">#${semi1Team2.seed}</span>
+                                <span class="team-name">${semi1Team2.name}</span>
+                            </div>
+                            <span class="probability ${showProbabilities ? 'show' : 'hide'}">
+                                ${((1 - semi1Prob) * 100).toFixed(1)}%
+                            </span>
+                        </div>
+
+                        <div style="margin-top: 15px; padding: 10px; background: white; border-radius: 5px; text-align: center;">
+                            <strong>Predicted Winner:</strong><br>
+                            <span style="color: #667eea; font-size: 1.2em;">${semi1Winner.name}</span>
+                        </div>
+                    </div>
+
+                    <!-- Semifinal 2 -->
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; min-width: 350px;">
+                        <h3 style="text-align: center; margin-bottom: 15px; color: #667eea;">Semifinal 2</h3>
+                        
+                        <div class="team ${semi2Prob > 0.5 ? 'predicted-winner' : ''}" style="margin-bottom: 10px;">
+                            <div class="team-info">
+                                <span class="seed">#${semi2Team1.seed}</span>
+                                <span class="team-name">${semi2Team1.name}</span>
+                            </div>
+                            <span class="probability ${showProbabilities ? 'show' : 'hide'}">
+                                ${(semi2Prob * 100).toFixed(1)}%
+                            </span>
+                        </div>
+
+                        <div style="text-align: center; color: #999; margin: 5px 0;">vs</div>
+
+                        <div class="team ${semi2Prob <= 0.5 ? 'predicted-winner' : ''}">
+                            <div class="team-info">
+                                <span class="seed">#${semi2Team2.seed}</span>
+                                <span class="team-name">${semi2Team2.name}</span>
+                            </div>
+                            <span class="probability ${showProbabilities ? 'show' : 'hide'}">
+                                ${((1 - semi2Prob) * 100).toFixed(1)}%
+                            </span>
+                        </div>
+
+                        <div style="margin-top: 15px; padding: 10px; background: white; border-radius: 5px; text-align: center;">
+                            <strong>Predicted Winner:</strong><br>
+                            <span style="color: #667eea; font-size: 1.2em;">${semi2Winner.name}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Championship -->
+                <div style="background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); padding: 30px; border-radius: 15px; min-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+                    <h2 style="text-align: center; margin-bottom: 20px; color: #333;">🏆 Championship Game</h2>
+                    
+                    <div class="team ${champProb > 0.5 ? 'predicted-winner' : ''}" style="margin-bottom: 15px; background: rgba(255,255,255,0.9);">
+                        <div class="team-info">
+                            <span class="seed">#${semi1Winner.seed}</span>
+                            <span class="team-name">${semi1Winner.name}</span>
+                        </div>
+                        <span class="probability ${showProbabilities ? 'show' : 'hide'}">
+                            ${(champProb * 100).toFixed(1)}%
+                        </span>
+                    </div>
+
+                    <div style="text-align: center; color: #333; margin: 10px 0; font-weight: bold;">vs</div>
+
+                    <div class="team ${champProb <= 0.5 ? 'predicted-winner' : ''}" style="background: rgba(255,255,255,0.9);">
+                        <div class="team-info">
+                            <span class="seed">#${semi2Winner.seed}</span>
+                            <span class="team-name">${semi2Winner.name}</span>
+                        </div>
+                        <span class="probability ${showProbabilities ? 'show' : 'hide'}">
+                            ${((1 - champProb) * 100).toFixed(1)}%
+                        </span>
+                    </div>
+
+                    <div style="margin-top: 25px; padding: 20px; background: rgba(255,255,255,0.95); border-radius: 10px; text-align: center;">
+                        <strong style="font-size: 1.1em;">Predicted Champion:</strong><br>
+                        <span style="color: #764ba2; font-size: 1.8em; font-weight: bold;">${champion.name}</span>
+                        <p style="margin-top: 10px; color: #666; font-size: 0.9em;">
+                            Win Probability: ${Math.max(champProb, 1 - champProb) * 100).toFixed(1)}%
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Actual Result -->
+                <div style="margin-top: 20px; padding: 20px; background: #e7f3ff; border-radius: 10px; border-left: 4px solid #667eea;">
+                    <h3 style="color: #333; margin-bottom: 10px;">Actual 2025 Result</h3>
+                    <p style="color: #666;">
+                        <strong>Champion:</strong> Florida defeated Houston 65-63<br>
+                        <strong>Semifinals:</strong> Florida def. Auburn, Houston def. Duke
+                    </p>
+                    <p style="margin-top: 10px; color: #666; font-size: 0.9em;">
+                        ${champion.name === 'Florida' ? '✅ Model correctly predicted the champion!' : 
+                          `❌ Model predicted ${champion.name}, actual winner was Florida`}
+                    </p>
+                </div>
+
+            </div>
+        `;
+        
+        document.getElementById('loading').style.display = 'none';
+        bracket.style.display = 'block';
+    }
+
+    function setupEventListeners() {
+        document.getElementById('probToggle').addEventListener('click', toggleProbabilities);
+        document.getElementById('resetBtn').addEventListener('click', resetBracket);
+    }
+
+    function toggleProbabilities() {
+        showProbabilities = !showProbabilities;
+        const btn = document.getElementById('probToggle');
+        btn.textContent = showProbabilities ? 'Hide Probabilities' : 'Show Probabilities';
+        btn.classList.toggle('active');
+        
+        // Rebuild to update display
+        buildBracket();
+    }
+
+    function resetBracket() {
+        buildBracket();
+    }
+</script>
 </body>
 </html>
