@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>March Madness 2025 Predictions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .nav-links {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 16px;
+            padding: 8px 16px;
+            border-radius: 5px;
+            background: rgba(255,255,255,0.2);
+            transition: background 0.3s;
+            display: inline-block;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .controls {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .toggle-btn {
+            padding: 12px 30px;
+            font-size: 16px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: 600;
+            margin: 0 10px;
+        }
+
+        .toggle-btn:hover {
+            background: #5568d3;
+        }
+
+        .toggle-btn.active {
+            background: #764ba2;
+        }
+
+        .bracket-container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow-x: auto;
+        }
+
+        .bracket {
+            display: flex;
+            justify-content: space-between;
+            min-width: 1600px;
+            gap: 20px;
+        }
+
+        .region {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .region-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .round {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .matchup {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .matchup:hover {
+            background: #e9ecef;
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+
+        .matchup.winner {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .team {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            margin: 4px 0;
+            border-radius: 4px;
+            background: white;
+        }
+
+        .team.predicted-winner {
+            font-weight: bold;
+            background: #e7f3ff;
+        }
+
+        .team-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .seed {
+            font-weight: bold;
+            color: #667eea;
+            min-width: 25px;
+        }
+
+        .team-name {
+            font-size: 14px;
+        }
+
+        .probability {
+            font-size: 12px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .probability.show {
+            display: inline;
+        }
+
+        .probability.hide {
+            display: none;
+        }
+
+        .final-four-container {
+            text-align: center;
+            padding: 30px;
+            margin-top: 20px;
+        }
+
+        .champion {
+            display: inline-block;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #333;
+            padding: 20px 40px;
+            border-radius: 10px;
+            font-size: 1.5em;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .loading {
+            text-align: center;
+            color: #667eea;
+            font-size: 18px;
+            padding: 40px;
+        }
+
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .info-box h3 {
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .info-box p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏀 March Madness 2025 Predictions</h1>
+        <p class="subtitle">AI-Powered Bracket Predictions | Ensemble Model</p>
+        
+        <div class="nav-links">
+            <a href="index.html">← Season Trends</a>
+            <a href="compare.html">Team Comparison</a>
+        </div>
+
+        <div class="controls">
+            <button class="toggle-btn" id="probToggle">Show Probabilities</button>
+            <button class="toggle-btn" id="resetBtn">Reset Bracket</button>
+        </div>
+
+        <div class="bracket-container">
+            <div class="info-box">
+                <h3>About This Bracket</h3>
+                <p>
+                    This bracket shows AI predictions for the 2025 NCAA Tournament based on an ensemble model 
+                    trained on historical tournament data (2003-2024). The model uses Four Factors, efficiency metrics, 
+                    momentum indicators, and seed information to predict game outcomes. Click on any matchup to 
+                    manually override the prediction and see how it affects downstream games.
+                </p>
+            </div>
+
+            <div id="loading" class="loading">Loading bracket predictions...</div>
+            <div id="bracket" class="bracket" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const PREDICTIONS_URL = 'predictions_2025_all_matchups.csv';
+        const TEAMS_URL = 'teams_2025_with_seeds.csv';
+
+        let predictions = {};
+        let teams = {};
+        let bracketData = {};
+        let showProbabilities = false;
+        let userOverrides = {};
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', init);
+
+        async function init() {
+            try {
+                await loadData();
+                buildBracket();
+                setupEventListeners();
+            } catch (error) {
+                console.error('Error initializing bracket:', error);
+                document.getElementById('loading').textContent = 'Error loading bracket data. Please try again.';
+            }
+        }
+
+        async function loadData() {
+            // Load predictions CSV
+            const predResponse = await fetch(PREDICTIONS_URL);
+            const predText = await predResponse.text();
+            parsePredictions(predText);
+
+            // Load teams CSV
+            const teamsResponse = await fetch(TEAMS_URL);
+            const teamsText = await teamsResponse.text();
+            parseTeams(teamsText);
+        }
+
+        function parsePredictions(csvText) {
+            const lines = csvText.trim().split('\n');
+            const headers = lines[0].split(',');
+            
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(',');
+                const id = values[0]; // Format: "2025_1234_5678"
+                const pred = parseFloat(values[1]);
+                
+                const parts = id.split('_');
+                const team1 = parseInt(parts[1]);
+                const team2 = parseInt(parts[2]);
+                
+                // Store both directions
+                predictions[`${team1}_${team2}`] = pred;
+                predictions[`${team2}_${team1}`] = 1 - pred;
+            }
+        }
+
+        function parseTeams(csvText) {
+            const lines = csvText.trim().split('\n');
+            const headers = lines[0].split(',');
+            
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(',');
+                const teamId = parseInt(values[0]);
+                const seed = parseInt(values[1]);
+                const region = values[2];
+                const teamName = values[3];
+                
+                teams[teamId] = {
+                    id: teamId,
+                    name: teamName,
+                    seed: seed,
+                    region: region
+                };
+            }
+        }
+
+        function getPrediction(team1Id, team2Id) {
+            // Check for user override first
+            const overrideKey = `${team1Id}_${team2Id}`;
+            if (userOverrides[overrideKey] !== undefined) {
+                return userOverrides[overrideKey];
+            }
+            
+            const key = `${team1Id}_${team2Id}`;
+            return predictions[key] || 0.5;
+        }
+
+        function buildBracket() {
+            // For demo purposes, create a simplified bracket structure
+            // In production, you'd parse the actual tournament bracket
+            
+            // Get teams by region and seed
+            const regions = ['W', 'X', 'Y', 'Z']; // West, East, South, Midwest
+            const regionNames = {
+                'W': 'West Region',
+                'X': 'East Region', 
+                'Y': 'South Region',
+                'Z': 'Midwest Region'
+            };
+            
+            const bracket = document.getElementById('bracket');
+            bracket.innerHTML = '';
+            
+            // This is a simplified example - you'd need the actual bracket structure
+            // For now, show a message
+            bracket.innerHTML = `
+                <div style="text-align: center; padding: 40px; width: 100%;">
+                    <h2>Bracket Visualization Coming Soon</h2>
+                    <p style="margin-top: 20px; color: #666;">
+                        The model has generated predictions for all ${Object.keys(predictions).length / 2} possible matchups.
+                        Full interactive bracket visualization will be added next.
+                    </p>
+                    <p style="margin-top: 10px; color: #666;">
+                        For now, you can see predictions by checking the CSV file or the comparison tools.
+                    </p>
+                </div>
+            `;
+            
+            document.getElementById('loading').style.display = 'none';
+            bracket.style.display = 'flex';
+        }
+
+        function setupEventListeners() {
+            document.getElementById('probToggle').addEventListener('click', toggleProbabilities);
+            document.getElementById('resetBtn').addEventListener('click', resetBracket);
+        }
+
+        function toggleProbabilities() {
+            showProbabilities = !showProbabilities;
+            const btn = document.getElementById('probToggle');
+            btn.textContent = showProbabilities ? 'Hide Probabilities' : 'Show Probabilities';
+            btn.classList.toggle('active');
+            
+            // Update display
+            document.querySelectorAll('.probability').forEach(el => {
+                el.classList.toggle('show', showProbabilities);
+                el.classList.toggle('hide', !showProbabilities);
+            });
+        }
+
+        function resetBracket() {
+            userOverrides = {};
+            buildBracket();
+        }
+    </script>
+</body>
+</html>
