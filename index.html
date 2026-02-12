@@ -356,7 +356,8 @@
     if (daysSinceLastSunday > 0 && daysSinceLastSunday < 7 && today <= endDate) {
         sundays.push(new Date(today));
     }
-    
+    console.log('Sundays collected:', sundays.map(d => formatDate(d)));
+    return sundays;
     return sundays;
 }
 
