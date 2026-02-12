@@ -332,22 +332,33 @@
     }
 
     function getSundaysInSeason(year) {
-        const sundays = [];
-        const startDate = new Date(year - 1, CONFIG.SEASON_START_MONTH, 1);
-        const endDate = new Date(year, CONFIG.SEASON_END_MONTH, 31);
-        
-        let current = new Date(startDate);
-        while (current.getDay() !== 0) {
-            current.setDate(current.getDate() + 1);
-        }
-        
-        while (current <= endDate) {
-            sundays.push(new Date(current));
-            current.setDate(current.getDate() + 7);
-        }
-        
-        return sundays;
+    const sundays = [];
+    const startDate = new Date(year - 1, CONFIG.SEASON_START_MONTH, 1);
+    const endDate = new Date(year, CONFIG.SEASON_END_MONTH, 31);
+    
+    // Find first Sunday
+    let current = new Date(startDate);
+    while (current.getDay() !== 0) {
+        current.setDate(current.getDate() + 1);
     }
+    
+    // Collect all Sundays up to today
+    const today = new Date();
+    while (current <= Math.min(endDate, today)) {
+        sundays.push(new Date(current));
+        current.setDate(current.getDate() + 7);
+    }
+    
+    // Add today if it's not already a Sunday and we're in the season
+    const lastSunday = sundays[sundays.length - 1];
+    const daysSinceLastSunday = Math.floor((today - lastSunday) / (1000 * 60 * 60 * 24));
+    
+    if (daysSinceLastSunday > 0 && daysSinceLastSunday < 7 && today <= endDate) {
+        sundays.push(new Date(today));
+    }
+    
+    return sundays;
+}
 
     function formatDate(date) {
         const year = date.getFullYear();
