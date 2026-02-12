@@ -511,7 +511,11 @@
     
     createChart();
     document.getElementById('resultsContainer').classList.add('active');
-    document.getElementById('toggleBtn').disabled = false;  // <-- This line is the problem
+    
+    const toggleBtn = document.getElementById('toggleBtn');
+    if (toggleBtn) {
+        toggleBtn.disabled = false;
+    }
 }
 
     function createChart() {
