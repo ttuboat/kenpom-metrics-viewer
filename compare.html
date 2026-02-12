@@ -542,38 +542,41 @@
     }
 
     function displayChart() {
-        if (!currentData || currentData.dataPoints.length === 0) {
-            return;
-        }
-        
-        const { team, dataPoints } = currentData;
-        const latest = dataPoints[dataPoints.length - 1];
-        const summary = document.getElementById('statsSummary');
-        
-        summary.innerHTML = `
-            <div class="stat-card">
-                <div class="stat-label">Latest AdjO</div>
-                <div class="stat-value">${latest.adjO.toFixed(1)}</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Latest AdjD</div>
-                <div class="stat-value">${latest.adjD.toFixed(1)}</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Latest Net Rating</div>
-                <div class="stat-value">${latest.adjEM.toFixed(1)}</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Overall Rank</div>
-                <div class="stat-value">#${latest.rankAdjEM}</div>
-            </div>
-        `;
-        
-        createChart();
-        document.getElementById('resultsContainer').classList.add('active');
-        document.getElementById('toggleBtn').disabled = false;
+    if (!currentData || currentData.dataPoints.length === 0) {
+        return;
     }
-
+    
+    const { team, dataPoints } = currentData;
+    const latest = dataPoints[dataPoints.length - 1];
+    const summary = document.getElementById('statsSummary');
+    
+    summary.innerHTML = `
+        <div class="stat-card">
+            <div class="stat-label">Latest AdjO</div>
+            <div class="stat-value">${latest.adjO.toFixed(1)}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Latest AdjD</div>
+            <div class="stat-value">${latest.adjD.toFixed(1)}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Latest Net Rating</div>
+            <div class="stat-value">${latest.adjEM.toFixed(1)}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Overall Rank</div>
+            <div class="stat-value">#${latest.rankAdjEM}</div>
+        </div>
+    `;
+    
+    createChart();
+    document.getElementById('resultsContainer').classList.add('active');
+    
+    const toggleBtn = document.getElementById('toggleBtn');
+    if (toggleBtn) {
+        toggleBtn.disabled = false;
+    }
+}
     function createChart() {
         const ctx = document.getElementById('trendsChart').getContext('2d');
         const { team, dataPoints } = currentData;
