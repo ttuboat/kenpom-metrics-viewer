@@ -228,10 +228,10 @@
         </div>
     </div>
 
-    <script>
-    // Configuration - UPDATE THIS AFTER DEPLOYING TO RENDER
+<script>
+    // Configuration
     const CONFIG = {
-        BACKEND_URL: 'https://kenpom-metrics-viewer.onrender.com', // Change this to your Render URL after deployment
+        BACKEND_URL: 'https://kenpom-api-backend.onrender.com', // UPDATE to your Render URL
         SEASON_START_MONTH: 10,
         SEASON_END_MONTH: 2,
     };
@@ -332,34 +332,28 @@
     }
 
     function getSundaysInSeason(year) {
-    const sundays = [];
-    const startDate = new Date(year - 1, CONFIG.SEASON_START_MONTH, 1);
-    const endDate = new Date(year, CONFIG.SEASON_END_MONTH, 31);
-    
-    // Find first Sunday
-    let current = new Date(startDate);
-    while (current.getDay() !== 0) {
-        current.setDate(current.getDate() + 1);
+        const sundays = [];
+        const startDate = new Date(year - 1, CONFIG.SEASON_START_MONTH, 1);
+        const endDate = new Date(year, CONFIG.SEASON_END_MONTH, 31);
+        
+        // Find first Sunday
+        let current = new Date(startDate);
+        while (current.getDay() !== 0) {
+            current.setDate(current.getDate() + 1);
+        }
+        
+        // Use yesterday as cutoff for archive data (KenPom updates overnight)
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        // Collect all Sundays up to yesterday
+        while (current <= Math.min(endDate, yesterday)) {
+            sundays.push(new Date(current));
+            current.setDate(current.getDate() + 7);
+        }
+        
+        return sundays;
     }
-    
-    // Collect all Sundays up to today
-    const today = new Date();
-    while (current <= Math.min(endDate, today)) {
-        sundays.push(new Date(current));
-        current.setDate(current.getDate() + 7);
-    }
-    
-    // Add today if it's not already a Sunday and we're in the season
-    const lastSunday = sundays[sundays.length - 1];
-    const daysSinceLastSunday = Math.floor((today - lastSunday) / (1000 * 60 * 60 * 24));
-    
-    if (daysSinceLastSunday > 0 && daysSinceLastSunday < 7 && today <= endDate) {
-        sundays.push(new Date(today));
-    }
-    console.log('Sundays collected:', sundays.map(d => formatDate(d)));
-    return sundays;
-    return sundays;
-}
 
     function formatDate(date) {
         const year = date.getFullYear();
@@ -377,15 +371,17 @@
             return;
         }
         
+        // Show loading
         document.getElementById('loading').classList.add('active');
         document.getElementById('errorMessage').classList.remove('active');
-        document.getElementById('chartContainer').classList.remove('active');
+        document.getElementById('resultsContainer').classList.remove('active');
         document.getElementById('fetchBtn').disabled = true;
         
         try {
             const sundays = getSundaysInSeason(year);
             const dataPoints = [];
             
+            // Fetch historical data for all Sundays
             for (const sunday of sundays) {
                 const dateStr = formatDate(sunday);
                 const data = await fetchKenPomData(dateStr, year, team);
@@ -397,6 +393,17 @@
                         ...data
                     });
                 }
+            }
+            
+            // Fetch current/latest ratings
+            const currentData = await fetchCurrentRatings(year, team);
+            if (currentData) {
+                const today = new Date();
+                dataPoints.push({
+                    date: today,
+                    dateStr: formatDate(today),
+                    ...currentData
+                });
             }
             
             if (dataPoints.length === 0) {
@@ -417,7 +424,7 @@
     }
 
     async function fetchKenPomData(date, year, team) {
-        const url = `${CONFIG.BACKEND_URL}/api/archive?d=${date}&y=${year}&team=${encodeURIComponent(team)}`;
+        const url = `${CONFIG.BACKEND_URL}/api/team/${encodeURIComponent(team)}?date=${date}&year=${year}`;
         
         try {
             const response = await fetch(url);
@@ -442,6 +449,34 @@
             
         } catch (error) {
             console.warn(`Could not fetch data for ${date}:`, error);
+            return null;
+        }
+    }
+
+    async function fetchCurrentRatings(year, team) {
+        const url = `${CONFIG.BACKEND_URL}/api/ratings/current?y=${year}&team=${encodeURIComponent(team)}`;
+        
+        try {
+            const response = await fetch(url);
+            
+            if (!response.ok) {
+                console.warn('Could not fetch current ratings');
+                return null;
+            }
+            
+            const teamData = await response.json();
+            
+            return {
+                adjO: teamData.AdjOE,
+                adjD: teamData.AdjDE,
+                adjEM: teamData.AdjEM,
+                rankAdjO: teamData.RankAdjOE,
+                rankAdjD: teamData.RankAdjDE,
+                rankAdjEM: teamData.RankAdjEM
+            };
+            
+        } catch (error) {
+            console.warn('Error fetching current ratings:', error);
             return null;
         }
     }
@@ -475,7 +510,7 @@
         `;
         
         createChart();
-        document.getElementById('chartContainer').classList.add('active');
+        document.getElementById('resultsContainer').classList.add('active');
         document.getElementById('toggleBtn').disabled = false;
     }
 
