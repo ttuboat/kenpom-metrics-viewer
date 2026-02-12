@@ -64,6 +64,52 @@ app.get('/api/archive', async (req, res) => {
     }
 });
 
+// New endpoint for current ratings (not archived)
+app.get('/api/ratings/current', async (req, res) => {
+    try {
+        const { y, team } = req.query;
+        const apiKey = process.env.KENPOM_API_KEY;
+
+        if (!apiKey) {
+            return res.status(500).json({ error: 'API key not configured' });
+        }
+
+        // Build URL for current ratings endpoint
+        const url = team 
+            ? `${KENPOM_API_BASE}?endpoint=ratings&y=${y}&team_id=${team}`
+            : `${KENPOM_API_BASE}?endpoint=ratings&y=${y}`;
+        
+        const response = await axios.get(url, {
+            headers: {
+                'Authorization': `Bearer ${apiKey}`
+            }
+        });
+
+        // If team is specified, filter for that team
+        if (team) {
+            const teamData = response.data.find(t => t.team_id === parseInt(team));
+            if (!teamData) {
+                return res.status(404).json({ error: 'Team not found' });
+            }
+            return res.json(teamData);
+        }
+
+        res.json(response.data);
+        
+    } catch (error) {
+        console.error('KenPom API Error:', error.message);
+        
+        if (error.response) {
+            res.status(error.response.status).json({ 
+                error: 'KenPom API error',
+                details: error.response.data 
+            });
+        } else {
+            res.status(500).json({ error: 'Server error' });
+        }
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
