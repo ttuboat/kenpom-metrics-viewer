@@ -363,65 +363,65 @@
     }
 
     async function fetchSeasonData() {
-        const team = document.getElementById('teamSelect').value;
-        const year = parseInt(document.getElementById('yearSelect').value);
+    const team = document.getElementById('teamSelect').value;
+    const year = parseInt(document.getElementById('yearSelect').value);
+    
+    if (!team) {
+        showError('Please select a team');
+        return;
+    }
+    
+    // Show loading
+    document.getElementById('loading').classList.add('active');
+    document.getElementById('errorMessage').classList.remove('active');
+    document.getElementById('resultsContainer').classList.remove('active');
+    document.getElementById('fetchBtn').disabled = true;
+    
+    try {
+        const sundays = getSundaysInSeason(year);
+        const dataPoints = [];
         
-        if (!team) {
-            showError('Please select a team');
+        // Fetch historical data for all Sundays
+        for (const sunday of sundays) {
+            const dateStr = formatDate(sunday);
+            const data = await fetchKenPomData(dateStr, year, team);
+            
+            if (data) {
+                dataPoints.push({
+                    date: sunday,
+                    dateStr: dateStr,
+                    ...data
+                });
+            }
+        }
+        
+        // Fetch current/latest ratings
+        const latestData = await fetchCurrentRatings(year, team);
+        if (latestData) {
+            const today = new Date();
+            dataPoints.push({
+                date: today,
+                dateStr: formatDate(today),
+                ...latestData
+            });
+        }
+        
+        if (dataPoints.length === 0) {
+            showError('No data found for this team and season.');
             return;
         }
         
-        // Show loading
-        document.getElementById('loading').classList.add('active');
-        document.getElementById('errorMessage').classList.remove('active');
-        document.getElementById('resultsContainer').classList.remove('active');
-        document.getElementById('fetchBtn').disabled = true;
+        currentData = { team, year, dataPoints };
+        displayChart();
         
-        try {
-            const sundays = getSundaysInSeason(year);
-            const dataPoints = [];
-            
-            // Fetch historical data for all Sundays
-            for (const sunday of sundays) {
-                const dateStr = formatDate(sunday);
-                const data = await fetchKenPomData(dateStr, year, team);
-                
-                if (data) {
-                    dataPoints.push({
-                        date: sunday,
-                        dateStr: dateStr,
-                        ...data
-                    });
-                }
-            }
-            
-            // Fetch current/latest ratings
-            const currentData = await fetchCurrentRatings(year, team);
-            if (currentData) {
-                const today = new Date();
-                dataPoints.push({
-                    date: today,
-                    dateStr: formatDate(today),
-                    ...currentData
-                });
-            }
-            
-            if (dataPoints.length === 0) {
-                showError('No data found for this team and season.');
-                return;
-            }
-            
-            currentData = { team, year, dataPoints };
-            displayChart();
-            
-        } catch (error) {
-            console.error('Error:', error);
-            showError(`Error: ${error.message}`);
-        } finally {
-            document.getElementById('loading').classList.remove('active');
-            document.getElementById('fetchBtn').disabled = false;
-        }
+    } catch (error) {
+        console.error('Error:', error);
+        showError(`Error: ${error.message}`);
+    } finally {
+        document.getElementById('loading').classList.remove('active');
+        document.getElementById('fetchBtn').disabled = false;
     }
+}
 
     async function fetchKenPomData(date, year, team) {
         const url = `${CONFIG.BACKEND_URL}/api/team/${encodeURIComponent(team)}?date=${date}&year=${year}`;
