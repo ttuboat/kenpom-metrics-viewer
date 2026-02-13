@@ -175,8 +175,10 @@
 
         .charts-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 1fr;
             gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .chart-card {
@@ -194,7 +196,7 @@
 
         .chart-container {
             position: relative;
-            height: 300px;
+            height: 400px;
         }
 
         .loading {
@@ -237,6 +239,17 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        
+        @media (max-width: 768px) {
+            .team-selectors {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-container {
+                height: 350px;
+            }
+        }
+        
     </style>
 </head>
 <body>
