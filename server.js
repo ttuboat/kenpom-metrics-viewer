@@ -109,7 +109,47 @@ app.get('/api/ratings/current', async (req, res) => {
         }
     }
 });
+// Get team data for a specific date (legacy endpoint)
+app.get('/api/team/:teamName', async (req, res) => {
+    try {
+        const { teamName } = req.params;
+        const { date, year } = req.query;
+        
+        if (!date || !year) {
+            return res.status(400).json({ error: 'Date and year are required' });
+        }
 
+        const url = `${KENPOM_API_BASE}?endpoint=archive&d=${date}&y=${year}`;
+        
+        const response = await axios.get(url, {
+            headers: {
+                'Authorization': `Bearer ${API_KEY}`
+            }
+        });
+
+        const teamData = response.data.find(t => 
+            t.TeamName && t.TeamName.toLowerCase() === decodeURIComponent(teamName).toLowerCase()
+        );
+
+        if (!teamData) {
+            return res.status(404).json({ error: 'Team not found' });
+        }
+
+        res.json(teamData);
+        
+    } catch (error) {
+        console.error('KenPom API Error:', error.message);
+        
+        if (error.response) {
+            res.status(error.response.status).json({ 
+                error: 'KenPom API error',
+                details: error.response.data 
+            });
+        } else {
+            res.status(500).json({ error: 'Server error' });
+        }
+    }
+});
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
