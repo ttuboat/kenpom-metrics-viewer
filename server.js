@@ -68,36 +68,37 @@ app.get('/api/archive', async (req, res) => {
 app.get('/api/ratings/current', async (req, res) => {
     try {
         const { y, team } = req.query;
-        const apiKey = process.env.KENPOM_API_KEY;
-
-        if (!apiKey) {
-            return res.status(500).json({ error: 'API key not configured' });
+        
+        if (!y) {
+            return res.status(400).json({ error: 'Year (y) is required' });
         }
 
-        // Build URL for current ratings endpoint
-        const url = team 
-            ? `${KENPOM_API_BASE}?endpoint=ratings&y=${y}&team_id=${team}`
-            : `${KENPOM_API_BASE}?endpoint=ratings&y=${y}`;
+        // Build URL for current ratings endpoint (don't filter by team in the API call)
+        const url = `${KENPOM_API_BASE}?endpoint=ratings&y=${y}`;
         
         const response = await axios.get(url, {
             headers: {
-                'Authorization': `Bearer ${apiKey}`
+                'Authorization': `Bearer ${API_KEY}`
             }
         });
 
-        // If team is specified, filter for that team
+        // If team is specified, filter for that team by NAME
         if (team) {
-            const teamData = response.data.find(t => t.team_id === parseInt(team));
+            const teamData = response.data.find(t => 
+                t.TeamName && t.TeamName.toLowerCase() === decodeURIComponent(team).toLowerCase()
+            );
+            
             if (!teamData) {
-                return res.status(404).json({ error: 'Team not found' });
+                return res.status(404).json({ error: 'Team not found in current ratings' });
             }
+            
             return res.json(teamData);
         }
 
         res.json(response.data);
         
     } catch (error) {
-        console.error('KenPom API Error:', error.message);
+        console.error('KenPom Ratings API Error:', error.message);
         
         if (error.response) {
             res.status(error.response.status).json({ 
