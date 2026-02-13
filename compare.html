@@ -377,12 +377,21 @@
     }
 
     function populateTeams() {
-        const select = document.getElementById('teamSelect');
+        const team1Select = document.getElementById('team1Select');
+        const team2Select = document.getElementById('team2Select');
+        
         teams.forEach(team => {
-            const option = document.createElement('option');
-            option.value = team;
-            option.textContent = team;
-            select.appendChild(option);
+            // Add to Team 1 dropdown
+            const option1 = document.createElement('option');
+            option1.value = team;
+            option1.textContent = team;
+            team1Select.appendChild(option1);
+            
+            // Add to Team 2 dropdown
+            const option2 = document.createElement('option');
+            option2.value = team;
+            option2.textContent = team;
+            team2Select.appendChild(option2);
         });
     }
 
