@@ -422,7 +422,6 @@
         document.getElementById('fetchBtn').disabled = false;
     }
 }
-
     async function fetchKenPomData(date, year, team) {
         const url = `${CONFIG.BACKEND_URL}/api/team/${encodeURIComponent(team)}?date=${date}&year=${year}`;
         
