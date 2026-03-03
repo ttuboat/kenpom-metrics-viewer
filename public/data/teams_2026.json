@@ -1,0 +1,2186 @@
+[
+  {
+    "id": 1120,
+    "name": "Auburn",
+    "seed": 1,
+    "seed_str": "Y01"
+  },
+  {
+    "id": 1181,
+    "name": "Duke",
+    "seed": 1,
+    "seed_str": "W01"
+  },
+  {
+    "id": 1196,
+    "name": "Florida",
+    "seed": 1,
+    "seed_str": "Z01"
+  },
+  {
+    "id": 1222,
+    "name": "Houston",
+    "seed": 1,
+    "seed_str": "X01"
+  },
+  {
+    "id": 1104,
+    "name": "Alabama",
+    "seed": 2,
+    "seed_str": "W02"
+  },
+  {
+    "id": 1277,
+    "name": "Michigan St",
+    "seed": 2,
+    "seed_str": "Y02"
+  },
+  {
+    "id": 1385,
+    "name": "St John's",
+    "seed": 2,
+    "seed_str": "Z02"
+  },
+  {
+    "id": 1397,
+    "name": "Tennessee",
+    "seed": 2,
+    "seed_str": "X02"
+  },
+  {
+    "id": 1235,
+    "name": "Iowa St",
+    "seed": 3,
+    "seed_str": "Y03"
+  },
+  {
+    "id": 1246,
+    "name": "Kentucky",
+    "seed": 3,
+    "seed_str": "X03"
+  },
+  {
+    "id": 1403,
+    "name": "Texas Tech",
+    "seed": 3,
+    "seed_str": "Z03"
+  },
+  {
+    "id": 1458,
+    "name": "Wisconsin",
+    "seed": 3,
+    "seed_str": "W03"
+  },
+  {
+    "id": 1112,
+    "name": "Arizona",
+    "seed": 4,
+    "seed_str": "W04"
+  },
+  {
+    "id": 1268,
+    "name": "Maryland",
+    "seed": 4,
+    "seed_str": "Z04"
+  },
+  {
+    "id": 1345,
+    "name": "Purdue",
+    "seed": 4,
+    "seed_str": "X04"
+  },
+  {
+    "id": 1401,
+    "name": "Texas A&M",
+    "seed": 4,
+    "seed_str": "Y04"
+  },
+  {
+    "id": 1155,
+    "name": "Clemson",
+    "seed": 5,
+    "seed_str": "X05"
+  },
+  {
+    "id": 1272,
+    "name": "Memphis",
+    "seed": 5,
+    "seed_str": "Z05"
+  },
+  {
+    "id": 1276,
+    "name": "Michigan",
+    "seed": 5,
+    "seed_str": "Y05"
+  },
+  {
+    "id": 1332,
+    "name": "Oregon",
+    "seed": 5,
+    "seed_str": "W05"
+  },
+  {
+    "id": 1140,
+    "name": "BYU",
+    "seed": 6,
+    "seed_str": "W06"
+  },
+  {
+    "id": 1228,
+    "name": "Illinois",
+    "seed": 6,
+    "seed_str": "X06"
+  },
+  {
+    "id": 1279,
+    "name": "Mississippi",
+    "seed": 6,
+    "seed_str": "Y06"
+  },
+  {
+    "id": 1281,
+    "name": "Missouri",
+    "seed": 6,
+    "seed_str": "Z06"
+  },
+  {
+    "id": 1242,
+    "name": "Kansas",
+    "seed": 7,
+    "seed_str": "Z07"
+  },
+  {
+    "id": 1266,
+    "name": "Marquette",
+    "seed": 7,
+    "seed_str": "Y07"
+  },
+  {
+    "id": 1388,
+    "name": "St Mary's CA",
+    "seed": 7,
+    "seed_str": "W07"
+  },
+  {
+    "id": 1417,
+    "name": "UCLA",
+    "seed": 7,
+    "seed_str": "X07"
+  },
+  {
+    "id": 1163,
+    "name": "Connecticut",
+    "seed": 8,
+    "seed_str": "Z08"
+  },
+  {
+    "id": 1211,
+    "name": "Gonzaga",
+    "seed": 8,
+    "seed_str": "X08"
+  },
+  {
+    "id": 1257,
+    "name": "Louisville",
+    "seed": 8,
+    "seed_str": "Y08"
+  },
+  {
+    "id": 1280,
+    "name": "Mississippi St",
+    "seed": 8,
+    "seed_str": "W08"
+  },
+  {
+    "id": 1124,
+    "name": "Baylor",
+    "seed": 9,
+    "seed_str": "W09"
+  },
+  {
+    "id": 1166,
+    "name": "Creighton",
+    "seed": 9,
+    "seed_str": "Y09"
+  },
+  {
+    "id": 1208,
+    "name": "Georgia",
+    "seed": 9,
+    "seed_str": "X09"
+  },
+  {
+    "id": 1328,
+    "name": "Oklahoma",
+    "seed": 9,
+    "seed_str": "Z09"
+  },
+  {
+    "id": 1116,
+    "name": "Arkansas",
+    "seed": 10,
+    "seed_str": "Z10"
+  },
+  {
+    "id": 1307,
+    "name": "New Mexico",
+    "seed": 10,
+    "seed_str": "Y10"
+  },
+  {
+    "id": 1429,
+    "name": "Utah St",
+    "seed": 10,
+    "seed_str": "X10"
+  },
+  {
+    "id": 1435,
+    "name": "Vanderbilt",
+    "seed": 10,
+    "seed_str": "W10"
+  },
+  {
+    "id": 1179,
+    "name": "Drake",
+    "seed": 11,
+    "seed_str": "Z11"
+  },
+  {
+    "id": 1314,
+    "name": "North Carolina",
+    "seed": 11,
+    "seed_str": "Y11a"
+  },
+  {
+    "id": 1361,
+    "name": "San Diego St",
+    "seed": 11,
+    "seed_str": "Y11b"
+  },
+  {
+    "id": 1400,
+    "name": "Texas",
+    "seed": 11,
+    "seed_str": "X11a"
+  },
+  {
+    "id": 1433,
+    "name": "VCU",
+    "seed": 11,
+    "seed_str": "W11"
+  },
+  {
+    "id": 1462,
+    "name": "Xavier",
+    "seed": 11,
+    "seed_str": "X11b"
+  },
+  {
+    "id": 1161,
+    "name": "Colorado St",
+    "seed": 12,
+    "seed_str": "Z12"
+  },
+  {
+    "id": 1251,
+    "name": "Liberty",
+    "seed": 12,
+    "seed_str": "W12"
+  },
+  {
+    "id": 1270,
+    "name": "McNeese St",
+    "seed": 12,
+    "seed_str": "X12"
+  },
+  {
+    "id": 1471,
+    "name": "UC San Diego",
+    "seed": 12,
+    "seed_str": "Y12"
+  },
+  {
+    "id": 1103,
+    "name": "Akron",
+    "seed": 13,
+    "seed_str": "W13"
+  },
+  {
+    "id": 1213,
+    "name": "Grand Canyon",
+    "seed": 13,
+    "seed_str": "Z13"
+  },
+  {
+    "id": 1219,
+    "name": "High Point",
+    "seed": 13,
+    "seed_str": "X13"
+  },
+  {
+    "id": 1463,
+    "name": "Yale",
+    "seed": 13,
+    "seed_str": "Y13"
+  },
+  {
+    "id": 1252,
+    "name": "Lipscomb",
+    "seed": 14,
+    "seed_str": "Y14"
+  },
+  {
+    "id": 1285,
+    "name": "Montana",
+    "seed": 14,
+    "seed_str": "W14"
+  },
+  {
+    "id": 1407,
+    "name": "Troy",
+    "seed": 14,
+    "seed_str": "X14"
+  },
+  {
+    "id": 1423,
+    "name": "UNC Wilmington",
+    "seed": 14,
+    "seed_str": "Z14"
+  },
+  {
+    "id": 1136,
+    "name": "Bryant",
+    "seed": 15,
+    "seed_str": "Y15"
+  },
+  {
+    "id": 1303,
+    "name": "NE Omaha",
+    "seed": 15,
+    "seed_str": "Z15"
+  },
+  {
+    "id": 1352,
+    "name": "Robert Morris",
+    "seed": 15,
+    "seed_str": "W15"
+  },
+  {
+    "id": 1459,
+    "name": "Wofford",
+    "seed": 15,
+    "seed_str": "X15"
+  },
+  {
+    "id": 1106,
+    "name": "Alabama St",
+    "seed": 16,
+    "seed_str": "Y16a"
+  },
+  {
+    "id": 1110,
+    "name": "American Univ",
+    "seed": 16,
+    "seed_str": "W16a"
+  },
+  {
+    "id": 1291,
+    "name": "Mt St Mary's",
+    "seed": 16,
+    "seed_str": "W16b"
+  },
+  {
+    "id": 1313,
+    "name": "Norfolk St",
+    "seed": 16,
+    "seed_str": "Z16"
+  },
+  {
+    "id": 1188,
+    "name": "SIUE",
+    "seed": 16,
+    "seed_str": "X16"
+  },
+  {
+    "id": 1384,
+    "name": "St Francis PA",
+    "seed": 16,
+    "seed_str": "Y16b"
+  },
+  {
+    "id": 1101,
+    "name": "Abilene Chr",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1102,
+    "name": "Air Force",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1105,
+    "name": "Alabama A&M",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1108,
+    "name": "Alcorn St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1111,
+    "name": "Appalachian St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1113,
+    "name": "Arizona St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1114,
+    "name": "Ark Little Rock",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1115,
+    "name": "Ark Pine Bluff",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1117,
+    "name": "Arkansas St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1119,
+    "name": "Army",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1122,
+    "name": "Austin Peay",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1123,
+    "name": "Ball St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1468,
+    "name": "Bellarmine",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1125,
+    "name": "Belmont",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1126,
+    "name": "Bethune-Cookman",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1127,
+    "name": "Binghamton",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1129,
+    "name": "Boise St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1130,
+    "name": "Boston College",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1131,
+    "name": "Boston Univ",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1132,
+    "name": "Bowling Green",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1133,
+    "name": "Bradley",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1135,
+    "name": "Brown",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1137,
+    "name": "Bucknell",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1138,
+    "name": "Buffalo",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1139,
+    "name": "Butler",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1141,
+    "name": "C Michigan",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1167,
+    "name": "CS Bakersfield",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1168,
+    "name": "CS Fullerton",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1169,
+    "name": "CS Northridge",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1170,
+    "name": "CS Sacramento",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1465,
+    "name": "Cal Baptist",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1142,
+    "name": "Cal Poly",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1143,
+    "name": "California",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1144,
+    "name": "Campbell",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1145,
+    "name": "Canisius",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1146,
+    "name": "Cent Arkansas",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1148,
+    "name": "Central Conn",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1149,
+    "name": "Charleston So",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1150,
+    "name": "Charlotte",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1151,
+    "name": "Chattanooga",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1152,
+    "name": "Chicago St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1153,
+    "name": "Cincinnati",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1154,
+    "name": "Citadel",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1156,
+    "name": "Cleveland St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1157,
+    "name": "Coastal Car",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1158,
+    "name": "Col Charleston",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1159,
+    "name": "Colgate",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1160,
+    "name": "Colorado",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1162,
+    "name": "Columbia",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1164,
+    "name": "Coppin St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1165,
+    "name": "Cornell",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1171,
+    "name": "Dartmouth",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1172,
+    "name": "Davidson",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1173,
+    "name": "Dayton",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1177,
+    "name": "DePaul",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1174,
+    "name": "Delaware",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1175,
+    "name": "Delaware St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1176,
+    "name": "Denver",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1178,
+    "name": "Detroit",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1180,
+    "name": "Drexel",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1182,
+    "name": "Duquesne",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1183,
+    "name": "E Illinois",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1184,
+    "name": "E Kentucky",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1185,
+    "name": "E Michigan",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1186,
+    "name": "E Washington",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1190,
+    "name": "ETSU",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1187,
+    "name": "East Carolina",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1477,
+    "name": "East Texas A&M",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1189,
+    "name": "Elon",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1191,
+    "name": "Evansville",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1192,
+    "name": "F Dickinson",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1195,
+    "name": "FGCU",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1194,
+    "name": "FL Atlantic",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1193,
+    "name": "Fairfield",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1197,
+    "name": "Florida A&M",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1198,
+    "name": "Florida Intl",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1199,
+    "name": "Florida St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1200,
+    "name": "Fordham",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1201,
+    "name": "Fresno St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1202,
+    "name": "Furman",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1203,
+    "name": "G Washington",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1204,
+    "name": "Ga Southern",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1205,
+    "name": "Gardner Webb",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1206,
+    "name": "George Mason",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1207,
+    "name": "Georgetown",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1209,
+    "name": "Georgia St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1210,
+    "name": "Georgia Tech",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1212,
+    "name": "Grambling",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1214,
+    "name": "Hampton",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1217,
+    "name": "Harvard",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1218,
+    "name": "Hawaii",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1220,
+    "name": "Hofstra",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1221,
+    "name": "Holy Cross",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1223,
+    "name": "Houston Chr",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1224,
+    "name": "Howard",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1227,
+    "name": "IL Chicago",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1237,
+    "name": "IUPUI",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1225,
+    "name": "Idaho",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1226,
+    "name": "Idaho St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1229,
+    "name": "Illinois St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1230,
+    "name": "Incarnate Word",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1231,
+    "name": "Indiana",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1232,
+    "name": "Indiana St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1233,
+    "name": "Iona",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1234,
+    "name": "Iowa",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1238,
+    "name": "Jackson St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1239,
+    "name": "Jacksonville",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1240,
+    "name": "Jacksonville St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1241,
+    "name": "James Madison",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1243,
+    "name": "Kansas St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1244,
+    "name": "Kennesaw",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1245,
+    "name": "Kent",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1254,
+    "name": "LIU Brooklyn",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1261,
+    "name": "LSU",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1247,
+    "name": "La Salle",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1248,
+    "name": "Lafayette",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1249,
+    "name": "Lamar",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1478,
+    "name": "Le Moyne",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1250,
+    "name": "Lehigh",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1473,
+    "name": "Lindenwood",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1253,
+    "name": "Long Beach St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1255,
+    "name": "Longwood",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1418,
+    "name": "Louisiana",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1256,
+    "name": "Louisiana Tech",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1258,
+    "name": "Loy Marymount",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1259,
+    "name": "Loyola MD",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1260,
+    "name": "Loyola-Chicago",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1262,
+    "name": "MA Lowell",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1271,
+    "name": "MD E Shore",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1290,
+    "name": "MS Valley St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1292,
+    "name": "MTSU",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1263,
+    "name": "Maine",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1264,
+    "name": "Manhattan",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1265,
+    "name": "Marist",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1267,
+    "name": "Marshall",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1269,
+    "name": "Massachusetts",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1273,
+    "name": "Mercer",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1479,
+    "name": "Mercyhurst",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1467,
+    "name": "Merrimack",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1274,
+    "name": "Miami FL",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1275,
+    "name": "Miami OH",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1278,
+    "name": "Minnesota",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1282,
+    "name": "Missouri KC",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1283,
+    "name": "Missouri St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1284,
+    "name": "Monmouth NJ",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1286,
+    "name": "Montana St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1287,
+    "name": "Morehead St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1288,
+    "name": "Morgan St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1293,
+    "name": "Murray St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1294,
+    "name": "N Colorado",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1295,
+    "name": "N Dakota St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1296,
+    "name": "N Illinois",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1297,
+    "name": "N Kentucky",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1299,
+    "name": "NC A&T",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1300,
+    "name": "NC Central",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1301,
+    "name": "NC State",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1312,
+    "name": "NJIT",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1298,
+    "name": "Navy",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1304,
+    "name": "Nebraska",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1305,
+    "name": "Nevada",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1306,
+    "name": "New Hampshire",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1308,
+    "name": "New Mexico St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1309,
+    "name": "New Orleans",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1310,
+    "name": "Niagara",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1311,
+    "name": "Nicholls St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1466,
+    "name": "North Alabama",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1315,
+    "name": "North Dakota",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1316,
+    "name": "North Florida",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1317,
+    "name": "North Texas",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1318,
+    "name": "Northeastern",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1319,
+    "name": "Northern Arizona",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1320,
+    "name": "Northern Iowa",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1321,
+    "name": "Northwestern",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1322,
+    "name": "Northwestern LA",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1323,
+    "name": "Notre Dame",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1324,
+    "name": "Oakland",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1325,
+    "name": "Ohio",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1326,
+    "name": "Ohio St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1329,
+    "name": "Oklahoma St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1330,
+    "name": "Old Dominion",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1331,
+    "name": "Oral Roberts",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1333,
+    "name": "Oregon St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1236,
+    "name": "PFW",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1334,
+    "name": "Pacific",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1335,
+    "name": "Penn",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1336,
+    "name": "Penn St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1337,
+    "name": "Pepperdine",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1338,
+    "name": "Pittsburgh",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1339,
+    "name": "Portland",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1340,
+    "name": "Portland St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1341,
+    "name": "Prairie View",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1342,
+    "name": "Presbyterian",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1343,
+    "name": "Princeton",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1344,
+    "name": "Providence",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1474,
+    "name": "Queens NC",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1346,
+    "name": "Quinnipiac",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1347,
+    "name": "Radford",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1348,
+    "name": "Rhode Island",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1349,
+    "name": "Rice",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1350,
+    "name": "Richmond",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1351,
+    "name": "Rider",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1353,
+    "name": "Rutgers",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1354,
+    "name": "S Carolina St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1355,
+    "name": "S Dakota St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1356,
+    "name": "S Illinois",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1367,
+    "name": "SC Upstate",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1368,
+    "name": "SE Louisiana",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1369,
+    "name": "SE Missouri St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1372,
+    "name": "SF Austin",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1374,
+    "name": "SMU",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1107,
+    "name": "SUNY Albany",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1357,
+    "name": "Sacred Heart",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1358,
+    "name": "Sam Houston St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1359,
+    "name": "Samford",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1360,
+    "name": "San Diego",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1362,
+    "name": "San Francisco",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1363,
+    "name": "San Jose St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1365,
+    "name": "Santa Clara",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1370,
+    "name": "Seattle",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1371,
+    "name": "Seton Hall",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1373,
+    "name": "Siena",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1375,
+    "name": "South Alabama",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1376,
+    "name": "South Carolina",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1377,
+    "name": "South Dakota",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1378,
+    "name": "South Florida",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1475,
+    "name": "Southern Indiana",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1379,
+    "name": "Southern Miss",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1380,
+    "name": "Southern Univ",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1381,
+    "name": "Southern Utah",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1382,
+    "name": "St Bonaventure",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1386,
+    "name": "St Joseph's PA",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1387,
+    "name": "St Louis",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1389,
+    "name": "St Peter's",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1472,
+    "name": "St Thomas MN",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1390,
+    "name": "Stanford",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1391,
+    "name": "Stetson",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1476,
+    "name": "Stonehill",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1392,
+    "name": "Stony Brook",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1393,
+    "name": "Syracuse",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1394,
+    "name": "TAM C. Christi",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1395,
+    "name": "TCU",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1404,
+    "name": "TN Martin",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1411,
+    "name": "TX Southern",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1470,
+    "name": "Tarleton St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1396,
+    "name": "Temple",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1398,
+    "name": "Tennessee St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1399,
+    "name": "Tennessee Tech",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1402,
+    "name": "Texas St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1405,
+    "name": "Toledo",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1406,
+    "name": "Towson",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1408,
+    "name": "Tulane",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1409,
+    "name": "Tulsa",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1412,
+    "name": "UAB",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1413,
+    "name": "UC Davis",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1414,
+    "name": "UC Irvine",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1415,
+    "name": "UC Riverside",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1364,
+    "name": "UC Santa Barbara",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1416,
+    "name": "UCF",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1419,
+    "name": "ULM",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1420,
+    "name": "UMBC",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1421,
+    "name": "UNC Asheville",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1422,
+    "name": "UNC Greensboro",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1424,
+    "name": "UNLV",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1425,
+    "name": "USC",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1426,
+    "name": "UT Arlington",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1427,
+    "name": "UT San Antonio",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1431,
+    "name": "UTEP",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1410,
+    "name": "UTRGV",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1428,
+    "name": "Utah",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1469,
+    "name": "Utah Tech",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1430,
+    "name": "Utah Valley",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1440,
+    "name": "VMI",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1434,
+    "name": "Valparaiso",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1436,
+    "name": "Vermont",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1437,
+    "name": "Villanova",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1438,
+    "name": "Virginia",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1439,
+    "name": "Virginia Tech",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1441,
+    "name": "W Carolina",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1442,
+    "name": "W Illinois",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1444,
+    "name": "W Michigan",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1453,
+    "name": "WI Green Bay",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1454,
+    "name": "WI Milwaukee",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1443,
+    "name": "WKU",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1447,
+    "name": "Wagner",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1448,
+    "name": "Wake Forest",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1449,
+    "name": "Washington",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1450,
+    "name": "Washington St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1451,
+    "name": "Weber St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1480,
+    "name": "West Georgia",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1452,
+    "name": "West Virginia",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1455,
+    "name": "Wichita St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1456,
+    "name": "William & Mary",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1457,
+    "name": "Winthrop",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1460,
+    "name": "Wright St",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1461,
+    "name": "Wyoming",
+    "seed": null,
+    "seed_str": null
+  },
+  {
+    "id": 1464,
+    "name": "Youngstown St",
+    "seed": null,
+    "seed_str": null
+  }
+]
