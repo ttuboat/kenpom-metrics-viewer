@@ -6,27 +6,7 @@
     <title>KenPom Season Trends</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-
-                @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-            
-            .container {
-                padding: 15px;
-                max-width: 100%;
-            }
-            
-            .card {
-                padding: 15px;
-            }
-            
-            h1 {
-                font-size: 24px;
-            }
-        }
-
-        {
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -39,6 +19,52 @@
             padding: 20px;
         }
 
+        /* Navigation */
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .nav-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .nav-links a.active {
+            background: #764ba2;
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -47,29 +73,9 @@
         h1 {
             color: white;
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 30px;
             font-size: 2.5em;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .nav-link {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .nav-link a {
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-            padding: 8px 16px;
-            border-radius: 5px;
-            background: rgba(255,255,255,0.2);
-            transition: background 0.3s;
-            display: inline-block;
-        }
-
-        .nav-link a:hover {
-            background: rgba(255,255,255,0.3);
         }
 
         .controls {
@@ -255,10 +261,60 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .nav-container {
+                padding: 15px;
+            }
+
+            .nav-title {
+                font-size: 20px;
+            }
+
+            .nav-links {
+                gap: 10px;
+            }
+
+            .nav-links a {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+            
+            .container {
+                padding: 0;
+            }
+            
+            .controls, .results-container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+                margin-bottom: 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .stat-value {
+                font-size: 24px;
+            }
+
+            .chart-container {
+                height: 300px;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- ADD THIS NAVIGATION -->
+    <!-- Navigation -->
     <div class="nav-container">
         <div class="nav-title">
             🏀 KenPom Metrics Viewer
@@ -271,6 +327,8 @@
         </div>
     </div>
 
+    <div class="container">
+        <h1>🏀 KenPom Season Trends</h1>
 
         <div class="controls">
             <div class="form-row">
@@ -282,13 +340,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="yearSelect">Select Season:</label>
-                    <select id="yearSelect">
-                        <option value="2026">2025-2026</option>
-                        <option value="2025">2024-2025</option>
-                        <option value="2024">2023-2024</option>
-                        <option value="2023">2022-2023</option>
-                        <option value="2022">2021-2022</option>
+                    <label for="seasonSelect">Select Season:</label>
+                    <select id="seasonSelect">
+                        <option value="">Choose a season...</option>
                     </select>
                 </div>
             </div>
@@ -307,7 +361,7 @@
 
         <div id="loading" class="loading">
             <div class="spinner"></div>
-            <p>Loading season data... This may take a moment.</p>
+            <p>Loading data...</p>
         </div>
 
         <div id="resultsContainer" class="results-container">
@@ -319,90 +373,89 @@
     </div>
 
     <script>
-        // Configuration
         const CONFIG = {
-            BACKEND_URL: 'https://kenpom-metrics-viewer.onrender.com',
-            SEASON_START_MONTH: 10, // November (0-indexed)
-            SEASON_END_MONTH: 2,     // March
+            BACKEND_URL: 'https://kenpom-api.onrender.com',
+            SEASON_START_MONTH: 10,
+            SEASON_END_MONTH: 3,
+            CURRENT_SEASON: 2026
         };
 
-        // State
-        let currentData = null;
-        let currentChart = null;
-        let showingRankings = false;
-
-        // D1 Basketball Teams
         const teams = [
-            "Air Force", "Akron", "Alabama", "Alabama A&M", "Alabama St.", "Albany NY",
-            "Alcorn St.", "American", "Appalachian St.", "Arizona", "Arizona St.", "Arkansas",
-            "Arkansas Pine Bluff", "Arkansas St.", "Army", "Auburn", "Austin Peay", "Ball St.",
-            "Baylor", "Belmont", "Binghamton", "Boise St.", "Boston College", "Boston University",
-            "Bowling Green", "Bradley", "Brown", "Bryant", "Bucknell", "Buffalo", "Butler",
-            "BYU", "California", "Cal Poly", "Cal St. Bakersfield", "Cal St. Fullerton",
-            "Cal St. Northridge", "Campbell", "Canisius", "Central Arkansas", "Central Connecticut",
-            "Central Michigan", "Charleston Southern", "Charlotte", "Chattanooga", "Chicago St.",
-            "Cincinnati", "Clemson", "Cleveland St.", "Coastal Carolina", "Colgate",
-            "College of Charleston", "Colorado", "Colorado St.", "Columbia", "Connecticut",
-            "Coppin St.", "Cornell", "Creighton", "Dartmouth", "Davidson", "Dayton", "Delaware",
-            "Delaware St.", "Denver", "DePaul", "Detroit", "Drake", "Drexel", "Duke", "Duquesne",
-            "East Carolina", "East Tennessee St.", "Eastern Illinois", "Eastern Kentucky",
-            "Eastern Michigan", "Eastern Washington", "Elon", "Evansville", "Fairfield",
-            "Fairleigh Dickinson", "FAU", "FIU", "Florida", "Florida A&M", "Florida Atlantic",
-            "Florida Gulf Coast", "Florida St.", "Fordham", "Fresno St.", "Furman",
-            "Gardner Webb", "George Mason", "George Washington", "Georgetown", "Georgia",
-            "Georgia Southern", "Georgia St.", "Georgia Tech", "Gonzaga", "Grambling St.",
-            "Grand Canyon", "Green Bay", "Hampton", "Harvard", "Hawaii", "High Point",
-            "Hofstra", "Holy Cross", "Houston", "Houston Baptist", "Howard", "Idaho",
-            "Idaho St.", "Illinois", "Illinois Chicago", "Illinois St.", "Incarnate Word",
-            "Indiana", "Indiana St.", "Iona", "Iowa", "Iowa St.", "IPFW", "IUPUI",
-            "Jackson St.", "Jacksonville", "Jacksonville St.", "James Madison", "Kansas",
-            "Kansas St.", "Kennesaw St.", "Kent St.", "Kentucky", "La Salle", "Lafayette",
-            "Lamar", "Lehigh", "Liberty", "Lipscomb", "LIU Brooklyn", "Long Beach St.",
-            "Longwood", "Louisiana Lafayette", "Louisiana Monroe", "Louisiana Tech",
-            "Louisville", "Loyola Chicago", "Loyola Marymount", "Loyola MD", "LSU",
-            "Maine", "Manhattan", "Marist", "Marquette", "Marshall", "Maryland",
-            "Maryland Eastern Shore", "Massachusetts", "McNeese St.", "Memphis", "Mercer",
-            "Miami FL", "Miami OH", "Michigan", "Michigan St.", "Middle Tennessee",
-            "Milwaukee", "Minnesota", "Mississippi", "Mississippi St.", "Mississippi Valley St.",
-            "Missouri", "Missouri St.", "Monmouth", "Montana", "Montana St.", "Morehead St.",
-            "Morgan St.", "Mount St. Mary's", "Murray St.", "Navy", "Nebraska", "Nebraska Omaha",
-            "Nevada", "New Hampshire", "New Mexico", "New Mexico St.", "New Orleans",
-            "Niagara", "Nicholls St.", "NJIT", "Norfolk St.", "North Carolina", "North Carolina A&T",
-            "North Carolina Central", "North Carolina St.", "North Dakota", "North Dakota St.",
-            "North Florida", "North Texas", "Northeastern", "Northern Arizona", "Northern Colorado",
-            "Northern Illinois", "Northern Iowa", "Northern Kentucky", "Northwestern",
-            "Northwestern St.", "Notre Dame", "Oakland", "Ohio", "Ohio St.", "Oklahoma",
-            "Oklahoma St.", "Old Dominion", "Ole Miss", "Oral Roberts", "Oregon", "Oregon St.",
-            "Pacific", "Penn", "Penn St.", "Pepperdine", "Pittsburgh", "Portland", "Portland St.",
-            "Prairie View A&M", "Presbyterian", "Princeton", "Providence", "Purdue",
-            "Quinnipiac", "Radford", "Rhode Island", "Rice", "Richmond", "Rider", "Robert Morris",
-            "Rutgers", "Sacramento St.", "Sacred Heart", "Saint Joseph's", "Saint Louis",
-            "Saint Mary's", "Saint Peter's", "Sam Houston St.", "Samford", "San Diego",
-            "San Diego St.", "San Francisco", "San Jose St.", "Santa Clara", "Savannah St.",
-            "Seattle", "Seton Hall", "Siena", "South Alabama", "South Carolina", "South Carolina St.",
-            "South Carolina Upstate", "South Dakota", "South Dakota St.", "South Florida",
-            "Southeast Missouri St.", "Southeastern Louisiana", "Southern", "Southern Illinois",
-            "Southern Miss", "Southern Utah", "St. Bonaventure", "St. Francis NY", "St. Francis PA",
-            "St. John's", "Stanford", "Stephen F. Austin", "Stetson", "Stony Brook", "Syracuse",
-            "TCU", "Temple", "Tennessee", "Tennessee Martin", "Tennessee St.", "Tennessee Tech",
-            "Texas", "Texas A&M", "Texas A&M Corpus Chris", "Texas Arlington", "Texas El Paso",
-            "Texas San Antonio", "Texas Southern", "Texas St.", "Texas Tech", "Toledo", "Towson",
-            "Troy", "Tulane", "Tulsa", "UAB", "UC Davis", "UC Irvine", "UC Riverside",
-            "UC Santa Barbara", "UCF", "UCLA", "UConn", "UIC", "UMass", "UMass Lowell",
-            "UMBC", "UMKC", "UNC Asheville", "UNC Greensboro", "UNC Wilmington", "UNLV",
-            "USC", "USC Upstate", "UT Rio Grande Valley", "Utah", "Utah St.", "Utah Valley",
-            "UTEP", "UTSA", "Valparaiso", "Vanderbilt", "VCU", "Vermont", "Villanova",
-            "Virginia", "Virginia Tech", "VMI", "Wagner", "Wake Forest", "Washington",
-            "Washington St.", "Weber St.", "West Virginia", "Western Carolina", "Western Illinois",
-            "Western Kentucky", "Western Michigan", "Wichita St.", "William & Mary", "Winthrop",
-            "Wisconsin", "Wofford", "Wright St.", "Wyoming", "Xavier", "Yale", "Youngstown St."
-        ].sort();
+            'Abilene Christian', 'Air Force', 'Akron', 'Alabama', 'Alabama A&M', 'Alabama St.', 
+            'Albany', 'Alcorn St.', 'American', 'Appalachian St.', 'Arizona', 'Arizona St.', 
+            'Arkansas', 'Arkansas Pine Bluff', 'Arkansas St.', 'Army', 'Auburn', 'Austin Peay', 
+            'Ball St.', 'Baylor', 'Bellarmine', 'Belmont', 'Bethune Cookman', 'Binghamton', 
+            'Boise St.', 'Boston College', 'Boston University', 'Bowling Green', 'Bradley', 
+            'Brown', 'Bryant', 'Bucknell', 'Buffalo', 'Butler', 'BYU', 'Cal Baptist', 
+            'California', 'UC Davis', 'UC Irvine', 'UC Riverside', 'UC San Diego', 'UC Santa Barbara', 
+            'UCLA', 'Campbell', 'Canisius', 'Central Arkansas', 'Central Connecticut', 
+            'Central Michigan', 'Charleston', 'Charleston Southern', 'Charlotte', 'Chattanooga', 
+            'Chicago St.', 'Cincinnati', 'Clemson', 'Cleveland St.', 'Coastal Carolina', 
+            'Colgate', 'Colorado', 'Colorado St.', 'Columbia', 'Connecticut', 'Coppin St.', 
+            'Cornell', 'Creighton', 'Dartmouth', 'Davidson', 'Dayton', 'Delaware', 
+            'Delaware St.', 'Denver', 'DePaul', 'Detroit', 'Drake', 'Drexel', 'Duke', 
+            'Duquesne', 'East Carolina', 'East Tennessee St.', 'Eastern Illinois', 
+            'Eastern Kentucky', 'Eastern Michigan', 'Eastern Washington', 'Elon', 'Evansville', 
+            'Fairfield', 'Fairleigh Dickinson', 'Florida', 'Florida A&M', 'Florida Atlantic', 
+            'Florida Gulf Coast', 'Florida International', 'Florida St.', 'Fordham', 
+            'Fresno St.', 'Furman', 'Gardner Webb', 'George Mason', 'George Washington', 
+            'Georgetown', 'Georgia', 'Georgia Southern', 'Georgia St.', 'Georgia Tech', 
+            'Gonzaga', 'Grambling St.', 'Grand Canyon', 'Green Bay', 'Hampton', 'Hartford', 
+            'Harvard', 'Hawaii', 'High Point', 'Hofstra', 'Holy Cross', 'Houston', 
+            'Houston Baptist', 'Howard', 'Idaho', 'Idaho St.', 'Illinois', 'Illinois Chicago', 
+            'Illinois St.', 'Incarnate Word', 'Indiana', 'Indiana St.', 'Iona', 'Iowa', 
+            'Iowa St.', 'IUPUI', 'Jackson St.', 'Jacksonville', 'Jacksonville St.', 'James Madison', 
+            'Kansas', 'Kansas St.', 'Kennesaw St.', 'Kent St.', 'Kentucky', 'La Salle', 
+            'Lafayette', 'Lamar', 'Le Moyne', 'Lehigh', 'Liberty', 'Lindenwood', 
+            'Lipscomb', 'Long Beach St.', 'Long Island University', 'Longwood', 'Louisiana', 
+            'Louisiana Monroe', 'Louisiana Tech', 'Louisville', 'Loyola Chicago', 'Loyola Marymount', 
+            'Loyola Maryland', 'LSU', 'Maine', 'Manhattan', 'Marist', 'Marquette', 
+            'Marshall', 'Maryland', 'Massachusetts', 'McNeese St.', 'Memphis', 'Mercer', 
+            'Merrimack', 'Miami FL', 'Miami OH', 'Michigan', 'Michigan St.', 'Middle Tennessee', 
+            'Milwaukee', 'Minnesota', 'Mississippi St.', 'Mississippi Valley St.', 'Missouri', 
+            'Missouri KC', 'Missouri St.', 'Monmouth', 'Montana', 'Montana St.', 'Morehead St.', 
+            'Morgan St.', 'Mount St. Mary\'s', 'Murray St.', 'Navy', 'Nebraska', 'Nebraska Omaha', 
+            'Nevada', 'New Hampshire', 'New Mexico', 'New Mexico St.', 'New Orleans', 
+            'Niagara', 'Nicholls St.', 'NJIT', 'Norfolk St.', 'North Alabama', 
+            'North Carolina', 'North Carolina A&T', 'North Carolina Central', 'North Carolina St.', 
+            'North Dakota', 'North Dakota St.', 'North Florida', 'North Texas', 'Northeastern', 
+            'Northern Arizona', 'Northern Colorado', 'Northern Illinois', 'Northern Iowa', 
+            'Northern Kentucky', 'Northwestern', 'Northwestern St.', 'Notre Dame', 'Oakland', 
+            'Ohio', 'Ohio St.', 'Oklahoma', 'Oklahoma St.', 'Old Dominion', 'Ole Miss', 
+            'Oral Roberts', 'Oregon', 'Oregon St.', 'Pacific', 'Penn', 'Penn St.', 
+            'Pepperdine', 'Pittsburgh', 'Portland', 'Portland St.', 'Prairie View A&M', 
+            'Presbyterian', 'Princeton', 'Providence', 'Purdue', 'Purdue Fort Wayne', 
+            'Queens', 'Quinnipiac', 'Radford', 'Rhode Island', 'Rice', 'Richmond', 
+            'Rider', 'Robert Morris', 'Rutgers', 'Sacramento St.', 'Sacred Heart', 
+            'Saint Joseph\'s', 'Saint Louis', 'Saint Mary\'s', 'Saint Peter\'s', 'Sam Houston St.', 
+            'Samford', 'San Diego', 'San Diego St.', 'San Francisco', 'San Jose St.', 
+            'Santa Clara', 'Seattle', 'Seton Hall', 'Siena', 'SMU', 'South Alabama', 
+            'South Carolina', 'South Carolina St.', 'South Carolina Upstate', 'South Dakota', 
+            'South Dakota St.', 'South Florida', 'Southeast Missouri St.', 'Southeastern Louisiana', 
+            'Southern', 'Southern Illinois', 'Southern Indiana', 'Southern Methodist', 
+            'Southern Mississippi', 'Southern Utah', 'St. Bonaventure', 'St. Francis NY', 
+            'St. Francis PA', 'St. John\'s', 'St. Thomas', 'Stanford', 'Stephen F. Austin', 
+            'Stetson', 'Stonehill', 'Stony Brook', 'Syracuse', 'Tarleton St.', 'TCU', 
+            'Temple', 'Tennessee', 'Tennessee Martin', 'Tennessee St.', 'Tennessee Tech', 
+            'Texas', 'Texas A&M', 'Texas A&M Commerce', 'Texas A&M Corpus Chris', 'Texas Arlington', 
+            'Texas Rio Grande Valley', 'Texas San Antonio', 'Texas Southern', 'Texas St.', 
+            'Texas Tech', 'The Citadel', 'Toledo', 'Towson', 'Troy', 'Tulane', 'Tulsa', 
+            'UAB', 'UCF', 'UCLA', 'UMass Lowell', 'UMBC', 'UNC Asheville', 'UNC Greensboro', 
+            'UNC Wilmington', 'UNLV', 'USC', 'UT Martin', 'Utah', 'Utah St.', 'Utah Tech', 
+            'Utah Valley', 'UTEP', 'Valparaiso', 'Vanderbilt', 'VCU', 'Vermont', 'Villanova', 
+            'Virginia', 'Virginia Tech', 'VMI', 'Wagner', 'Wake Forest', 'Washington', 
+            'Washington St.', 'Weber St.', 'West Virginia', 'Western Carolina', 'Western Illinois', 
+            'Western Kentucky', 'Western Michigan', 'Wichita St.', 'William & Mary', 'Winthrop', 
+            'Wisconsin', 'Wofford', 'Wright St.', 'Wyoming', 'Xavier', 'Yale', 'Youngstown St.'
+        ];
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', init);
+        let currentChart = null;
+        let currentData = null;
+        let showingRankings = false;
 
         function init() {
             populateTeams();
+            populateSeasons();
             setupEventListeners();
         }
 
@@ -416,8 +469,18 @@
             });
         }
 
+        function populateSeasons() {
+            const select = document.getElementById('seasonSelect');
+            for (let year = CONFIG.CURRENT_SEASON; year >= 2003; year--) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = `${year - 1}-${year}`;
+                select.appendChild(option);
+            }
+        }
+
         function setupEventListeners() {
-            document.getElementById('fetchBtn').addEventListener('click', fetchSeasonData);
+            document.getElementById('fetchBtn').addEventListener('click', loadSeasonTrends);
             document.getElementById('toggleBtn').addEventListener('click', toggleView);
         }
 
@@ -426,17 +489,14 @@
             const startDate = new Date(year - 1, CONFIG.SEASON_START_MONTH, 1);
             const endDate = new Date(year, CONFIG.SEASON_END_MONTH, 31);
             
-            // Find first Sunday
             let current = new Date(startDate);
             while (current.getDay() !== 0) {
                 current.setDate(current.getDate() + 1);
             }
             
-            // Use yesterday as cutoff (KenPom updates overnight)
             const yesterday = new Date();
             yesterday.setDate(yesterday.getDate() - 1);
             
-            // Collect all Sundays up to yesterday
             while (current <= Math.min(endDate, yesterday)) {
                 sundays.push(new Date(current));
                 current.setDate(current.getDate() + 7);
@@ -452,16 +512,15 @@
             return `${year}-${month}-${day}`;
         }
 
-        async function fetchSeasonData() {
+        async function loadSeasonTrends() {
             const team = document.getElementById('teamSelect').value;
-            const year = parseInt(document.getElementById('yearSelect').value);
+            const year = parseInt(document.getElementById('seasonSelect').value);
             
-            if (!team) {
-                showError('Please select a team');
+            if (!team || !year) {
+                showError('Please select both a team and a season.');
                 return;
             }
             
-            // Show loading
             document.getElementById('loading').classList.add('active');
             document.getElementById('errorMessage').classList.remove('active');
             document.getElementById('resultsContainer').classList.remove('active');
@@ -471,7 +530,6 @@
                 const sundays = getSundaysInSeason(year);
                 const dataPoints = [];
                 
-                // Fetch historical data for all Sundays
                 for (const sunday of sundays) {
                     const dateStr = formatDate(sunday);
                     const data = await fetchKenPomData(dateStr, year, team);
@@ -485,7 +543,6 @@
                     }
                 }
                 
-                // Fetch current/latest ratings
                 const latestData = await fetchCurrentRatings(year, team);
                 if (latestData) {
                     const today = new Date();
@@ -717,6 +774,8 @@
             errorDiv.textContent = message;
             errorDiv.classList.add('active');
         }
+
+        init();
     </script>
 </body>
 </html>
