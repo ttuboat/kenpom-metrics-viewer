@@ -228,11 +228,11 @@
         async function loadData() {
             try {
                 // Load predictions
-                const predResponse = await fetch('/data/predictions_2026.json');
+                const predResponse = await fetch('./data/predictions_2026.json');
                 predictions = await predResponse.json();
                 
                 // Load teams
-                const teamsResponse = await fetch('/data/teams_2026.json');
+                const teamsResponse = await fetch('./data/teams_2026.json');
                 teams = await teamsResponse.json();
                 
                 // Populate dropdowns
