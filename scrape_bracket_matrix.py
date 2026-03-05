@@ -9,6 +9,10 @@ import pandas as pd
 import json
 from datetime import datetime
 import sys
+import urllib3
+
+# Suppress SSL warnings (needed for bracketmatrix.com)
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def scrape_bracket_matrix():
     """
@@ -25,7 +29,9 @@ def scrape_bracket_matrix():
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
         }
-        response = requests.get(url, headers=headers, timeout=10)
+        # Note: verify=False is needed because bracketmatrix.com has SSL certificate issues
+        # This is acceptable for public data scraping
+        response = requests.get(url, headers=headers, timeout=10, verify=False)
         response.raise_for_status()
         
         print(f"✓ Page fetched successfully (Status: {response.status_code})")
