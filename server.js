@@ -6,19 +6,60 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// Enable CORS for your GitHub Pages site
-app.use(cors({
-    origin: ['https://ttuboat.github.io', 'http://localhost:3000'],
-    methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
-}));
+// OPTION 1: Simple CORS - Allow all origins (easiest to verify)
+// Uncomment this to test if it works:
+// app.use(cors());
 
-// Add logging to verify CORS is working
+// OPTION 2: Explicit CORS configuration (more secure)
+const corsOptions = {
+    origin: function (origin, callback) {
+        const allowedOrigins = [
+            'https://ttuboat.github.io',
+            'http://localhost:3000',
+            'http://localhost:5000'
+        ];
+        
+        // Allow requests with no origin (like mobile apps or curl)
+        if (!origin) return callback(null, true);
+        
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            console.log('Blocked origin:', origin);
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
+
+// FALLBACK: Manual CORS headers (in case cors package fails)
 app.use((req, res, next) => {
-    console.log(`Request from origin: ${req.headers.origin}`);
+    const origin = req.headers.origin;
+    const allowedOrigins = [
+        'https://ttuboat.github.io',
+        'http://localhost:3000'
+    ];
+    
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+    }
+    
+    // Handle preflight
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+    
+    console.log(`Request from origin: ${origin || 'undefined'}`);
     next();
 });
+
 app.use(express.json());
 
 const KENPOM_API_BASE = 'https://kenpom.com/api.php';
@@ -26,7 +67,12 @@ const API_KEY = process.env.KENPOM_API_KEY;
 
 // Health check endpoint
 app.get('/', (req, res) => {
-    res.json({ status: 'KenPom API Backend is running' });
+    res.json({ 
+        status: 'KenPom API Backend is running',
+        version: '2.1-cors-double-fixed',
+        corsEnabled: true,
+        timestamp: new Date().toISOString()
+    });
 });
 
 // Get archive data for a specific date
@@ -117,6 +163,7 @@ app.get('/api/ratings/current', async (req, res) => {
         }
     }
 });
+
 // Get team data for a specific date (legacy endpoint)
 app.get('/api/team/:teamName', async (req, res) => {
     try {
@@ -158,6 +205,8 @@ app.get('/api/team/:teamName', async (req, res) => {
         }
     }
 });
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
+    console.log(`CORS enabled for: https://ttuboat.github.io`);
 });
