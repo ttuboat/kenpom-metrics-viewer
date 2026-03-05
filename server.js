@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 10000;
 
 // OPTION 1: Simple CORS - Allow all origins (easiest to verify)
 // Uncomment this to test if it works:
-// app.use(cors());
+ app.use(cors());
 
 // OPTION 2: Explicit CORS configuration (more secure)
 const corsOptions = {
