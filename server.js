@@ -9,9 +9,16 @@ const PORT = process.env.PORT || 10000;
 // Enable CORS for your GitHub Pages site
 app.use(cors({
     origin: ['https://ttuboat.github.io', 'http://localhost:3000'],
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }));
 
+// Add logging to verify CORS is working
+app.use((req, res, next) => {
+    console.log(`Request from origin: ${req.headers.origin}`);
+    next();
+});
 app.use(express.json());
 
 const KENPOM_API_BASE = 'https://kenpom.com/api.php';
