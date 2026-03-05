@@ -1,5 +1,5 @@
 """
-Bracket Matrix Scraper - Daily Seed Updates
+Bracket Matrix Scraper - Daily Seed Updates (IMPROVED)
 Scrapes bracketmatrix.com for projected 2026 tournament seeds
 """
 
@@ -10,6 +10,7 @@ import json
 from datetime import datetime
 import sys
 import urllib3
+import re
 
 # Suppress SSL warnings (needed for bracketmatrix.com)
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -29,8 +30,6 @@ def scrape_bracket_matrix():
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
         }
-        # Note: verify=False is needed because bracketmatrix.com has SSL certificate issues
-        # This is acceptable for public data scraping
         response = requests.get(url, headers=headers, timeout=10, verify=False)
         response.raise_for_status()
         
@@ -39,72 +38,141 @@ def scrape_bracket_matrix():
         # Parse HTML
         soup = BeautifulSoup(response.content, 'html.parser')
         
-        # Find the main bracket table
-        # Note: This selector may need adjustment based on actual site structure
-        bracket_table = soup.find('table', {'class': 'matrix'}) or soup.find('table')
-        
-        if not bracket_table:
-            print("⚠️ Could not find bracket table. Page structure may have changed.")
-            print("Attempting alternative parsing...")
-            # Try finding all tables
-            tables = soup.find_all('table')
-            print(f"Found {len(tables)} tables on page")
-            if tables:
-                bracket_table = tables[0]  # Use first table as fallback
+        # Save HTML for debugging if needed
+        with open('debug_page.html', 'w', encoding='utf-8') as f:
+            f.write(soup.prettify())
+        print("✓ Saved debug HTML to debug_page.html")
         
         teams_data = []
         
-        # Parse table rows
-        if bracket_table:
-            rows = bracket_table.find_all('tr')
-            print(f"Found {len(rows)} rows in bracket table")
-            
-            for row in rows[1:]:  # Skip header row
-                cells = row.find_all(['td', 'th'])
+        # METHOD 1: Try to find the main bracket table
+        print("\n🔍 METHOD 1: Looking for bracket table...")
+        tables = soup.find_all('table')
+        print(f"Found {len(tables)} tables on page")
+        
+        if tables:
+            # Bracket Matrix typically has the bracket in the first or second table
+            for idx, table in enumerate(tables[:3]):  # Check first 3 tables
+                print(f"\nAnalyzing table {idx + 1}...")
+                rows = table.find_all('tr')
+                print(f"  - {len(rows)} rows")
                 
-                if len(cells) >= 2:
-                    # Extract team name and seed
-                    # Typical format: seed number in one column, team name in another
-                    team_text = cells[0].get_text(strip=True)
-                    seed_text = cells[1].get_text(strip=True) if len(cells) > 1 else ""
+                # Look at first few rows to understand structure
+                for i, row in enumerate(rows[:5]):
+                    cells = row.find_all(['td', 'th'])
+                    cell_texts = [cell.get_text(strip=True) for cell in cells]
+                    print(f"  Row {i}: {cell_texts}")
+                
+                # Try to extract data from this table
+                for row_idx, row in enumerate(rows):
+                    cells = row.find_all('td')
+                    if not cells:
+                        continue
                     
-                    # Parse seed number (e.g., "1", "2a", "11", etc.)
-                    seed_num = None
-                    if seed_text:
-                        # Extract numeric part of seed
-                        seed_clean = ''.join(filter(str.isdigit, seed_text))
-                        if seed_clean:
-                            seed_num = int(seed_clean)
+                    # Get all cell text
+                    cell_texts = [cell.get_text(strip=True) for cell in cells]
                     
-                    # Also check if seed is in team text (format like "1. Duke")
-                    if not seed_num and team_text:
-                        parts = team_text.split('.', 1)
-                        if len(parts) == 2 and parts[0].strip().isdigit():
-                            seed_num = int(parts[0].strip())
-                            team_text = parts[1].strip()
+                    # Look for patterns like: seed number, team name
+                    # Common formats:
+                    # - "1" "Duke"
+                    # - "1 Duke"
+                    # - Row contains both seed and team
                     
-                    if team_text and seed_num:
-                        teams_data.append({
-                            'team': team_text,
-                            'seed': seed_num,
-                            'seed_str': f"{seed_num:02d}"
-                        })
+                    for i, text in enumerate(cell_texts):
+                        # Check if this cell contains a seed number (1-16)
+                        if text.isdigit() and 1 <= int(text) <= 16:
+                            seed = int(text)
+                            # Team name is likely in the next cell or same cell
+                            team_name = None
+                            
+                            # Try next cell
+                            if i + 1 < len(cell_texts):
+                                team_name = cell_texts[i + 1]
+                            
+                            # Or check if team name is in same cell after seed
+                            if not team_name or team_name.isdigit():
+                                # Try to find team in same cell
+                                full_text = text
+                                if len(cells) > i:
+                                    full_text = cells[i].get_text(strip=True)
+                                
+                                # Parse formats like "1 Duke" or "1. Duke"
+                                match = re.match(r'(\d+)[\.\s]+(.+)', full_text)
+                                if match:
+                                    seed = int(match.group(1))
+                                    team_name = match.group(2).strip()
+                            
+                            if team_name and not team_name.isdigit() and len(team_name) > 1:
+                                teams_data.append({
+                                    'team': team_name,
+                                    'seed': seed,
+                                    'seed_str': f"{seed:02d}"
+                                })
+                                print(f"  ✓ Found: Seed {seed} - {team_name}")
         
+        # METHOD 2: Look for specific Bracket Matrix patterns
         if not teams_data:
-            print("⚠️ No teams extracted. Trying alternative parsing method...")
-            # Alternative: Look for specific patterns in page text
-            text_content = soup.get_text()
-            print(f"Page text preview: {text_content[:500]}")
+            print("\n🔍 METHOD 2: Looking for div/span patterns...")
+            
+            # Look for elements with team names
+            team_elements = soup.find_all(['div', 'span'], class_=re.compile(r'team|school', re.I))
+            print(f"Found {len(team_elements)} potential team elements")
+            
+            for elem in team_elements[:10]:  # Show first 10
+                print(f"  - {elem.get_text(strip=True)}")
         
-        # Create DataFrame
+        # METHOD 3: Text-based parsing
+        if not teams_data:
+            print("\n🔍 METHOD 3: Looking for text patterns...")
+            
+            # Get all text and look for patterns like "1. Duke"
+            page_text = soup.get_text()
+            
+            # Look for patterns: number followed by team name
+            pattern = r'(?:^|\n)\s*(\d{1,2})[\.\s]+([A-Z][A-Za-z\s&\'\.]+?)(?:\s*\n|\s{2,})'
+            matches = re.findall(pattern, page_text, re.MULTILINE)
+            
+            if matches:
+                print(f"Found {len(matches)} pattern matches")
+                for seed_str, team in matches[:20]:  # First 20 matches
+                    if seed_str.isdigit():
+                        seed = int(seed_str)
+                        if 1 <= seed <= 16 and len(team.strip()) > 2:
+                            team_clean = team.strip()
+                            teams_data.append({
+                                'team': team_clean,
+                                'seed': seed,
+                                'seed_str': f"{seed:02d}"
+                            })
+                            print(f"  ✓ Pattern match: Seed {seed} - {team_clean}")
+        
+        # Remove duplicates
         if teams_data:
             df = pd.DataFrame(teams_data)
-            print(f"\n✓ Successfully extracted {len(df)} teams")
+            # Remove duplicates, keeping first occurrence
+            df = df.drop_duplicates(subset=['team'], keep='first')
+            df = df.sort_values('seed')
+            
+            print(f"\n✓ Successfully extracted {len(df)} unique teams")
             print("\nPreview of extracted data:")
-            print(df.head(10))
+            print(df.head(20))
+            
+            # Validation
+            seed_counts = df.groupby('seed').size()
+            print(f"\nSeeds distribution:")
+            print(seed_counts)
+            
+            # Warning if something looks wrong
+            if len(df) < 60:
+                print(f"\n⚠️ WARNING: Only found {len(df)} teams. Expected ~68 for tournament.")
+            
+            if any(seed_counts > 8):
+                print(f"\n⚠️ WARNING: Some seed numbers have >8 teams. Data might be incorrect.")
+            
             return df
         else:
-            print("\n❌ No team data could be extracted")
+            print("\n❌ No team data could be extracted from any method")
+            print("\n🔍 Saved page HTML to 'debug_page.html' for manual inspection")
             return None
             
     except requests.RequestException as e:
@@ -179,7 +247,7 @@ def main():
     df = scrape_bracket_matrix()
     
     # Save data
-    if df is not None:
+    if df is not None and len(df) > 0:
         success = save_seed_data(df, output_format='both')
         
         if success:
@@ -189,7 +257,8 @@ def main():
             print("\n❌ Failed to save data")
             sys.exit(1)
     else:
-        print("\n❌ Scraping failed")
+        print("\n❌ Scraping failed - no data extracted")
+        print("Check 'debug_page.html' to see what the page looks like")
         sys.exit(1)
 
 if __name__ == "__main__":
