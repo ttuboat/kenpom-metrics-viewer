@@ -29,7 +29,11 @@ jobs:
       - name: 🔍 Scrape Bracket Matrix
         run: |
           python scrape_bracket_matrix.py
-      
+          
+          # Move CSV to correct location with correct name
+          mkdir -p public/data
+          cp projected_seeds_2026.csv public/data/teams_2026_with_seeds.csv
+          
       - name: 📊 Check if data changed
         id: check_changes
         run: |
