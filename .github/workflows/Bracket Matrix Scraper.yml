@@ -30,19 +30,89 @@ jobs:
         run: |
           python scrape_bracket_matrix.py
           
-          # Move CSV to correct location with correct name
+          # Debug: Show what files were created
+          echo ""
+          echo "Files created by scraper:"
+          ls -lh projected_seeds_2026.* 2>/dev/null || echo "No projected_seeds files found"
+          echo ""
+      
+      - name: 📂 Prepare data files
+        run: |
+          # Create public/data directory if it doesn't exist
           mkdir -p public/data
-          cp projected_seeds_2026.csv public/data/teams_2026_with_seeds.csv
           
+          # Check if scraper created the files
+          echo "Checking for generated files..."
+          ls -la projected_seeds_2026.* || echo "⚠️ No seed files found!"
+          
+          # Copy seeds CSV to correct location with correct name
+          if [ -f projected_seeds_2026.csv ]; then
+            cp projected_seeds_2026.csv public/data/teams_2026_with_seeds.csv
+            echo "✓ Copied seeds CSV to public/data/teams_2026_with_seeds.csv"
+          else
+            echo "❌ ERROR: projected_seeds_2026.csv not found!"
+            exit 1
+          fi
+          
+          # Copy JSON if it exists
+          if [ -f projected_seeds_2026.json ]; then
+            cp projected_seeds_2026.json public/data/
+            echo "✓ Copied seeds JSON to public/data/"
+          else
+            echo "⚠️ WARNING: projected_seeds_2026.json not found"
+          fi
+      
+      - name: 🔄 Convert predictions JSON to CSV
+        run: |
+          # Check if predictions JSON exists
+          if [ ! -f public/data/predictions_2026.json ]; then
+            echo "❌ ERROR: public/data/predictions_2026.json not found!"
+            echo "Available files in public/data/:"
+            ls -la public/data/
+            exit 1
+          fi
+          
+          python -c "
+          import json
+          import pandas as pd
+          
+          # Load predictions JSON
+          with open('public/data/predictions_2026.json') as f:
+              preds = json.load(f)
+          
+          # Convert to DataFrame
+          rows = []
+          for matchup_id, pred_data in preds.items():
+              row = {
+                  'matchup_id': matchup_id,
+                  'team1_id': pred_data.get('team1_id'),
+                  'team1_name': pred_data.get('team1_name'),
+                  'team1_seed': pred_data.get('team1_seed'),
+                  'team2_id': pred_data.get('team2_id'),
+                  'team2_name': pred_data.get('team2_name'),
+                  'team2_seed': pred_data.get('team2_seed'),
+                  'team1_win_prob': pred_data.get('team1_win_prob'),
+                  'team2_win_prob': pred_data.get('team2_win_prob')
+              }
+              rows.append(row)
+          
+          # Save to CSV
+          df = pd.DataFrame(rows)
+          df.to_csv('public/data/predictions_2026_all_matchups.csv', index=False)
+          print(f'✓ Created predictions CSV with {len(df)} matchups')
+          "
+          
+          echo "✓ Conversion complete"
+      
       - name: 📊 Check if data changed
         id: check_changes
         run: |
-          if git diff --quiet projected_seeds_2026.*; then
+          if git diff --quiet projected_seeds_2026.* public/data/teams_2026_with_seeds.csv public/data/predictions_2026_all_matchups.csv; then
             echo "changed=false" >> $GITHUB_OUTPUT
-            echo "No changes detected in seed data"
+            echo "No changes detected in seed or prediction data"
           else
             echo "changed=true" >> $GITHUB_OUTPUT
-            echo "Seed data has been updated!"
+            echo "Data has been updated!"
           fi
       
       - name: 💾 Commit and push changes
@@ -51,28 +121,36 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add projected_seeds_2026.csv projected_seeds_2026.json
-          git commit -m "🤖 Auto-update: Bracket Matrix seeds ($(date +'%Y-%m-%d'))"
+          git add public/data/teams_2026_with_seeds.csv
+          git add public/data/predictions_2026_all_matchups.csv
+          git add public/data/projected_seeds_2026.json
+          git commit -m "🤖 Auto-update: Bracket data ($(date +'%Y-%m-%d'))"
           git push
       
       - name: ✅ Summary
         run: |
           echo "================================"
-          echo "Bracket Matrix Scraper Summary"
+          echo "Bracket Data Update Summary"
           echo "================================"
-          if [ -f projected_seeds_2026.json ]; then
-            echo "✓ Seeds file updated successfully"
-            echo "📁 Files created:"
-            ls -lh projected_seeds_2026.*
-          else
-            echo "⚠️ No seed files found"
+          echo ""
+          echo "Files created/updated:"
+          ls -lh projected_seeds_2026.* public/data/teams_2026_with_seeds.csv public/data/predictions_2026_all_matchups.csv 2>/dev/null || echo "Some files not found"
+          echo ""
+          if [ -f public/data/teams_2026_with_seeds.csv ]; then
+            echo "✓ Teams CSV ready for bracket page"
+          fi
+          if [ -f public/data/predictions_2026_all_matchups.csv ]; then
+            echo "✓ Predictions CSV ready for bracket page"
           fi
       
       - name: 📤 Upload artifact (for debugging)
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: seed-data
+          name: bracket-data
           path: |
             projected_seeds_2026.csv
             projected_seeds_2026.json
+            public/data/teams_2026_with_seeds.csv
+            public/data/predictions_2026_all_matchups.csv
           retention-days: 7
