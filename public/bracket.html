@@ -327,23 +327,24 @@
     function parseTeams(csvText) {
     const lines = csvText.trim().split('\n');
     
+    // Skip header row
     for (let i = 1; i < lines.length; i++) {
-        const values = lines[i].split(',');
-        const teamId = parseInt(values[0]);
-        const season = values[1];
-        const seedStr = values[2];
-        const region = values[3];
-        const teamName = values[4] || 'Unknown';
+        const line = lines[i].trim();
+        if (!line) continue;
         
-        // Only include teams with seed data (tournament teams)
-        if (season && seedStr && region) {
-            const seed = parseFloat(seedStr);
-            
+        const values = line.split(',');
+        const teamId = parseInt(values[0]);
+        const teamName = values[1];
+        const seed = parseInt(values[2]);
+        
+        // Only include teams with valid data
+        if (teamId && teamName && seed) {
             teams[teamId] = {
                 id: teamId,
                 name: teamName,
                 seed: seed,
-                region: region
+                // Default region assignment based on seed
+                region: seed <= 4 ? ['East', 'West', 'South', 'Midwest'][seed - 1] : 'TBD'
             };
         }
     }
