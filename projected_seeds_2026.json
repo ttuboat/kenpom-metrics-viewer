@@ -1,0 +1,369 @@
+{
+  "metadata": {
+    "updated": "2026-03-06 14:45:56",
+    "source": "bracketmatrix.com",
+    "teams_count": 72
+  },
+  "teams": [
+    {
+      "team": "Duke",
+      "seed": 1,
+      "seed_str": "01"
+    },
+    {
+      "team": "Michigan",
+      "seed": 1,
+      "seed_str": "01"
+    },
+    {
+      "team": "Arizona",
+      "seed": 1,
+      "seed_str": "01"
+    },
+    {
+      "team": "Connecticut",
+      "seed": 1,
+      "seed_str": "01"
+    },
+    {
+      "team": "Florida",
+      "seed": 2,
+      "seed_str": "02"
+    },
+    {
+      "team": "Houston",
+      "seed": 2,
+      "seed_str": "02"
+    },
+    {
+      "team": "Michigan State",
+      "seed": 2,
+      "seed_str": "02"
+    },
+    {
+      "team": "Illinois",
+      "seed": 2,
+      "seed_str": "02"
+    },
+    {
+      "team": "Iowa State",
+      "seed": 3,
+      "seed_str": "03"
+    },
+    {
+      "team": "Purdue",
+      "seed": 3,
+      "seed_str": "03"
+    },
+    {
+      "team": "Nebraska",
+      "seed": 3,
+      "seed_str": "03"
+    },
+    {
+      "team": "Texas Tech",
+      "seed": 3,
+      "seed_str": "03"
+    },
+    {
+      "team": "Gonzaga",
+      "seed": 4,
+      "seed_str": "04"
+    },
+    {
+      "team": "Alabama",
+      "seed": 4,
+      "seed_str": "04"
+    },
+    {
+      "team": "Kansas",
+      "seed": 4,
+      "seed_str": "04"
+    },
+    {
+      "team": "Virginia",
+      "seed": 4,
+      "seed_str": "04"
+    },
+    {
+      "team": "Arkansas",
+      "seed": 5,
+      "seed_str": "05"
+    },
+    {
+      "team": "Vanderbilt",
+      "seed": 5,
+      "seed_str": "05"
+    },
+    {
+      "team": "North Carolina",
+      "seed": 5,
+      "seed_str": "05"
+    },
+    {
+      "team": "Tennessee",
+      "seed": 5,
+      "seed_str": "05"
+    },
+    {
+      "team": "St. John's",
+      "seed": 6,
+      "seed_str": "06"
+    },
+    {
+      "team": "Louisville",
+      "seed": 6,
+      "seed_str": "06"
+    },
+    {
+      "team": "Wisconsin",
+      "seed": 6,
+      "seed_str": "06"
+    },
+    {
+      "team": "Kentucky",
+      "seed": 6,
+      "seed_str": "06"
+    },
+    {
+      "team": "BYU",
+      "seed": 7,
+      "seed_str": "07"
+    },
+    {
+      "team": "St. Mary's (CA)",
+      "seed": 7,
+      "seed_str": "07"
+    },
+    {
+      "team": "Villanova",
+      "seed": 7,
+      "seed_str": "07"
+    },
+    {
+      "team": "Miami (FLA.)",
+      "seed": 7,
+      "seed_str": "07"
+    },
+    {
+      "team": "Saint Louis",
+      "seed": 8,
+      "seed_str": "08"
+    },
+    {
+      "team": "Georgia",
+      "seed": 8,
+      "seed_str": "08"
+    },
+    {
+      "team": "Clemson",
+      "seed": 8,
+      "seed_str": "08"
+    },
+    {
+      "team": "Utah State",
+      "seed": 8,
+      "seed_str": "08"
+    },
+    {
+      "team": "Iowa",
+      "seed": 9,
+      "seed_str": "09"
+    },
+    {
+      "team": "Central Florida",
+      "seed": 9,
+      "seed_str": "09"
+    },
+    {
+      "team": "UCLA",
+      "seed": 9,
+      "seed_str": "09"
+    },
+    {
+      "team": "North Carolina State",
+      "seed": 9,
+      "seed_str": "09"
+    },
+    {
+      "team": "Missouri",
+      "seed": 10,
+      "seed_str": "10"
+    },
+    {
+      "team": "Texas",
+      "seed": 10,
+      "seed_str": "10"
+    },
+    {
+      "team": "TCU",
+      "seed": 10,
+      "seed_str": "10"
+    },
+    {
+      "team": "Texas A&M",
+      "seed": 10,
+      "seed_str": "10"
+    },
+    {
+      "team": "SMU",
+      "seed": 11,
+      "seed_str": "11"
+    },
+    {
+      "team": "Miami (Ohio)",
+      "seed": 11,
+      "seed_str": "11"
+    },
+    {
+      "team": "Ohio State",
+      "seed": 11,
+      "seed_str": "11"
+    },
+    {
+      "team": "Santa Clara",
+      "seed": 11,
+      "seed_str": "11"
+    },
+    {
+      "team": "VCU",
+      "seed": 11,
+      "seed_str": "11"
+    },
+    {
+      "team": "New Mexico",
+      "seed": 11,
+      "seed_str": "11"
+    },
+    {
+      "team": "Auburn",
+      "seed": 11,
+      "seed_str": "11"
+    },
+    {
+      "team": "South Florida",
+      "seed": 12,
+      "seed_str": "12"
+    },
+    {
+      "team": "Yale",
+      "seed": 12,
+      "seed_str": "12"
+    },
+    {
+      "team": "Liberty",
+      "seed": 12,
+      "seed_str": "12"
+    },
+    {
+      "team": "McNeese State",
+      "seed": 12,
+      "seed_str": "12"
+    },
+    {
+      "team": "Belmont",
+      "seed": 12,
+      "seed_str": "12"
+    },
+    {
+      "team": "NC-Wilmington",
+      "seed": 13,
+      "seed_str": "13"
+    },
+    {
+      "team": "Utah Valley",
+      "seed": 13,
+      "seed_str": "13"
+    },
+    {
+      "team": "Stephen F. Austin",
+      "seed": 13,
+      "seed_str": "13"
+    },
+    {
+      "team": "High Point",
+      "seed": 13,
+      "seed_str": "13"
+    },
+    {
+      "team": "Navy",
+      "seed": 14,
+      "seed_str": "14"
+    },
+    {
+      "team": "Troy",
+      "seed": 14,
+      "seed_str": "14"
+    },
+    {
+      "team": "Hawaii",
+      "seed": 14,
+      "seed_str": "14"
+    },
+    {
+      "team": "North Dakota State",
+      "seed": 14,
+      "seed_str": "14"
+    },
+    {
+      "team": "Portland State",
+      "seed": 15,
+      "seed_str": "15"
+    },
+    {
+      "team": "Wright State",
+      "seed": 15,
+      "seed_str": "15"
+    },
+    {
+      "team": "E. Tennessee State",
+      "seed": 15,
+      "seed_str": "15"
+    },
+    {
+      "team": "Austin Peay",
+      "seed": 15,
+      "seed_str": "15"
+    },
+    {
+      "team": "Northern Colorado",
+      "seed": 15,
+      "seed_str": "15"
+    },
+    {
+      "team": "Robert Morris",
+      "seed": 15,
+      "seed_str": "15"
+    },
+    {
+      "team": "Tennessee State",
+      "seed": 16,
+      "seed_str": "16"
+    },
+    {
+      "team": "Merrimack",
+      "seed": 16,
+      "seed_str": "16"
+    },
+    {
+      "team": "UMBC",
+      "seed": 16,
+      "seed_str": "16"
+    },
+    {
+      "team": "Howard",
+      "seed": 16,
+      "seed_str": "16"
+    },
+    {
+      "team": "Bethune-Cookman",
+      "seed": 16,
+      "seed_str": "16"
+    },
+    {
+      "team": "Long Island",
+      "seed": 16,
+      "seed_str": "16"
+    }
+  ]
+}
