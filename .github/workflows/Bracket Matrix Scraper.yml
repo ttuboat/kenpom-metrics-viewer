@@ -104,28 +104,22 @@ jobs:
           
           echo "✓ Conversion complete"
       
-      - name: 📊 Check if data changed
-        id: check_changes
-        run: |
-          if git diff --quiet projected_seeds_2026.* public/data/teams_2026_with_seeds.csv public/data/predictions_2026_all_matchups.csv; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-            echo "No changes detected in seed or prediction data"
-          else
-            echo "changed=true" >> $GITHUB_OUTPUT
-            echo "Data has been updated!"
-          fi
-      
       - name: 💾 Commit and push changes
-        if: steps.check_changes.outputs.changed == 'true'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add projected_seeds_2026.csv projected_seeds_2026.json
-          git add public/data/teams_2026_with_seeds.csv
-          git add public/data/predictions_2026_all_matchups.csv
-          git add public/data/projected_seeds_2026.json
-          git commit -m "🤖 Auto-update: Bracket data ($(date +'%Y-%m-%d'))"
-          git push
+          
+          # Add all generated files
+          git add -f projected_seeds_2026.csv projected_seeds_2026.json
+          git add -f public/data/teams_2026_with_seeds.csv
+          git add -f public/data/predictions_2026_all_matchups.csv
+          git add -f public/data/projected_seeds_2026.json
+          
+          # Commit (use || true to not fail if nothing to commit)
+          git commit -m "🤖 Auto-update: Bracket data ($(date +'%Y-%m-%d %H:%M'))" || echo "No changes to commit"
+          
+          # Push
+          git push || echo "Nothing to push"
       
       - name: ✅ Summary
         run: |
