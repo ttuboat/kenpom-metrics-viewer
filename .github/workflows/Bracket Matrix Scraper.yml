@@ -45,10 +45,34 @@ jobs:
           echo "Checking for generated files..."
           ls -la projected_seeds_2026.* || echo "⚠️ No seed files found!"
           
-          # Copy seeds CSV to correct location with correct name
+          # Transform the seeds CSV to the format bracket.html expects
           if [ -f projected_seeds_2026.csv ]; then
-            cp projected_seeds_2026.csv public/data/teams_2026_with_seeds.csv
-            echo "✓ Copied seeds CSV to public/data/teams_2026_with_seeds.csv"
+            python -c "
+import pandas as pd
+
+# Load the scraper's CSV
+df = pd.read_csv('projected_seeds_2026.csv')
+
+# Rename columns to what bracket.html expects
+# Scraper has: team, seed, seed_str
+# Bracket wants: team_id, team_name, seed
+
+# Generate team IDs (just sequential numbers)
+df['team_id'] = range(1, len(df) + 1)
+
+# Rename 'team' to 'team_name'
+df['team_name'] = df['team']
+
+# Keep 'seed' as is
+
+# Select only the columns bracket.html needs
+df_output = df[['team_id', 'team_name', 'seed']]
+
+# Save to correct location
+df_output.to_csv('public/data/teams_2026_with_seeds.csv', index=False)
+print(f'✓ Transformed seeds CSV: {len(df_output)} teams')
+"
+            echo "✓ Created teams_2026_with_seeds.csv"
           else
             echo "❌ ERROR: projected_seeds_2026.csv not found!"
             exit 1
