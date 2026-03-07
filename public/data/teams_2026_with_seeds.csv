@@ -7,67 +7,66 @@ team_id,team_name,seed
 6,Houston,2
 7,Michigan State,2
 8,Illinois,2
-9,Iowa State,3
-10,Purdue,3
+9,Purdue,3
+10,Iowa State,3
 11,Nebraska,3
 12,Texas Tech,3
 13,Gonzaga,4
 14,Alabama,4
-15,Kansas,4
-16,Virginia,4
-17,Arkansas,5
-18,Vanderbilt,5
+15,Virginia,4
+16,Kansas,4
+17,Vanderbilt,5
+18,Arkansas,5
 19,North Carolina,5
 20,Tennessee,5
 21,St. John's,6
-22,Louisville,6
-23,Wisconsin,6
+22,Wisconsin,6
+23,Louisville,6
 24,Kentucky,6
-25,BYU,7
-26,St. Mary's (CA),7
-27,Villanova,7
-28,Miami (FLA.),7
-29,Saint Louis,8
-30,Georgia,8
+25,St. Mary's (CA),7
+26,BYU,7
+27,Miami (FLA.),7
+28,Villanova,7
+29,Georgia,8
+30,Saint Louis,8
 31,Clemson,8
 32,Utah State,8
 33,Iowa,9
-34,Central Florida,9
-35,UCLA,9
+34,UCLA,9
+35,Central Florida,9
 36,North Carolina State,9
-37,Missouri,10
-38,Texas,10
-39,TCU,10
+37,TCU,10
+38,Missouri,10
+39,Texas,10
 40,Texas A&M,10
-41,SMU,11
+41,Ohio State,11
 42,Miami (Ohio),11
-43,Ohio State,11
+43,SMU,11
 44,Santa Clara,11
 45,VCU,11
-46,New Mexico,11
-47,Auburn,11
+46,Indiana,11
+47,New Mexico,11
 48,South Florida,12
-49,Yale,12
-50,Liberty,12
-51,McNeese State,12
-52,Belmont,12
-53,NC-Wilmington,13
-54,Utah Valley,13
-55,Stephen F. Austin,13
-56,High Point,13
-57,Navy,14
-58,Troy,14
+49,Stephen F. Austin,12
+50,High Point,12
+51,Belmont,12
+52,Yale,12
+53,Utah Valley,13
+54,Bradley,13
+55,Liberty,13
+56,NC-Wilmington,13
+57,Troy,14
+58,Navy,14
 59,Hawaii,14
 60,North Dakota State,14
 61,Portland State,15
 62,Wright State,15
 63,E. Tennessee State,15
 64,Austin Peay,15
-65,Northern Colorado,15
-66,Robert Morris,15
+65,Central Arkansas,15
+66,Merrimack,16
 67,Tennessee State,16
-68,Merrimack,16
+68,Long Island,16
 69,UMBC,16
 70,Howard,16
 71,Bethune-Cookman,16
-72,Long Island,16
