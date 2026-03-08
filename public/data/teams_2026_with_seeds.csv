@@ -7,8 +7,8 @@ team_id,team_name,seed
 6,Houston,2
 7,Michigan State,2
 8,Illinois,2
-9,Purdue,3
-10,Iowa State,3
+9,Iowa State,3
+10,Purdue,3
 11,Nebraska,3
 12,Texas Tech,3
 13,Gonzaga,4
@@ -31,42 +31,46 @@ team_id,team_name,seed
 30,Saint Louis,8
 31,Clemson,8
 32,Utah State,8
-33,Iowa,9
-34,UCLA,9
-35,Central Florida,9
-36,North Carolina State,9
+33,UCLA,9
+34,Iowa,9
+35,North Carolina State,9
+36,Central Florida,9
 37,TCU,10
 38,Missouri,10
-39,Texas,10
-40,Texas A&M,10
-41,Ohio State,11
-42,Miami (Ohio),11
+39,Texas A&M,10
+40,Texas,10
+41,Miami (Ohio),11
+42,Ohio State,11
 43,SMU,11
 44,Santa Clara,11
 45,VCU,11
 46,Indiana,11
-47,New Mexico,11
+47,Auburn,11
 48,South Florida,12
 49,Stephen F. Austin,12
 50,High Point,12
-51,Belmont,12
+51,McNeese State,12
 52,Yale,12
-53,Utah Valley,13
-54,Bradley,13
+53,Belmont,12
+54,NC-Wilmington,13
 55,Liberty,13
-56,NC-Wilmington,13
-57,Troy,14
+56,Northern Iowa,13
+57,Utah Valley,13
 58,Navy,14
 59,Hawaii,14
 60,North Dakota State,14
-61,Portland State,15
-62,Wright State,15
+61,St. Thomas,14
+62,Troy,14
 63,E. Tennessee State,15
-64,Austin Peay,15
-65,Central Arkansas,15
-66,Merrimack,16
-67,Tennessee State,16
-68,Long Island,16
-69,UMBC,16
-70,Howard,16
-71,Bethune-Cookman,16
+64,Portland State,15
+65,Austin Peay,15
+66,Wright State,15
+67,Central Arkansas,15
+68,Merrimack,16
+69,Tennessee State,16
+70,Bethune-Cookman,16
+71,Long Island,16
+72,Howard,16
+73,Marist,16
+74,Montana State,16
+75,UMBC,16
