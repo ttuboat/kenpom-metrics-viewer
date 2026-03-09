@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "updated": "2026-03-08 10:18:43",
+    "updated": "2026-03-09 10:39:03",
     "source": "bracketmatrix.com",
-    "teams_count": 75
+    "teams_count": 73
   },
   "teams": [
     {
@@ -21,12 +21,12 @@
       "seed_str": "01"
     },
     {
-      "team": "Connecticut",
+      "team": "Florida",
       "seed": 1,
       "seed_str": "01"
     },
     {
-      "team": "Florida",
+      "team": "Connecticut",
       "seed": 2,
       "seed_str": "02"
     },
@@ -51,17 +51,17 @@
       "seed_str": "03"
     },
     {
-      "team": "Purdue",
-      "seed": 3,
-      "seed_str": "03"
-    },
-    {
       "team": "Nebraska",
       "seed": 3,
       "seed_str": "03"
     },
     {
-      "team": "Texas Tech",
+      "team": "Purdue",
+      "seed": 3,
+      "seed_str": "03"
+    },
+    {
+      "team": "Alabama",
       "seed": 3,
       "seed_str": "03"
     },
@@ -71,12 +71,12 @@
       "seed_str": "04"
     },
     {
-      "team": "Alabama",
+      "team": "Virginia",
       "seed": 4,
       "seed_str": "04"
     },
     {
-      "team": "Virginia",
+      "team": "Texas Tech",
       "seed": 4,
       "seed_str": "04"
     },
@@ -96,17 +96,17 @@
       "seed_str": "05"
     },
     {
+      "team": "St. John's",
+      "seed": 5,
+      "seed_str": "05"
+    },
+    {
       "team": "North Carolina",
       "seed": 5,
       "seed_str": "05"
     },
     {
       "team": "Tennessee",
-      "seed": 5,
-      "seed_str": "05"
-    },
-    {
-      "team": "St. John's",
       "seed": 6,
       "seed_str": "06"
     },
@@ -121,17 +121,17 @@
       "seed_str": "06"
     },
     {
-      "team": "Kentucky",
+      "team": "BYU",
       "seed": 6,
       "seed_str": "06"
     },
     {
-      "team": "St. Mary's (CA)",
+      "team": "Kentucky",
       "seed": 7,
       "seed_str": "07"
     },
     {
-      "team": "BYU",
+      "team": "St. Mary's (CA)",
       "seed": 7,
       "seed_str": "07"
     },
@@ -151,12 +151,12 @@
       "seed_str": "08"
     },
     {
-      "team": "Saint Louis",
+      "team": "Clemson",
       "seed": 8,
       "seed_str": "08"
     },
     {
-      "team": "Clemson",
+      "team": "UCLA",
       "seed": 8,
       "seed_str": "08"
     },
@@ -166,27 +166,37 @@
       "seed_str": "08"
     },
     {
-      "team": "UCLA",
-      "seed": 9,
-      "seed_str": "09"
-    },
-    {
       "team": "Iowa",
       "seed": 9,
       "seed_str": "09"
     },
     {
-      "team": "North Carolina State",
-      "seed": 9,
-      "seed_str": "09"
-    },
-    {
-      "team": "Central Florida",
+      "team": "Saint Louis",
       "seed": 9,
       "seed_str": "09"
     },
     {
       "team": "TCU",
+      "seed": 9,
+      "seed_str": "09"
+    },
+    {
+      "team": "Texas A&M",
+      "seed": 9,
+      "seed_str": "09"
+    },
+    {
+      "team": "North Carolina State",
+      "seed": 10,
+      "seed_str": "10"
+    },
+    {
+      "team": "Ohio State",
+      "seed": 10,
+      "seed_str": "10"
+    },
+    {
+      "team": "Central Florida",
       "seed": 10,
       "seed_str": "10"
     },
@@ -196,22 +206,12 @@
       "seed_str": "10"
     },
     {
-      "team": "Texas A&M",
-      "seed": 10,
-      "seed_str": "10"
-    },
-    {
       "team": "Texas",
-      "seed": 10,
-      "seed_str": "10"
-    },
-    {
-      "team": "Miami (Ohio)",
       "seed": 11,
       "seed_str": "11"
     },
     {
-      "team": "Ohio State",
+      "team": "Miami (Ohio)",
       "seed": 11,
       "seed_str": "11"
     },
@@ -256,29 +256,9 @@
       "seed_str": "12"
     },
     {
-      "team": "McNeese State",
-      "seed": 12,
-      "seed_str": "12"
-    },
-    {
       "team": "Yale",
       "seed": 12,
       "seed_str": "12"
-    },
-    {
-      "team": "Belmont",
-      "seed": 12,
-      "seed_str": "12"
-    },
-    {
-      "team": "NC-Wilmington",
-      "seed": 13,
-      "seed_str": "13"
-    },
-    {
-      "team": "Liberty",
-      "seed": 13,
-      "seed_str": "13"
     },
     {
       "team": "Northern Iowa",
@@ -291,7 +271,27 @@
       "seed_str": "13"
     },
     {
-      "team": "Navy",
+      "team": "Hofstra",
+      "seed": 13,
+      "seed_str": "13"
+    },
+    {
+      "team": "NC-Wilmington",
+      "seed": 13,
+      "seed_str": "13"
+    },
+    {
+      "team": "Liberty",
+      "seed": 13,
+      "seed_str": "13"
+    },
+    {
+      "team": "Troy",
+      "seed": 14,
+      "seed_str": "14"
+    },
+    {
+      "team": "E. Tennessee State",
       "seed": 14,
       "seed_str": "14"
     },
@@ -306,27 +306,17 @@
       "seed_str": "14"
     },
     {
-      "team": "St. Thomas",
+      "team": "California Baptist",
       "seed": 14,
       "seed_str": "14"
     },
     {
-      "team": "Troy",
+      "team": "Navy",
       "seed": 14,
       "seed_str": "14"
-    },
-    {
-      "team": "E. Tennessee State",
-      "seed": 15,
-      "seed_str": "15"
     },
     {
       "team": "Portland State",
-      "seed": 15,
-      "seed_str": "15"
-    },
-    {
-      "team": "Austin Peay",
       "seed": 15,
       "seed_str": "15"
     },
@@ -336,17 +326,27 @@
       "seed_str": "15"
     },
     {
-      "team": "Central Arkansas",
+      "team": "Austin Peay",
+      "seed": 15,
+      "seed_str": "15"
+    },
+    {
+      "team": "Queens",
       "seed": 15,
       "seed_str": "15"
     },
     {
       "team": "Merrimack",
+      "seed": 15,
+      "seed_str": "15"
+    },
+    {
+      "team": "Tennessee State",
       "seed": 16,
       "seed_str": "16"
     },
     {
-      "team": "Tennessee State",
+      "team": "Lehigh",
       "seed": 16,
       "seed_str": "16"
     },
@@ -356,7 +356,7 @@
       "seed_str": "16"
     },
     {
-      "team": "Long Island",
+      "team": "UMBC",
       "seed": 16,
       "seed_str": "16"
     },
@@ -366,17 +366,7 @@
       "seed_str": "16"
     },
     {
-      "team": "Marist",
-      "seed": 16,
-      "seed_str": "16"
-    },
-    {
-      "team": "Montana State",
-      "seed": 16,
-      "seed_str": "16"
-    },
-    {
-      "team": "UMBC",
+      "team": "Long Island",
       "seed": 16,
       "seed_str": "16"
     }
