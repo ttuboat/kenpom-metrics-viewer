@@ -48,82 +48,110 @@ jobs:
           # Transform the seeds CSV to the format bracket.html expects
           if [ -f projected_seeds_2026.csv ]; then
             python -c "
-          import pandas as pd
-          
-          # Load the scraper's CSV
-          df = pd.read_csv('projected_seeds_2026.csv')
-          
-          # Rename columns to what bracket.html expects
-          # Scraper has: team, seed, seed_str
-          # Bracket wants: team_id, team_name, seed
-          
-          # Generate team IDs (just sequential numbers)
-          df['team_id'] = range(1, len(df) + 1)
-          
-          # Rename 'team' to 'team_name'
-          df['team_name'] = df['team']
-          
-          # Keep 'seed' as is
-          
-          # Select only the columns bracket.html needs
-          df_output = df[['team_id', 'team_name', 'seed']]
-          
-          # Save to correct location
-          df_output.to_csv('public/data/teams_2026_with_seeds.csv', index=False)
-          print(f'✓ Transformed seeds CSV: {len(df_output)} teams')
-          "
-                      echo "✓ Created teams_2026_with_seeds.csv"
-                    else
-                      echo "❌ ERROR: projected_seeds_2026.csv not found!"
-                      exit 1
-                    fi
-                    
-                    # Copy JSON if it exists
-                    if [ -f projected_seeds_2026.json ]; then
-                      cp projected_seeds_2026.json public/data/
-                      echo "✓ Copied seeds JSON to public/data/"
-                    else
-                      echo "⚠️ WARNING: projected_seeds_2026.json not found"
-                    fi
-      
-      - name: 🔄 Convert predictions JSON to CSV
-        run: |
-          # Check if predictions JSON exists
-          if [ ! -f public/data/predictions_2026.json ]; then
-            echo "❌ ERROR: public/data/predictions_2026.json not found!"
-            echo "Available files in public/data/:"
-            ls -la public/data/
+import pandas as pd
+
+# Load the scraper's CSV
+df = pd.read_csv('projected_seeds_2026.csv')
+
+# Rename columns to what bracket.html expects
+# Scraper has: team, seed, seed_str
+# Bracket wants: team_id, team_name, seed
+
+# Generate team IDs (just sequential numbers)
+df['team_id'] = range(1, len(df) + 1)
+
+# Rename 'team' to 'team_name'
+df['team_name'] = df['team']
+
+# Keep 'seed' as is
+
+# Select only the columns bracket.html needs
+df_output = df[['team_id', 'team_name', 'seed']]
+
+# Save to correct location
+df_output.to_csv('public/data/teams_2026_with_seeds.csv', index=False)
+print(f'✓ Transformed seeds CSV: {len(df_output)} teams')
+"
+            echo "✓ Created teams_2026_with_seeds.csv"
+          else
+            echo "❌ ERROR: projected_seeds_2026.csv not found!"
             exit 1
           fi
           
+          # Copy JSON if it exists
+          if [ -f projected_seeds_2026.json ]; then
+            cp projected_seeds_2026.json public/data/
+            echo "✓ Copied seeds JSON to public/data/"
+          else
+            echo "⚠️ WARNING: projected_seeds_2026.json not found"
+          fi
+      
+      - name: 🔄 Convert predictions JSON to CSV with correct team IDs
+        run: |
           python -c "
           import json
           import pandas as pd
           
-          # Load predictions JSON
+          print('Loading predictions JSON...')
           with open('public/data/predictions_2026.json') as f:
               preds = json.load(f)
           
-          # Convert to DataFrame
+          print('Loading teams CSV to get ID mapping...')
+          teams_df = pd.read_csv('public/data/teams_2026_with_seeds.csv')
+          
+          # Create mapping from team name to sequential ID (1, 2, 3...)
+          team_name_to_id = {}
+          for idx, row in teams_df.iterrows():
+              team_name_to_id[row['team_name']] = row['team_id']
+          
+          print(f'Created mapping for {len(team_name_to_id)} teams')
+          
+          # Load original teams to get the original ID mapping
+          # Predictions JSON uses original IDs, we need to map to new IDs
+          with open('public/data/teams_2026.json') as f:
+              teams_json = json.load(f)
+          
+          # Create mapping from original ID to team name
+          original_id_to_name = {}
+          for team in teams_json:
+              original_id_to_name[team['id']] = team['name']
+          
+          print(f'Loaded {len(original_id_to_name)} teams from JSON')
+          
+          # Convert predictions with ID remapping
           rows = []
           for matchup_id, pred_data in preds.items():
-              row = {
-                  'matchup_id': matchup_id,
-                  'team1_id': pred_data.get('team1_id'),
-                  'team1_name': pred_data.get('team1_name'),
-                  'team1_seed': pred_data.get('team1_seed'),
-                  'team2_id': pred_data.get('team2_id'),
-                  'team2_name': pred_data.get('team2_name'),
-                  'team2_seed': pred_data.get('team2_seed'),
-                  'team1_win_prob': pred_data.get('team1_win_prob'),
-                  'team2_win_prob': pred_data.get('team2_win_prob')
-              }
-              rows.append(row)
+              # Get original IDs
+              orig_team1_id = pred_data.get('team1_id')
+              orig_team2_id = pred_data.get('team2_id')
+              
+              # Get team names
+              team1_name = original_id_to_name.get(orig_team1_id, pred_data.get('team1_name'))
+              team2_name = original_id_to_name.get(orig_team2_id, pred_data.get('team2_name'))
+              
+              # Map to new sequential IDs
+              new_team1_id = team_name_to_id.get(team1_name)
+              new_team2_id = team_name_to_id.get(team2_name)
+              
+              if new_team1_id and new_team2_id:
+                  row = {
+                      'matchup_id': f'2026_{new_team1_id}_{new_team2_id}',
+                      'team1_id': new_team1_id,
+                      'team1_name': team1_name,
+                      'team1_seed': pred_data.get('team1_seed'),
+                      'team2_id': new_team2_id,
+                      'team2_name': team2_name,
+                      'team2_seed': pred_data.get('team2_seed'),
+                      'team1_win_prob': pred_data.get('team1_win_prob'),
+                      'team2_win_prob': pred_data.get('team2_win_prob')
+                  }
+                  rows.append(row)
           
           # Save to CSV
           df = pd.DataFrame(rows)
           df.to_csv('public/data/predictions_2026_all_matchups.csv', index=False)
-          print(f'✓ Created predictions CSV with {len(df)} matchups')
+          print(f'✓ Created predictions CSV with {len(df)} matchups using remapped IDs')
+          print(f'Sample IDs: {df[\"team1_id\"].head(5).tolist()}')
           "
           
           echo "✓ Conversion complete"
