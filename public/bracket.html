@@ -499,7 +499,18 @@
 
     function getPrediction(team1Id, team2Id) {
         const key = `${team1Id}_${team2Id}`;
-        return predictions[key] || 0.5;
+        const pred = predictions[key];
+        
+        if (!pred && !predictions[`${team1Id}_${team2Id}`]) {
+            // Debug: Log missing prediction
+            if (Math.random() < 0.01) { // Only log 1% to avoid spam
+                console.warn(`Missing prediction for ${team1Id} vs ${team2Id}`);
+                console.log('Available prediction keys (first 10):', Object.keys(predictions).slice(0, 10));
+                console.log('Team IDs in use:', team1Id, team2Id);
+            }
+        }
+        
+        return pred || 0.5;
     }
 
     function assignRegions() {
@@ -813,6 +824,31 @@
     function setupEventListeners() {
         document.getElementById('probToggle').addEventListener('click', toggleProbabilities);
         document.getElementById('resetBtn').addEventListener('click', resetBracket);
+        
+        // Debug helper
+        window.debugBracket = function() {
+            console.log('=== BRACKET DEBUG INFO ===');
+            console.log('Total predictions loaded:', Object.keys(predictions).length);
+            console.log('Total teams loaded:', Object.keys(teams).length);
+            console.log('\nSample predictions:');
+            Object.keys(predictions).slice(0, 10).forEach(key => {
+                console.log(`  ${key}: ${predictions[key].toFixed(4)}`);
+            });
+            console.log('\nSample teams:');
+            Object.values(teams).slice(0, 5).forEach(team => {
+                console.log(`  ID ${team.id}: ${team.name} (seed ${team.seed})`);
+            });
+            console.log('\nTest prediction lookup:');
+            const testTeam1 = Object.values(teams)[0];
+            const testTeam2 = Object.values(teams)[1];
+            if (testTeam1 && testTeam2) {
+                const testKey = `${testTeam1.id}_${testTeam2.id}`;
+                console.log(`  Looking up: ${testKey}`);
+                console.log(`  Found: ${predictions[testKey]}`);
+                console.log(`  getPrediction result: ${getPrediction(testTeam1.id, testTeam2.id)}`);
+            }
+        };
+        console.log('💡 Run debugBracket() in console for detailed diagnostics');
     }
 
     function toggleProbabilities() {
