@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 1800px;
+            max-width: 100%;
             margin: 0 auto;
         }
 
@@ -98,55 +98,93 @@
             overflow-x: auto;
         }
 
-        .bracket {
+        #loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 18px;
+        }
+
+        #bracket {
+            display: none;
+        }
+
+        /* Full Bracket Styles */
+        .full-bracket {
             display: flex;
-            justify-content: space-between;
-            min-width: 1600px;
-            gap: 20px;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .regions-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
         }
 
         .region {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
         }
 
-        .region-title {
-            font-size: 1.3em;
-            font-weight: bold;
+        .region-header {
             text-align: center;
-            padding: 10px;
+            margin-bottom: 20px;
+            padding: 15px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
             color: white;
-            border-radius: 5px;
-            margin-bottom: 10px;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .region.east .region-header {
+            background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+        }
+
+        .region.west .region-header {
+            background: linear-gradient(135deg, #E94B3C 0%, #C62828 100%);
+        }
+
+        .region.south .region-header {
+            background: linear-gradient(135deg, #7ED321 0%, #5FA516 100%);
+        }
+
+        .region.midwest .region-header {
+            background: linear-gradient(135deg, #F5A623 0%, #D68910 100%);
+        }
+
+        .rounds {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
         }
 
         .round {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 10px;
+            min-width: 200px;
+        }
+
+        .round-title {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            padding: 5px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 4px;
         }
 
         .matchup {
-            background: #f8f9fa;
+            background: white;
             border-radius: 8px;
             padding: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-        }
-
-        .matchup:hover {
-            background: #e9ecef;
-            border-color: #667eea;
-            transform: translateX(5px);
-        }
-
-        .matchup.winner {
-            background: #d4edda;
-            border-color: #28a745;
+            border: 2px solid #e0e0e0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .team {
@@ -154,14 +192,19 @@
             justify-content: space-between;
             align-items: center;
             padding: 8px;
-            margin: 4px 0;
             border-radius: 4px;
-            background: white;
+            margin: 3px 0;
+            transition: all 0.2s;
         }
 
-        .team.predicted-winner {
-            font-weight: bold;
-            background: #e7f3ff;
+        .team:hover {
+            background: #f8f9fa;
+        }
+
+        .team.winner {
+            background: rgba(102, 126, 234, 0.1);
+            border-left: 3px solid #667eea;
+            font-weight: 600;
         }
 
         .team-info {
@@ -171,70 +214,157 @@
         }
 
         .seed {
-            font-weight: bold;
-            color: #667eea;
-            min-width: 25px;
+            background: #667eea;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: 600;
+            min-width: 28px;
+            text-align: center;
         }
 
         .team-name {
-            font-size: 14px;
+            font-size: 0.95em;
         }
 
         .probability {
-            font-size: 12px;
-            color: #666;
+            font-size: 0.85em;
+            color: #667eea;
             font-weight: 600;
-        }
-
-        .probability.show {
-            display: inline;
+            padding: 2px 8px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 4px;
         }
 
         .probability.hide {
             display: none;
         }
 
-        .final-four-container {
-            text-align: center;
-            padding: 30px;
-            margin-top: 20px;
-        }
-
-        .champion {
+        .probability.show {
             display: inline-block;
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            color: #333;
-            padding: 20px 40px;
-            border-radius: 10px;
-            font-size: 1.5em;
-            font-weight: bold;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
-        .loading {
+        .vs {
+            text-align: center;
+            color: #999;
+            font-size: 0.85em;
+            margin: 2px 0;
+        }
+
+        /* Final Four Section */
+        .final-four-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .final-four-title {
+            text-align: center;
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .semifinals {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .semifinal {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            min-width: 300px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .semifinal h3 {
             text-align: center;
             color: #667eea;
-            font-size: 18px;
-            padding: 40px;
+            margin-bottom: 15px;
         }
 
-        .info-box {
-            background: #e7f3ff;
-            border-left: 4px solid #667eea;
-            padding: 15px;
+        .championship {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .championship h2 {
+            text-align: center;
             margin-bottom: 20px;
-            border-radius: 4px;
-        }
-
-        .info-box h3 {
-            margin-bottom: 8px;
             color: #333;
         }
 
-        .info-box p {
+        .championship .team {
+            background: rgba(255,255,255,0.9);
+            margin: 10px 0;
+        }
+
+        .champion-box {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .champion-name {
+            color: #764ba2;
+            font-size: 2em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .win-prob {
             color: #666;
-            font-size: 14px;
+            font-size: 0.95em;
+            margin-top: 10px;
+        }
+
+        .about-section {
+            background: #e7f3ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .about-section h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .about-section p {
+            color: #666;
             line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .regions-container {
+                grid-template-columns: 1fr;
+            }
+
+            .semifinals {
+                flex-direction: column;
+            }
+
+            .round {
+                min-width: 150px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
         }
     </style>
 </head>
@@ -242,30 +372,26 @@
     <div class="container">
         <h1>🏀 March Madness 2026 Predictions</h1>
         <p class="subtitle">AI-Powered Bracket Predictions | Ensemble Model</p>
-        
+
         <div class="nav-links">
             <a href="index.html">← Season Trends</a>
             <a href="compare.html">Team Comparison</a>
+            <a href="predictor.html">Matchup Predictor</a>
         </div>
 
         <div class="controls">
-            <button class="toggle-btn" id="probToggle">Show Probabilities</button>
-            <button class="toggle-btn" id="resetBtn">Reset Bracket</button>
+            <button id="probToggle" class="toggle-btn active">Hide Probabilities</button>
+            <button id="resetBtn" class="toggle-btn">Reset Bracket</button>
+        </div>
+
+        <div class="about-section">
+            <h3>About This Bracket</h3>
+            <p>This bracket shows AI predictions for the 2026 NCAA Tournament based on an ensemble model trained on historical tournament data (2003-2024). The model uses Four Factors, efficiency metrics, momentum indicators, and seed information to predict game outcomes. Seeds are updated daily from Bracket Matrix consensus rankings.</p>
         </div>
 
         <div class="bracket-container">
-            <div class="info-box">
-                <h3>About This Bracket</h3>
-                <p>
-                    This bracket shows AI predictions for the 2025 NCAA Tournament based on an ensemble model 
-                    trained on historical tournament data (2003-2024). The model uses Four Factors, efficiency metrics, 
-                    momentum indicators, and seed information to predict game outcomes. Click on any matchup to 
-                    manually override the prediction and see how it affects downstream games.
-                </p>
-            </div>
-
-            <div id="loading" class="loading">Loading bracket predictions...</div>
-            <div id="bracket" class="bracket" style="display: none;"></div>
+            <div id="loading">Loading bracket data...</div>
+            <div id="bracket"></div>
         </div>
     </div>
 
@@ -276,7 +402,7 @@
 
     let predictions = {};
     let teams = {};
-    let showProbabilities = false;
+    let showProbabilities = true; // Start with probabilities shown
 
     // Initialize
     document.addEventListener('DOMContentLoaded', init);
@@ -284,7 +410,7 @@
     async function init() {
         try {
             await loadData();
-            buildBracket();
+            buildFullBracket();
             setupEventListeners();
         } catch (error) {
             console.error('Error initializing bracket:', error);
@@ -309,14 +435,13 @@
         
         for (let i = 1; i < lines.length; i++) {
             const values = lines[i].split(',');
-            const id = values[0]; // Format: "2025_1234_5678"
+            const id = values[0];
             const pred = parseFloat(values[1]);
             
             const parts = id.split('_');
             const team1 = parseInt(parts[1]);
             const team2 = parseInt(parts[2]);
             
-            // Store both directions
             predictions[`${team1}_${team2}`] = pred;
             predictions[`${team2}_${team1}`] = 1 - pred;
         }
@@ -325,204 +450,276 @@
     }
 
     function parseTeams(csvText) {
-    const lines = csvText.trim().split('\n');
-    
-    // Skip header row
-    for (let i = 1; i < lines.length; i++) {
-        const line = lines[i].trim();
-        if (!line) continue;
+        const lines = csvText.trim().split('\n');
         
-        const values = line.split(',');
-        const teamId = parseInt(values[0]);
-        const teamName = values[1];
-        const seed = parseInt(values[2]);
-        
-        // Only include teams with valid data
-        if (teamId && teamName && seed) {
-            teams[teamId] = {
-                id: teamId,
-                name: teamName,
-                seed: seed,
-                // Default region assignment based on seed
-                region: seed <= 4 ? ['East', 'West', 'South', 'Midwest'][seed - 1] : 'TBD'
-            };
+        for (let i = 1; i < lines.length; i++) {
+            const line = lines[i].trim();
+            if (!line) continue;
+            
+            const values = line.split(',');
+            const teamId = parseInt(values[0]);
+            const teamName = values[1];
+            const seed = parseInt(values[2]);
+            
+            if (teamId && teamName && seed) {
+                teams[teamId] = {
+                    id: teamId,
+                    name: teamName,
+                    seed: seed,
+                    region: null // Will be assigned
+                };
+            }
         }
+        
+        console.log(`Loaded ${Object.keys(teams).length} tournament teams`);
     }
-    
-    console.log(`Loaded ${Object.keys(teams).length} tournament teams`);
-}
 
     function getPrediction(team1Id, team2Id) {
         const key = `${team1Id}_${team2Id}`;
         return predictions[key] || 0.5;
     }
 
-    function buildBracket() {
-        // Get the four #1 seeds (Final Four teams in 2025)
-        const oneSeeds = Object.values(teams).filter(t => t.seed === 1);
+    function assignRegions() {
+        // Get top 68 teams by seed
+        const teamsList = Object.values(teams);
+        teamsList.sort((a, b) => a.seed - b.seed);
+        const tournamentTeams = teamsList.slice(0, 68);
         
-        if (oneSeeds.length < 4) {
-            document.getElementById('bracket').innerHTML = `
-                <div style="text-align: center; padding: 40px;">
-                    <p>Error: Could not find all #1 seeds. Found ${oneSeeds.length} teams.</p>
-                </div>
-            `;
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('bracket').style.display = 'block';
-            return;
+        // Assign regions based on standard bracket seeding
+        const regions = ['East', 'West', 'South', 'Midwest'];
+        const teamsPerRegion = 16;
+        
+        // Group by seed
+        const bySeed = {};
+        tournamentTeams.forEach(team => {
+            if (!bySeed[team.seed]) bySeed[team.seed] = [];
+            bySeed[team.seed].push(team);
+        });
+        
+        // Assign teams to regions
+        const regionTeams = { East: [], West: [], South: [], Midwest: [] };
+        
+        for (let seed = 1; seed <= 16; seed++) {
+            const teamsWithSeed = bySeed[seed] || [];
+            for (let i = 0; i < teamsWithSeed.length && i < 4; i++) {
+                const region = regions[i];
+                teamsWithSeed[i].region = region;
+                regionTeams[region].push(teamsWithSeed[i]);
+            }
         }
-
-        // Sort by region for consistency
-        oneSeeds.sort((a, b) => a.region.localeCompare(b.region));
         
-        console.log('Final Four teams:', oneSeeds);
+        return regionTeams;
+    }
 
-        // Matchup 1: First two #1 seeds
-        const semi1Team1 = oneSeeds[0];
-        const semi1Team2 = oneSeeds[1];
-        const semi1Prob = getPrediction(semi1Team1.id, semi1Team2.id);
-        const semi1Winner = semi1Prob > 0.5 ? semi1Team1 : semi1Team2;
+    function buildRegion(regionName, regionTeams) {
+        // Sort teams by seed
+        regionTeams.sort((a, b) => a.seed - b.seed);
+        
+        if (regionTeams.length < 16) {
+            return `<div class="region ${regionName.toLowerCase()}">
+                <div class="region-header">${regionName} Region</div>
+                <p style="text-align: center; padding: 20px;">Not enough teams for this region</p>
+            </div>`;
+        }
+        
+        // Standard bracket matchups: 1v16, 8v9, 5v12, 4v13, 6v11, 3v14, 7v10, 2v15
+        const round1Matchups = [
+            [regionTeams[0], regionTeams[15]], // 1 vs 16
+            [regionTeams[7], regionTeams[8]],  // 8 vs 9
+            [regionTeams[4], regionTeams[11]], // 5 vs 12
+            [regionTeams[3], regionTeams[12]], // 4 vs 13
+            [regionTeams[5], regionTeams[10]], // 6 vs 11
+            [regionTeams[2], regionTeams[13]], // 3 vs 14
+            [regionTeams[6], regionTeams[9]],  // 7 vs 10
+            [regionTeams[1], regionTeams[14]]  // 2 vs 15
+        ];
+        
+        // Build HTML for region
+        let html = `<div class="region ${regionName.toLowerCase()}">
+            <div class="region-header">${regionName} Region</div>
+            <div class="rounds">`;
+        
+        // Round of 64
+        html += '<div class="round"><div class="round-title">Round of 64</div>';
+        round1Matchups.forEach(([team1, team2]) => {
+            html += createMatchupHTML(team1, team2);
+        });
+        html += '</div>';
+        
+        // Round of 32
+        html += '<div class="round"><div class="round-title">Round of 32</div>';
+        for (let i = 0; i < 4; i++) {
+            const game1Winner = getWinner(round1Matchups[i * 2][0], round1Matchups[i * 2][1]);
+            const game2Winner = getWinner(round1Matchups[i * 2 + 1][0], round1Matchups[i * 2 + 1][1]);
+            html += createMatchupHTML(game1Winner, game2Winner);
+        }
+        html += '</div>';
+        
+        // Sweet 16
+        html += '<div class="round"><div class="round-title">Sweet 16</div>';
+        const sweet16Teams = [];
+        for (let i = 0; i < 4; i++) {
+            const game1Winner = getWinner(round1Matchups[i * 2][0], round1Matchups[i * 2][1]);
+            const game2Winner = getWinner(round1Matchups[i * 2 + 1][0], round1Matchups[i * 2 + 1][1]);
+            sweet16Teams.push(getWinner(game1Winner, game2Winner));
+        }
+        html += createMatchupHTML(sweet16Teams[0], sweet16Teams[1]);
+        html += createMatchupHTML(sweet16Teams[2], sweet16Teams[3]);
+        html += '</div>';
+        
+        // Elite 8
+        html += '<div class="round"><div class="round-title">Elite Eight</div>';
+        const elite8Winner = getWinner(sweet16Teams[0], sweet16Teams[1], sweet16Teams[2], sweet16Teams[3]);
+        html += createMatchupHTML(
+            getWinner(sweet16Teams[0], sweet16Teams[1]),
+            getWinner(sweet16Teams[2], sweet16Teams[3])
+        );
+        html += '</div>';
+        
+        html += '</div></div>'; // Close rounds and region
+        
+        return html;
+    }
 
-        // Matchup 2: Last two #1 seeds
-        const semi2Team1 = oneSeeds[2];
-        const semi2Team2 = oneSeeds[3];
-        const semi2Prob = getPrediction(semi2Team1.id, semi2Team2.id);
-        const semi2Winner = semi2Prob > 0.5 ? semi2Team1 : semi2Team2;
+    function getWinner(...teams) {
+        if (teams.length === 2) {
+            const [team1, team2] = teams;
+            const prob = getPrediction(team1.id, team2.id);
+            return prob > 0.5 ? team1 : team2;
+        } else if (teams.length === 4) {
+            const winner1 = getWinner(teams[0], teams[1]);
+            const winner2 = getWinner(teams[2], teams[3]);
+            return getWinner(winner1, winner2);
+        }
+        return teams[0];
+    }
 
-        // Championship
+    function createMatchupHTML(team1, team2) {
+        const prob = getPrediction(team1.id, team2.id);
+        const team1Prob = (prob * 100).toFixed(1);
+        const team2Prob = ((1 - prob) * 100).toFixed(1);
+        
+        return `
+            <div class="matchup">
+                <div class="team ${prob > 0.5 ? 'winner' : ''}">
+                    <div class="team-info">
+                        <span class="seed">${team1.seed}</span>
+                        <span class="team-name">${team1.name}</span>
+                    </div>
+                    <span class="probability ${showProbabilities ? 'show' : 'hide'}">${team1Prob}%</span>
+                </div>
+                <div class="vs">vs</div>
+                <div class="team ${prob <= 0.5 ? 'winner' : ''}">
+                    <div class="team-info">
+                        <span class="seed">${team2.seed}</span>
+                        <span class="team-name">${team2.name}</span>
+                    </div>
+                    <span class="probability ${showProbabilities ? 'show' : 'hide'}">${team2Prob}%</span>
+                </div>
+            </div>
+        `;
+    }
+
+    function buildFullBracket() {
+        const regionTeams = assignRegions();
+        
+        // Build regions
+        const regionsHTML = `
+            <div class="regions-container">
+                ${buildRegion('East', regionTeams.East)}
+                ${buildRegion('West', regionTeams.West)}
+                ${buildRegion('South', regionTeams.South)}
+                ${buildRegion('Midwest', regionTeams.Midwest)}
+            </div>
+        `;
+        
+        // Build Final Four
+        const eastChamp = getRegionChampion(regionTeams.East);
+        const westChamp = getRegionChampion(regionTeams.West);
+        const southChamp = getRegionChampion(regionTeams.South);
+        const midwestChamp = getRegionChampion(regionTeams.Midwest);
+        
+        const semi1Prob = getPrediction(eastChamp.id, westChamp.id);
+        const semi1Winner = semi1Prob > 0.5 ? eastChamp : westChamp;
+        
+        const semi2Prob = getPrediction(southChamp.id, midwestChamp.id);
+        const semi2Winner = semi2Prob > 0.5 ? southChamp : midwestChamp;
+        
         const champProb = getPrediction(semi1Winner.id, semi2Winner.id);
         const champion = champProb > 0.5 ? semi1Winner : semi2Winner;
-
+        
+        const finalFourHTML = `
+            <div class="final-four-section">
+                <h2 class="final-four-title">🏆 Final Four</h2>
+                
+                <div class="semifinals">
+                    <div class="semifinal">
+                        <h3>Semifinal 1</h3>
+                        ${createMatchupHTML(eastChamp, westChamp)}
+                        <div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 5px; text-align: center;">
+                            <strong>Winner:</strong> ${semi1Winner.name}
+                        </div>
+                    </div>
+                    
+                    <div class="semifinal">
+                        <h3>Semifinal 2</h3>
+                        ${createMatchupHTML(southChamp, midwestChamp)}
+                        <div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 5px; text-align: center;">
+                            <strong>Winner:</strong> ${semi2Winner.name}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="championship">
+                    <h2>🏆 Championship Game</h2>
+                    ${createMatchupHTML(semi1Winner, semi2Winner)}
+                    <div class="champion-box">
+                        <strong style="font-size: 1.1em;">Predicted Champion</strong>
+                        <div class="champion-name">${champion.name}</div>
+                        <div class="win-prob">Win Probability: ${(Math.max(champProb, 1 - champProb) * 100).toFixed(1)}%</div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
         const bracket = document.getElementById('bracket');
         bracket.innerHTML = `
-            <div style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 30px;">
-                
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <h2 style="color: #333; margin-bottom: 10px;">2025 Final Four Predictions</h2>
-                    <p style="color: #666;">All four #1 seeds made the Final Four (Florida, Duke, Houston, Auburn)</p>
-                </div>
-
-                <!-- Semifinals -->
-                <div style="display: flex; gap: 50px; justify-content: center; width: 100%;">
-                    
-                    <!-- Semifinal 1 -->
-                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; min-width: 350px;">
-                        <h3 style="text-align: center; margin-bottom: 15px; color: #667eea;">Semifinal 1</h3>
-                        
-                        <div class="team ${semi1Prob > 0.5 ? 'predicted-winner' : ''}" style="margin-bottom: 10px;">
-                            <div class="team-info">
-                                <span class="seed">#${semi1Team1.seed}</span>
-                                <span class="team-name">${semi1Team1.name}</span>
-                            </div>
-                            <span class="probability ${showProbabilities ? 'show' : 'hide'}">
-                                ${(semi1Prob * 100).toFixed(1)}%
-                            </span>
-                        </div>
-
-                        <div style="text-align: center; color: #999; margin: 5px 0;">vs</div>
-
-                        <div class="team ${semi1Prob <= 0.5 ? 'predicted-winner' : ''}">
-                            <div class="team-info">
-                                <span class="seed">#${semi1Team2.seed}</span>
-                                <span class="team-name">${semi1Team2.name}</span>
-                            </div>
-                            <span class="probability ${showProbabilities ? 'show' : 'hide'}">
-                                ${((1 - semi1Prob) * 100).toFixed(1)}%
-                            </span>
-                        </div>
-
-                        <div style="margin-top: 15px; padding: 10px; background: white; border-radius: 5px; text-align: center;">
-                            <strong>Predicted Winner:</strong><br>
-                            <span style="color: #667eea; font-size: 1.2em;">${semi1Winner.name}</span>
-                        </div>
-                    </div>
-
-                    <!-- Semifinal 2 -->
-                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; min-width: 350px;">
-                        <h3 style="text-align: center; margin-bottom: 15px; color: #667eea;">Semifinal 2</h3>
-                        
-                        <div class="team ${semi2Prob > 0.5 ? 'predicted-winner' : ''}" style="margin-bottom: 10px;">
-                            <div class="team-info">
-                                <span class="seed">#${semi2Team1.seed}</span>
-                                <span class="team-name">${semi2Team1.name}</span>
-                            </div>
-                            <span class="probability ${showProbabilities ? 'show' : 'hide'}">
-                                ${(semi2Prob * 100).toFixed(1)}%
-                            </span>
-                        </div>
-
-                        <div style="text-align: center; color: #999; margin: 5px 0;">vs</div>
-
-                        <div class="team ${semi2Prob <= 0.5 ? 'predicted-winner' : ''}">
-                            <div class="team-info">
-                                <span class="seed">#${semi2Team2.seed}</span>
-                                <span class="team-name">${semi2Team2.name}</span>
-                            </div>
-                            <span class="probability ${showProbabilities ? 'show' : 'hide'}">
-                                ${((1 - semi2Prob) * 100).toFixed(1)}%
-                            </span>
-                        </div>
-
-                        <div style="margin-top: 15px; padding: 10px; background: white; border-radius: 5px; text-align: center;">
-                            <strong>Predicted Winner:</strong><br>
-                            <span style="color: #667eea; font-size: 1.2em;">${semi2Winner.name}</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Championship -->
-                <div style="background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); padding: 30px; border-radius: 15px; min-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
-                    <h2 style="text-align: center; margin-bottom: 20px; color: #333;">🏆 Championship Game</h2>
-                    
-                    <div class="team ${champProb > 0.5 ? 'predicted-winner' : ''}" style="margin-bottom: 15px; background: rgba(255,255,255,0.9);">
-                        <div class="team-info">
-                            <span class="seed">#${semi1Winner.seed}</span>
-                            <span class="team-name">${semi1Winner.name}</span>
-                        </div>
-                        <span class="probability ${showProbabilities ? 'show' : 'hide'}">
-                            ${(champProb * 100).toFixed(1)}%
-                        </span>
-                    </div>
-
-                    <div style="text-align: center; color: #333; margin: 10px 0; font-weight: bold;">vs</div>
-
-                    <div class="team ${champProb <= 0.5 ? 'predicted-winner' : ''}" style="background: rgba(255,255,255,0.9);">
-                        <div class="team-info">
-                            <span class="seed">#${semi2Winner.seed}</span>
-                            <span class="team-name">${semi2Winner.name}</span>
-                        </div>
-                        <span class="probability ${showProbabilities ? 'show' : 'hide'}">
-                            ${((1 - champProb) * 100).toFixed(1)}%
-                        </span>
-                    </div>
-
-                    <div style="margin-top: 25px; padding: 20px; background: rgba(255,255,255,0.95); border-radius: 10px; text-align: center;">
-                        <strong style="font-size: 1.1em;">Predicted Champion:</strong><br>
-                        <span style="color: #764ba2; font-size: 1.8em; font-weight: bold;">${champion.name}</span>
-                        <p style="margin-top: 10px; color: #666; font-size: 0.9em;">
-                            Win Probability: ${(Math.max(champProb, 1 - champProb) * 100).toFixed(1)}%
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Actual Result -->
-                <div style="margin-top: 20px; padding: 20px; background: #e7f3ff; border-radius: 10px; border-left: 4px solid #667eea;">
-                    <h3 style="color: #333; margin-bottom: 10px;">Actual 2025 Result</h3>
-                    <p style="color: #666;">
-                        <strong>Champion:</strong> Florida defeated Houston 65-63<br>
-                        <strong>Semifinals:</strong> Florida def. Auburn, Houston def. Duke
-                    </p>
-                    <p style="margin-top: 10px; color: #666; font-size: 0.9em;">
-                        ${champion.name === 'Florida' ? '✅ Model correctly predicted the champion!' : 
-                          `❌ Model predicted ${champion.name}, actual winner was Florida`}
-                    </p>
-                </div>
-
+            <div class="full-bracket">
+                ${regionsHTML}
+                ${finalFourHTML}
             </div>
         `;
         
         document.getElementById('loading').style.display = 'none';
         bracket.style.display = 'block';
+    }
+
+    function getRegionChampion(regionTeams) {
+        // Simulate region to find champion
+        regionTeams.sort((a, b) => a.seed - b.seed);
+        
+        const round1Matchups = [
+            [regionTeams[0], regionTeams[15]],
+            [regionTeams[7], regionTeams[8]],
+            [regionTeams[4], regionTeams[11]],
+            [regionTeams[3], regionTeams[12]],
+            [regionTeams[5], regionTeams[10]],
+            [regionTeams[2], regionTeams[13]],
+            [regionTeams[6], regionTeams[9]],
+            [regionTeams[1], regionTeams[14]]
+        ];
+        
+        const round2Winners = [];
+        for (let i = 0; i < 4; i++) {
+            const w1 = getWinner(round1Matchups[i * 2][0], round1Matchups[i * 2][1]);
+            const w2 = getWinner(round1Matchups[i * 2 + 1][0], round1Matchups[i * 2 + 1][1]);
+            round2Winners.push(getWinner(w1, w2));
+        }
+        
+        const semi1 = getWinner(round2Winners[0], round2Winners[1]);
+        const semi2 = getWinner(round2Winners[2], round2Winners[3]);
+        
+        return getWinner(semi1, semi2);
     }
 
     function setupEventListeners() {
@@ -536,12 +733,11 @@
         btn.textContent = showProbabilities ? 'Hide Probabilities' : 'Show Probabilities';
         btn.classList.toggle('active');
         
-        // Rebuild to update display
-        buildBracket();
+        buildFullBracket();
     }
 
     function resetBracket() {
-        buildBracket();
+        buildFullBracket();
     }
 </script>
 </body>
