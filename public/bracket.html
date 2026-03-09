@@ -387,6 +387,9 @@
         <div class="about-section">
             <h3>About This Bracket</h3>
             <p>This bracket shows AI predictions for the 2026 NCAA Tournament based on an ensemble model trained on historical tournament data (2003-2024). The model uses Four Factors, efficiency metrics, momentum indicators, and seed information to predict game outcomes. Seeds are updated daily from Bracket Matrix consensus rankings.</p>
+            <p style="margin-top: 10px; font-size: 0.9em; color: #888;">
+                <strong>Note:</strong> Bracket Matrix includes play-in bubble teams. This display shows the top 4 teams for each seed (64 total), representing the tournament field after First Four play-in games are resolved.
+            </p>
         </div>
 
         <div class="bracket-container">
@@ -480,43 +483,69 @@
     }
 
     function assignRegions() {
-        // Get all teams and sort by seed
+        // Get all teams and sort by seed, then by team_id for consistent ordering
         const teamsList = Object.values(teams);
         console.log(`Total teams loaded: ${teamsList.length}`);
         
-        teamsList.sort((a, b) => a.seed - b.seed);
-        
-        // Take top 68 teams
-        const tournamentTeams = teamsList.slice(0, 68);
-        console.log(`Tournament teams: ${tournamentTeams.length}`);
-        
-        // Assign regions
-        const regions = ['East', 'West', 'South', 'Midwest'];
-        const regionTeams = { East: [], West: [], South: [], Midwest: [] };
+        teamsList.sort((a, b) => {
+            if (a.seed !== b.seed) return a.seed - b.seed;
+            return a.id - b.id; // Secondary sort by ID for consistency
+        });
         
         // Group by seed
         const bySeed = {};
-        tournamentTeams.forEach(team => {
+        teamsList.forEach(team => {
             if (!bySeed[team.seed]) bySeed[team.seed] = [];
             bySeed[team.seed].push(team);
         });
         
-        // Assign teams to regions (distribute evenly)
+        // Take exactly 4 teams for each seed 1-16 (64 teams total)
+        const tournamentTeams = [];
         for (let seed = 1; seed <= 16; seed++) {
             const teamsWithSeed = bySeed[seed] || [];
-            console.log(`Seed ${seed}: ${teamsWithSeed.length} teams`);
+            // Take first 4 teams (by team_id) - this handles play-ins by taking top 4
+            const selectedTeams = teamsWithSeed.slice(0, 4);
             
-            for (let i = 0; i < teamsWithSeed.length && i < 4; i++) {
+            if (selectedTeams.length < 4) {
+                console.warn(`⚠️ Seed ${seed}: Only ${selectedTeams.length} teams available (need 4)`);
+            } else if (teamsWithSeed.length > 4) {
+                console.log(`ℹ️ Seed ${seed}: Selected first 4 of ${teamsWithSeed.length} teams (play-in bubble)`);
+            }
+            
+            tournamentTeams.push(...selectedTeams);
+        }
+        
+        console.log(`Tournament teams selected: ${tournamentTeams.length}/64`);
+        
+        // Assign to regions (distribute evenly across 4 regions)
+        const regions = ['East', 'West', 'South', 'Midwest'];
+        const regionTeams = { East: [], West: [], South: [], Midwest: [] };
+        
+        // Re-group by seed (now with exactly 4 teams per seed)
+        const cleanBySeed = {};
+        tournamentTeams.forEach(team => {
+            if (!cleanBySeed[team.seed]) cleanBySeed[team.seed] = [];
+            cleanBySeed[team.seed].push(team);
+        });
+        
+        // Assign teams to regions (1 team per seed per region)
+        for (let seed = 1; seed <= 16; seed++) {
+            const teamsWithSeed = cleanBySeed[seed] || [];
+            
+            for (let i = 0; i < teamsWithSeed.length; i++) {
                 const region = regions[i % 4];
                 teamsWithSeed[i].region = region;
                 regionTeams[region].push(teamsWithSeed[i]);
             }
         }
         
-        // Log region sizes
+        // Log final distribution
         console.log('Region distribution:');
         Object.keys(regionTeams).forEach(region => {
             console.log(`  ${region}: ${regionTeams[region].length} teams`);
+            if (regionTeams[region].length !== 16) {
+                console.warn(`  ⚠️ ${region} should have 16 teams!`);
+            }
         });
         
         return regionTeams;
