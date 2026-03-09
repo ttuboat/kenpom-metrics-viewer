@@ -480,14 +480,19 @@
     }
 
     function assignRegions() {
-        // Get top 68 teams by seed
+        // Get all teams and sort by seed
         const teamsList = Object.values(teams);
-        teamsList.sort((a, b) => a.seed - b.seed);
-        const tournamentTeams = teamsList.slice(0, 68);
+        console.log(`Total teams loaded: ${teamsList.length}`);
         
-        // Assign regions based on standard bracket seeding
+        teamsList.sort((a, b) => a.seed - b.seed);
+        
+        // Take top 68 teams
+        const tournamentTeams = teamsList.slice(0, 68);
+        console.log(`Tournament teams: ${tournamentTeams.length}`);
+        
+        // Assign regions
         const regions = ['East', 'West', 'South', 'Midwest'];
-        const teamsPerRegion = 16;
+        const regionTeams = { East: [], West: [], South: [], Midwest: [] };
         
         // Group by seed
         const bySeed = {};
@@ -496,17 +501,23 @@
             bySeed[team.seed].push(team);
         });
         
-        // Assign teams to regions
-        const regionTeams = { East: [], West: [], South: [], Midwest: [] };
-        
+        // Assign teams to regions (distribute evenly)
         for (let seed = 1; seed <= 16; seed++) {
             const teamsWithSeed = bySeed[seed] || [];
+            console.log(`Seed ${seed}: ${teamsWithSeed.length} teams`);
+            
             for (let i = 0; i < teamsWithSeed.length && i < 4; i++) {
-                const region = regions[i];
+                const region = regions[i % 4];
                 teamsWithSeed[i].region = region;
                 regionTeams[region].push(teamsWithSeed[i]);
             }
         }
+        
+        // Log region sizes
+        console.log('Region distribution:');
+        Object.keys(regionTeams).forEach(region => {
+            console.log(`  ${region}: ${regionTeams[region].length} teams`);
+        });
         
         return regionTeams;
     }
@@ -518,7 +529,7 @@
         if (regionTeams.length < 16) {
             return `<div class="region ${regionName.toLowerCase()}">
                 <div class="region-header">${regionName} Region</div>
-                <p style="text-align: center; padding: 20px;">Not enough teams for this region</p>
+                <p style="text-align: center; padding: 20px;">Not enough teams for this region (${regionTeams.length}/16)</p>
             </div>`;
         }
         
@@ -534,6 +545,26 @@
             [regionTeams[1], regionTeams[14]]  // 2 vs 15
         ];
         
+        // Calculate winners for each round
+        const round1Winners = round1Matchups.map(([t1, t2]) => getWinner(t1, t2));
+        
+        const round2Matchups = [
+            [round1Winners[0], round1Winners[1]],
+            [round1Winners[2], round1Winners[3]],
+            [round1Winners[4], round1Winners[5]],
+            [round1Winners[6], round1Winners[7]]
+        ];
+        const round2Winners = round2Matchups.map(([t1, t2]) => getWinner(t1, t2));
+        
+        const round3Matchups = [
+            [round2Winners[0], round2Winners[1]],
+            [round2Winners[2], round2Winners[3]]
+        ];
+        const round3Winners = round3Matchups.map(([t1, t2]) => getWinner(t1, t2));
+        
+        const round4Matchup = [round3Winners[0], round3Winners[1]];
+        const round4Winner = getWinner(round3Winners[0], round3Winners[1]);
+        
         // Build HTML for region
         let html = `<div class="region ${regionName.toLowerCase()}">
             <div class="region-header">${regionName} Region</div>
@@ -548,32 +579,21 @@
         
         // Round of 32
         html += '<div class="round"><div class="round-title">Round of 32</div>';
-        for (let i = 0; i < 4; i++) {
-            const game1Winner = getWinner(round1Matchups[i * 2][0], round1Matchups[i * 2][1]);
-            const game2Winner = getWinner(round1Matchups[i * 2 + 1][0], round1Matchups[i * 2 + 1][1]);
-            html += createMatchupHTML(game1Winner, game2Winner);
-        }
+        round2Matchups.forEach(([team1, team2]) => {
+            html += createMatchupHTML(team1, team2);
+        });
         html += '</div>';
         
         // Sweet 16
         html += '<div class="round"><div class="round-title">Sweet 16</div>';
-        const sweet16Teams = [];
-        for (let i = 0; i < 4; i++) {
-            const game1Winner = getWinner(round1Matchups[i * 2][0], round1Matchups[i * 2][1]);
-            const game2Winner = getWinner(round1Matchups[i * 2 + 1][0], round1Matchups[i * 2 + 1][1]);
-            sweet16Teams.push(getWinner(game1Winner, game2Winner));
-        }
-        html += createMatchupHTML(sweet16Teams[0], sweet16Teams[1]);
-        html += createMatchupHTML(sweet16Teams[2], sweet16Teams[3]);
+        round3Matchups.forEach(([team1, team2]) => {
+            html += createMatchupHTML(team1, team2);
+        });
         html += '</div>';
         
         // Elite 8
         html += '<div class="round"><div class="round-title">Elite Eight</div>';
-        const elite8Winner = getWinner(sweet16Teams[0], sweet16Teams[1], sweet16Teams[2], sweet16Teams[3]);
-        html += createMatchupHTML(
-            getWinner(sweet16Teams[0], sweet16Teams[1]),
-            getWinner(sweet16Teams[2], sweet16Teams[3])
-        );
+        html += createMatchupHTML(round4Matchup[0], round4Matchup[1]);
         html += '</div>';
         
         html += '</div></div>'; // Close rounds and region
@@ -581,20 +601,27 @@
         return html;
     }
 
-    function getWinner(...teams) {
-        if (teams.length === 2) {
-            const [team1, team2] = teams;
-            const prob = getPrediction(team1.id, team2.id);
-            return prob > 0.5 ? team1 : team2;
-        } else if (teams.length === 4) {
-            const winner1 = getWinner(teams[0], teams[1]);
-            const winner2 = getWinner(teams[2], teams[3]);
-            return getWinner(winner1, winner2);
+    function getWinner(team1, team2) {
+        // Safety check for undefined teams
+        if (!team1 || !team2) {
+            console.warn('getWinner called with undefined team:', team1, team2);
+            return team1 || team2 || null;
         }
-        return teams[0];
+        
+        const prob = getPrediction(team1.id, team2.id);
+        return prob > 0.5 ? team1 : team2;
     }
 
     function createMatchupHTML(team1, team2) {
+        // Safety check for undefined teams
+        if (!team1 || !team2) {
+            return `<div class="matchup" style="opacity: 0.5;">
+                <div class="team"><div class="team-info">
+                    <span class="team-name">TBD</span>
+                </div></div>
+            </div>`;
+        }
+        
         const prob = getPrediction(team1.id, team2.id);
         const team1Prob = (prob * 100).toFixed(1);
         const team2Prob = ((1 - prob) * 100).toFixed(1);
@@ -695,9 +722,15 @@
     }
 
     function getRegionChampion(regionTeams) {
-        // Simulate region to find champion
+        // Sort teams by seed
         regionTeams.sort((a, b) => a.seed - b.seed);
         
+        if (regionTeams.length < 16) {
+            console.warn('Not enough teams in region:', regionTeams.length);
+            return regionTeams[0]; // Return top seed as fallback
+        }
+        
+        // Round 1
         const round1Matchups = [
             [regionTeams[0], regionTeams[15]],
             [regionTeams[7], regionTeams[8]],
@@ -708,18 +741,24 @@
             [regionTeams[6], regionTeams[9]],
             [regionTeams[1], regionTeams[14]]
         ];
+        const round1Winners = round1Matchups.map(([t1, t2]) => getWinner(t1, t2));
         
-        const round2Winners = [];
-        for (let i = 0; i < 4; i++) {
-            const w1 = getWinner(round1Matchups[i * 2][0], round1Matchups[i * 2][1]);
-            const w2 = getWinner(round1Matchups[i * 2 + 1][0], round1Matchups[i * 2 + 1][1]);
-            round2Winners.push(getWinner(w1, w2));
-        }
+        // Round 2
+        const round2Winners = [
+            getWinner(round1Winners[0], round1Winners[1]),
+            getWinner(round1Winners[2], round1Winners[3]),
+            getWinner(round1Winners[4], round1Winners[5]),
+            getWinner(round1Winners[6], round1Winners[7])
+        ];
         
-        const semi1 = getWinner(round2Winners[0], round2Winners[1]);
-        const semi2 = getWinner(round2Winners[2], round2Winners[3]);
+        // Sweet 16
+        const sweet16Winners = [
+            getWinner(round2Winners[0], round2Winners[1]),
+            getWinner(round2Winners[2], round2Winners[3])
+        ];
         
-        return getWinner(semi1, semi2);
+        // Elite 8 - Region Champion
+        return getWinner(sweet16Winners[0], sweet16Winners[1]);
     }
 
     function setupEventListeners() {
