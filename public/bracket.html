@@ -436,20 +436,40 @@
     function parsePredictions(csvText) {
         const lines = csvText.trim().split('\n');
         
+        // Parse header to find column indices
+        const header = lines[0].split(',');
+        const team1IdIdx = header.indexOf('team1_id');
+        const team2IdIdx = header.indexOf('team2_id');
+        const team1ProbIdx = header.indexOf('team1_win_prob');
+        
+        console.log('CSV columns:', header);
+        console.log(`Team1 ID index: ${team1IdIdx}, Team2 ID index: ${team2IdIdx}, Probability index: ${team1ProbIdx}`);
+        
         for (let i = 1; i < lines.length; i++) {
-            const values = lines[i].split(',');
-            const id = values[0];
-            const pred = parseFloat(values[1]);
+            const line = lines[i].trim();
+            if (!line) continue;
             
-            const parts = id.split('_');
-            const team1 = parseInt(parts[1]);
-            const team2 = parseInt(parts[2]);
+            const values = line.split(',');
             
-            predictions[`${team1}_${team2}`] = pred;
-            predictions[`${team2}_${team1}`] = 1 - pred;
+            // Get team IDs and probability
+            const team1Id = parseInt(values[team1IdIdx]);
+            const team2Id = parseInt(values[team2IdIdx]);
+            const team1Prob = parseFloat(values[team1ProbIdx]);
+            
+            if (isNaN(team1Id) || isNaN(team2Id) || isNaN(team1Prob)) {
+                continue;
+            }
+            
+            // Store both directions
+            predictions[`${team1Id}_${team2Id}`] = team1Prob;
+            predictions[`${team2Id}_${team1Id}`] = 1 - team1Prob;
         }
         
         console.log(`Loaded ${Object.keys(predictions).length / 2} matchup predictions`);
+        
+        // Debug: Show a few sample predictions
+        const sampleKeys = Object.keys(predictions).slice(0, 4);
+        console.log('Sample predictions:', sampleKeys.map(k => `${k}: ${(predictions[k] * 100).toFixed(1)}%`).join(', '));
     }
 
     function parseTeams(csvText) {
