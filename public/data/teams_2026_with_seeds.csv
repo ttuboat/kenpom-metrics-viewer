@@ -5,8 +5,8 @@ team_id,team_name,seed
 4,Florida,1
 5,Connecticut,2
 6,Houston,2
-7,Michigan State,2
-8,Illinois,2
+7,Illinois,2
+8,Michigan State,2
 9,Iowa State,3
 10,Nebraska,3
 11,Purdue,3
@@ -28,8 +28,8 @@ team_id,team_name,seed
 27,Miami (FLA.),7
 28,Villanova,7
 29,Georgia,8
-30,UCLA,8
-31,Clemson,8
+30,Clemson,8
+31,UCLA,8
 32,Utah State,8
 33,Iowa,9
 34,Saint Louis,9
@@ -45,34 +45,32 @@ team_id,team_name,seed
 44,SMU,11
 45,VCU,11
 46,Indiana,11
-47,South Florida,12
-48,Yale,12
+47,Stanford,11
+48,South Florida,12
 49,Stephen F. Austin,12
 50,High Point,12
-51,Northern Iowa,13
-52,Liberty,13
+51,McNeese State,12
+52,Yale,12
 53,Utah Valley,13
 54,Hofstra,13
-55,California Baptist,13
-56,UC Irvine,14
+55,Northern Iowa,13
+56,Liberty,13
 57,Troy,14
 58,Portland State,14
-59,Hawaii,14
-60,North Dakota State,14
-61,Navy,14
-62,Central Arkansas,14
-63,Wright State,15
-64,Merrimack,15
-65,Southern Miss,15
-66,Tennessee State,15
-67,Furman,15
-68,Queens,16
+59,UC Irvine,14
+60,Northern Colorado,14
+61,Robert Morris,14
+62,Hawaii,14
+63,North Dakota State,14
+64,Wright State,15
+65,Merrimack,15
+66,E. Tennessee State,15
+67,Tennessee State,15
+68,Furman,15
 69,Lehigh,16
-70,Bethune-Cookman,16
-71,Long Island,16
+70,Queens,16
+71,Howard,16
 72,UMBC,16
-73,Florida A&M,16
-74,Eastern Washington,16
-75,Howard,16
-76,Green Bay,16
-77,Western Carolina,16
+73,Monmouth,16
+74,Long Island,16
+75,Bethune-Cookman,16
