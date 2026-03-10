@@ -88,7 +88,7 @@ jobs:
       
       - name: 🔄 Convert predictions JSON to CSV with correct team IDs
         run: |
-          python -c "
+          python3 << 'PYEOF'
           import json
           import pandas as pd
           
@@ -99,85 +99,241 @@ jobs:
           print('Loading teams CSV to get ID mapping...')
           teams_df = pd.read_csv('public/data/teams_2026_with_seeds.csv')
           
-          # Create mapping from team name to sequential ID (1, 2, 3...)
-          team_name_to_id = {}
-          for idx, row in teams_df.iterrows():
-              team_name_to_id[row['team_name']] = row['team_id']
-          
-          print(f'Created mapping for {len(team_name_to_id)} teams')
-          
-          # ============================================================
-          # Name normalization: Kaggle (MTeams.csv) name -> Bracket Matrix name
-          # These 23 teams use different naming conventions between sources.
-          # Kaggle names are on the left, Bracket Matrix names on the right.
-          # ============================================================
-          kaggle_to_bracket_matrix = {
-              'Cal Baptist': 'California Baptist',
-              'Cent Arkansas': 'Central Arkansas',
-              'UCF': 'Central Florida',
-              'E Washington': 'Eastern Washington',
-              'WI Green Bay': 'Green Bay',
-              'Iowa St': 'Iowa State',
-              'LIU Brooklyn': 'Long Island',
-              'Miami FL': 'Miami (FLA.)',
-              'Miami OH': 'Miami (Ohio)',
-              'Michigan St': 'Michigan State',
-              'NC State': 'North Carolina State',
-              'N Dakota St': 'North Dakota State',
-              'Ohio St': 'Ohio State',
-              'Portland St': 'Portland State',
-              'Queens NC': 'Queens',
-              'St Louis': 'Saint Louis',
-              'St John\'s': 'St. John\'s',
-              'St Mary\'s CA': 'St. Mary\'s (CA)',
-              'SF Austin': 'Stephen F. Austin',
-              'Tennessee St': 'Tennessee State',
-              'Utah St': 'Utah State',
-              'W Carolina': 'Western Carolina',
-              'Wright St': 'Wright State',
-          }
-          print(f'Loaded {len(kaggle_to_bracket_matrix)} name normalizations')
-          
-          # Load original teams to get the original ID mapping
-          # Predictions JSON uses Kaggle IDs, we need to map to new IDs
+          # Load original teams JSON (uses Kaggle IDs and Kaggle names)
           with open('public/data/teams_2026.json') as f:
               teams_json = json.load(f)
           
-          # Create mapping from original ID to team name
-          original_id_to_name = {}
+          # Kaggle ID -> Kaggle name
+          kaggle_id_to_name = {}
           for team in teams_json:
-              original_id_to_name[team['id']] = team['name']
+              kaggle_id_to_name[team['id']] = team['name']
+          print(f'Loaded {len(kaggle_id_to_name)} teams from predictions JSON')
           
-          print(f'Loaded {len(original_id_to_name)} teams from JSON')
+          # ============================================================
+          # COMPREHENSIVE name normalization map
+          # Direction: Bracket Matrix name -> Kaggle name
+          # This lets us match bracket CSV teams to their Kaggle equivalents
+          # regardless of how Bracket Matrix names them on any given day.
+          # ============================================================
+          bm_to_kaggle = {
+              # "State" vs "St" expansions
+              'Alabama State': 'Alabama St',
+              'Alcorn State': 'Alcorn St',
+              'Appalachian State': 'Appalachian St',
+              'Arizona State': 'Arizona St',
+              'Arkansas State': 'Arkansas St',
+              'Ball State': 'Ball St',
+              'Boise State': 'Boise St',
+              'Chicago State': 'Chicago St',
+              'Cleveland State': 'Cleveland St',
+              'Colorado State': 'Colorado St',
+              'Coppin State': 'Coppin St',
+              'Delaware State': 'Delaware St',
+              'Florida State': 'Florida St',
+              'Fresno State': 'Fresno St',
+              'Georgia State': 'Georgia St',
+              'Idaho State': 'Idaho St',
+              'Illinois State': 'Illinois St',
+              'Indiana State': 'Indiana St',
+              'Iowa State': 'Iowa St',
+              'Jackson State': 'Jackson St',
+              'Jacksonville State': 'Jacksonville St',
+              'Kansas State': 'Kansas St',
+              'Long Beach State': 'Long Beach St',
+              'McNeese State': 'McNeese St',
+              'Michigan State': 'Michigan St',
+              'Mississippi State': 'Mississippi St',
+              'Missouri State': 'Missouri St',
+              'Montana State': 'Montana St',
+              'Morehead State': 'Morehead St',
+              'Morgan State': 'Morgan St',
+              'Murray State': 'Murray St',
+              'New Mexico State': 'New Mexico St',
+              'Nicholls State': 'Nicholls St',
+              'Norfolk State': 'Norfolk St',
+              'North Dakota State': 'N Dakota St',
+              'Ohio State': 'Ohio St',
+              'Oklahoma State': 'Oklahoma St',
+              'Oregon State': 'Oregon St',
+              'Penn State': 'Penn St',
+              'Portland State': 'Portland St',
+              'Sam Houston State': 'Sam Houston St',
+              'San Diego State': 'San Diego St',
+              'San Jose State': 'San Jose St',
+              'Tarleton State': 'Tarleton St',
+              'Tennessee State': 'Tennessee St',
+              'Texas State': 'Texas St',
+              'Utah State': 'Utah St',
+              'Washington State': 'Washington St',
+              'Weber State': 'Weber St',
+              'Wichita State': 'Wichita St',
+              'Wright State': 'Wright St',
+              'Youngstown State': 'Youngstown St',
+              # Directional prefix expansions (E/W/N/S -> full words)
+              'Eastern Washington': 'E Washington',
+              'Eastern Kentucky': 'E Kentucky',
+              'Eastern Michigan': 'E Michigan',
+              'Eastern Illinois': 'E Illinois',
+              'Western Carolina': 'W Carolina',
+              'Western Illinois': 'W Illinois',
+              'Western Michigan': 'W Michigan',
+              'Western Kentucky': 'WKU',
+              'Northern Colorado': 'N Colorado',
+              'Northern Illinois': 'N Illinois',
+              'Northern Kentucky': 'N Kentucky',
+              'Southern Illinois': 'S Illinois',
+              'North Carolina State': 'NC State',
+              'South Carolina State': 'S Carolina St',
+              'South Dakota State': 'S Dakota St',
+              'Southeast Missouri State': 'SE Missouri St',
+              'Southeastern Louisiana': 'SE Louisiana',
+              # "E. X" / "N. X" dot-prefix variants from Bracket Matrix
+              'E. Tennessee State': 'ETSU',
+              'E. Washington': 'E Washington',
+              'E. Illinois': 'E Illinois',
+              'E. Kentucky': 'E Kentucky',
+              'E. Michigan': 'E Michigan',
+              'W. Carolina': 'W Carolina',
+              'W. Illinois': 'W Illinois',
+              'W. Michigan': 'W Michigan',
+              'N. Colorado': 'N Colorado',
+              'N. Dakota State': 'N Dakota St',
+              'N. Illinois': 'N Illinois',
+              'N. Kentucky': 'N Kentucky',
+              'S. Carolina State': 'S Carolina St',
+              'S. Dakota State': 'S Dakota St',
+              'S. Illinois': 'S Illinois',
+              # Abbreviation mismatches
+              'Central Florida': 'UCF',
+              'East Tennessee State': 'ETSU',
+              'E Tennessee State': 'ETSU',
+              'Middle Tennessee State': 'MTSU',
+              'Middle Tennessee': 'MTSU',
+              'M. Tennessee State': 'MTSU',
+              'Florida Atlantic': 'FL Atlantic',
+              'Florida Gulf Coast': 'FGCU',
+              'Central Arkansas': 'Cent Arkansas',
+              'Central Michigan': 'C Michigan',
+              'California Baptist': 'Cal Baptist',
+              'Virginia Commonwealth': 'VCU',
+              'Southern Methodist': 'SMU',
+              'Brigham Young': 'BYU',
+              'Louisiana State': 'LSU',
+              'Nevada-Las Vegas': 'UNLV',
+              'Loyola Marymount': 'Loy Marymount',
+              'Loyola Chicago': 'Loyola-Chicago',
+              'Georgia Southern': 'Ga Southern',
+              'George Washington': 'G Washington',
+              'Fairleigh Dickinson': 'F Dickinson',
+              'Charleston Southern': 'Charleston So',
+              'College of Charleston': 'Col Charleston',
+              'Arkansas-Little Rock': 'Ark Little Rock',
+              'Little Rock': 'Ark Little Rock',
+              'Arkansas-Pine Bluff': 'Ark Pine Bluff',
+              'Purdue Fort Wayne': 'PFW',
+              'Gardner-Webb': 'Gardner Webb',
+              'Sam Houston': 'Sam Houston St',
+              'Sacramento State': 'CS Sacramento',
+              'Cal State Fullerton': 'CS Fullerton',
+              'Cal State Northridge': 'CS Northridge',
+              'Cal State Bakersfield': 'CS Bakersfield',
+              'Cal State Sacramento': 'CS Sacramento',
+              'Maryland Eastern Shore': 'MD E Shore',
+              'Maryland-Eastern Shore': 'MD E Shore',
+              'Nebraska Omaha': 'NE Omaha',
+              'Nebraska-Omaha': 'NE Omaha',
+              'Omaha': 'NE Omaha',
+              # Punctuation / qualifier mismatches
+              'St. John\'s': 'St John\'s',
+              'Saint John\'s': 'St John\'s',
+              'St. Mary\'s (CA)': 'St Mary\'s CA',
+              'Saint Mary\'s (CA)': 'St Mary\'s CA',
+              'Saint Mary\'s': 'St Mary\'s CA',
+              'St. Louis': 'St Louis',
+              'Saint Louis': 'St Louis',
+              'St. Bonaventure': 'St Bonaventure',
+              'Saint Bonaventure': 'St Bonaventure',
+              'St. Peter\'s': 'St Peter\'s',
+              'Saint Peter\'s': 'St Peter\'s',
+              'St. Francis (PA)': 'St Francis PA',
+              'Saint Francis (PA)': 'St Francis PA',
+              'Mount St. Mary\'s': 'Mt St Mary\'s',
+              'Mt. St. Mary\'s': 'Mt St Mary\'s',
+              'Stephen F. Austin': 'SF Austin',
+              'Miami (FLA.)': 'Miami FL',
+              'Miami (Fla.)': 'Miami FL',
+              'Miami (FL)': 'Miami FL',
+              'Miami (Ohio)': 'Miami OH',
+              'Miami (OH)': 'Miami OH',
+              # Regional qualifier mismatches
+              'Green Bay': 'WI Green Bay',
+              'Wisconsin-Green Bay': 'WI Green Bay',
+              'Milwaukee': 'WI Milwaukee',
+              'Wisconsin-Milwaukee': 'WI Milwaukee',
+              'Long Island': 'LIU Brooklyn',
+              'LIU': 'LIU Brooklyn',
+              'Queens': 'Queens NC',
+              'Albany': 'SUNY Albany',
+              'Charleston': 'Col Charleston',
+          }
           
-          # Convert predictions with ID remapping
+          # ============================================================
+          # Build Kaggle name -> sequential ID mapping
+          # For each bracket CSV team, register BOTH its BM name and
+          # its Kaggle equivalent so lookups work from either direction.
+          # ============================================================
+          kaggle_name_to_seq_id = {}
+          kaggle_names = set(kaggle_id_to_name.values())
+          matched = 0
+          unmatched_bracket_teams = []
+          
+          for idx, row in teams_df.iterrows():
+              bm_name = row['team_name']
+              seq_id = row['team_id']
+              
+              # Check if BM name IS a Kaggle name (exact match)
+              if bm_name in kaggle_names:
+                  kaggle_name_to_seq_id[bm_name] = seq_id
+                  matched += 1
+              # Check if BM name has a known Kaggle equivalent
+              elif bm_name in bm_to_kaggle:
+                  kg_name = bm_to_kaggle[bm_name]
+                  if kg_name in kaggle_names:
+                      kaggle_name_to_seq_id[kg_name] = seq_id
+                      matched += 1
+                  else:
+                      unmatched_bracket_teams.append(bm_name)
+              else:
+                  unmatched_bracket_teams.append(bm_name)
+          
+          print(f'Mapped {matched}/{len(teams_df)} bracket teams to Kaggle names')
+          if unmatched_bracket_teams:
+              print(f'⚠️ UNMATCHED bracket teams: {unmatched_bracket_teams}')
+          
+          # ============================================================
+          # Convert predictions using Kaggle name -> sequential ID
+          # ============================================================
           rows = []
-          unmapped_teams = set()
+          unmapped_kaggle = set()
+          
           for matchup_id, pred_data in preds.items():
-              # Get original Kaggle IDs
               orig_team1_id = pred_data.get('team1_id')
               orig_team2_id = pred_data.get('team2_id')
               
-              # Get Kaggle team names
-              team1_kaggle = original_id_to_name.get(orig_team1_id, pred_data.get('team1_name'))
-              team2_kaggle = original_id_to_name.get(orig_team2_id, pred_data.get('team2_name'))
+              team1_kaggle = kaggle_id_to_name.get(orig_team1_id, pred_data.get('team1_name'))
+              team2_kaggle = kaggle_id_to_name.get(orig_team2_id, pred_data.get('team2_name'))
               
-              # Normalize to Bracket Matrix names (use original if no mapping needed)
-              team1_name = kaggle_to_bracket_matrix.get(team1_kaggle, team1_kaggle)
-              team2_name = kaggle_to_bracket_matrix.get(team2_kaggle, team2_kaggle)
-              
-              # Map to new sequential IDs
-              new_team1_id = team_name_to_id.get(team1_name)
-              new_team2_id = team_name_to_id.get(team2_name)
+              new_team1_id = kaggle_name_to_seq_id.get(team1_kaggle)
+              new_team2_id = kaggle_name_to_seq_id.get(team2_kaggle)
               
               if new_team1_id and new_team2_id:
                   row = {
                       'matchup_id': f'2026_{new_team1_id}_{new_team2_id}',
                       'team1_id': new_team1_id,
-                      'team1_name': team1_name,
+                      'team1_name': team1_kaggle,
                       'team1_seed': pred_data.get('team1_seed'),
                       'team2_id': new_team2_id,
-                      'team2_name': team2_name,
+                      'team2_name': team2_kaggle,
                       'team2_seed': pred_data.get('team2_seed'),
                       'team1_win_prob': pred_data.get('team1_win_prob'),
                       'team2_win_prob': pred_data.get('team2_win_prob')
@@ -185,30 +341,24 @@ jobs:
                   rows.append(row)
               else:
                   if not new_team1_id and team1_kaggle:
-                      unmapped_teams.add(team1_kaggle)
+                      unmapped_kaggle.add(team1_kaggle)
                   if not new_team2_id and team2_kaggle:
-                      unmapped_teams.add(team2_kaggle)
+                      unmapped_kaggle.add(team2_kaggle)
           
-          # Save to CSV
           df = pd.DataFrame(rows)
           df.to_csv('public/data/predictions_2026_all_matchups.csv', index=False)
           print(f'✓ Created predictions CSV with {len(df)} matchups using remapped IDs')
-          print(f'Sample IDs: {df[\"team1_id\"].head(5).tolist()}')
+          print(f'Sample: {list(zip(df["team1_id"].head(3), df["team1_name"].head(3)))}')
           
-          # Report any teams that still couldn't be mapped
-          # (These are teams in predictions but not in the 64-team bracket - expected)
-          if unmapped_teams:
-              bracket_teams = set(teams_df['team_name'].tolist())
-              truly_missing = set()
-              for t in unmapped_teams:
-                  normalized = kaggle_to_bracket_matrix.get(t, t)
-                  if normalized in bracket_teams:
-                      truly_missing.add(t)
+          # Report: non-bracket teams are expected to be unmapped (only ~77 of 364 are in bracket)
+          if unmapped_kaggle:
+              bracket_kaggle_names = set(kaggle_name_to_seq_id.keys())
+              truly_missing = unmapped_kaggle & bracket_kaggle_names
               if truly_missing:
-                  print(f'⚠️ WARNING: {len(truly_missing)} bracket teams still unmapped: {truly_missing}')
+                  print(f'⚠️ WARNING: bracket teams with broken predictions: {truly_missing}')
               else:
-                  print(f'✓ All bracket teams mapped successfully ({len(unmapped_teams)} non-bracket teams skipped as expected)')
-          "
+                  print(f'✓ All bracket teams mapped. ({len(unmapped_kaggle)} non-bracket teams skipped)')
+          PYEOF
           
           echo "✓ Conversion complete"
       
