@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "updated": "2026-03-09 10:39:03",
+    "updated": "2026-03-10 12:04:47",
     "source": "bracketmatrix.com",
-    "teams_count": 73
+    "teams_count": 77
   },
   "teams": [
     {
@@ -76,12 +76,12 @@
       "seed_str": "04"
     },
     {
-      "team": "Texas Tech",
+      "team": "Kansas",
       "seed": 4,
       "seed_str": "04"
     },
     {
-      "team": "Kansas",
+      "team": "Texas Tech",
       "seed": 4,
       "seed_str": "04"
     },
@@ -126,12 +126,12 @@
       "seed_str": "06"
     },
     {
-      "team": "Kentucky",
+      "team": "St. Mary's (CA)",
       "seed": 7,
       "seed_str": "07"
     },
     {
-      "team": "St. Mary's (CA)",
+      "team": "Kentucky",
       "seed": 7,
       "seed_str": "07"
     },
@@ -151,12 +151,12 @@
       "seed_str": "08"
     },
     {
-      "team": "Clemson",
+      "team": "UCLA",
       "seed": 8,
       "seed_str": "08"
     },
     {
-      "team": "UCLA",
+      "team": "Clemson",
       "seed": 8,
       "seed_str": "08"
     },
@@ -181,17 +181,12 @@
       "seed_str": "09"
     },
     {
-      "team": "Texas A&M",
+      "team": "Ohio State",
       "seed": 9,
       "seed_str": "09"
     },
     {
-      "team": "North Carolina State",
-      "seed": 10,
-      "seed_str": "10"
-    },
-    {
-      "team": "Ohio State",
+      "team": "Texas A&M",
       "seed": 10,
       "seed_str": "10"
     },
@@ -201,14 +196,14 @@
       "seed_str": "10"
     },
     {
-      "team": "Missouri",
+      "team": "North Carolina State",
       "seed": 10,
       "seed_str": "10"
     },
     {
-      "team": "Texas",
-      "seed": 11,
-      "seed_str": "11"
+      "team": "Missouri",
+      "seed": 10,
+      "seed_str": "10"
     },
     {
       "team": "Miami (Ohio)",
@@ -216,12 +211,17 @@
       "seed_str": "11"
     },
     {
-      "team": "SMU",
+      "team": "Texas",
       "seed": 11,
       "seed_str": "11"
     },
     {
       "team": "Santa Clara",
+      "seed": 11,
+      "seed_str": "11"
+    },
+    {
+      "team": "SMU",
       "seed": 11,
       "seed_str": "11"
     },
@@ -236,12 +236,12 @@
       "seed_str": "11"
     },
     {
-      "team": "Auburn",
-      "seed": 11,
-      "seed_str": "11"
+      "team": "South Florida",
+      "seed": 12,
+      "seed_str": "12"
     },
     {
-      "team": "South Florida",
+      "team": "Yale",
       "seed": 12,
       "seed_str": "12"
     },
@@ -256,12 +256,12 @@
       "seed_str": "12"
     },
     {
-      "team": "Yale",
-      "seed": 12,
-      "seed_str": "12"
+      "team": "Northern Iowa",
+      "seed": 13,
+      "seed_str": "13"
     },
     {
-      "team": "Northern Iowa",
+      "team": "Liberty",
       "seed": 13,
       "seed_str": "13"
     },
@@ -276,14 +276,14 @@
       "seed_str": "13"
     },
     {
-      "team": "NC-Wilmington",
+      "team": "California Baptist",
       "seed": 13,
       "seed_str": "13"
     },
     {
-      "team": "Liberty",
-      "seed": 13,
-      "seed_str": "13"
+      "team": "UC Irvine",
+      "seed": 14,
+      "seed_str": "14"
     },
     {
       "team": "Troy",
@@ -291,7 +291,7 @@
       "seed_str": "14"
     },
     {
-      "team": "E. Tennessee State",
+      "team": "Portland State",
       "seed": 14,
       "seed_str": "14"
     },
@@ -306,32 +306,17 @@
       "seed_str": "14"
     },
     {
-      "team": "California Baptist",
-      "seed": 14,
-      "seed_str": "14"
-    },
-    {
       "team": "Navy",
       "seed": 14,
       "seed_str": "14"
     },
     {
-      "team": "Portland State",
-      "seed": 15,
-      "seed_str": "15"
+      "team": "Central Arkansas",
+      "seed": 14,
+      "seed_str": "14"
     },
     {
       "team": "Wright State",
-      "seed": 15,
-      "seed_str": "15"
-    },
-    {
-      "team": "Austin Peay",
-      "seed": 15,
-      "seed_str": "15"
-    },
-    {
-      "team": "Queens",
       "seed": 15,
       "seed_str": "15"
     },
@@ -341,7 +326,22 @@
       "seed_str": "15"
     },
     {
+      "team": "Southern Miss",
+      "seed": 15,
+      "seed_str": "15"
+    },
+    {
       "team": "Tennessee State",
+      "seed": 15,
+      "seed_str": "15"
+    },
+    {
+      "team": "Furman",
+      "seed": 15,
+      "seed_str": "15"
+    },
+    {
+      "team": "Queens",
       "seed": 16,
       "seed_str": "16"
     },
@@ -356,7 +356,22 @@
       "seed_str": "16"
     },
     {
+      "team": "Long Island",
+      "seed": 16,
+      "seed_str": "16"
+    },
+    {
       "team": "UMBC",
+      "seed": 16,
+      "seed_str": "16"
+    },
+    {
+      "team": "Florida A&M",
+      "seed": 16,
+      "seed_str": "16"
+    },
+    {
+      "team": "Eastern Washington",
       "seed": 16,
       "seed_str": "16"
     },
@@ -366,7 +381,12 @@
       "seed_str": "16"
     },
     {
-      "team": "Long Island",
+      "team": "Green Bay",
+      "seed": 16,
+      "seed_str": "16"
+    },
+    {
+      "team": "Western Carolina",
       "seed": 16,
       "seed_str": "16"
     }

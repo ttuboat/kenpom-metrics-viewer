@@ -13,8 +13,8 @@ team_id,team_name,seed
 12,Alabama,3
 13,Gonzaga,4
 14,Virginia,4
-15,Texas Tech,4
-16,Kansas,4
+15,Kansas,4
+16,Texas Tech,4
 17,Vanderbilt,5
 18,Arkansas,5
 19,St. John's,5
@@ -23,52 +23,56 @@ team_id,team_name,seed
 22,Wisconsin,6
 23,Louisville,6
 24,BYU,6
-25,Kentucky,7
-26,St. Mary's (CA),7
+25,St. Mary's (CA),7
+26,Kentucky,7
 27,Miami (FLA.),7
 28,Villanova,7
 29,Georgia,8
-30,Clemson,8
-31,UCLA,8
+30,UCLA,8
+31,Clemson,8
 32,Utah State,8
 33,Iowa,9
 34,Saint Louis,9
 35,TCU,9
-36,Texas A&M,9
-37,North Carolina State,10
-38,Ohio State,10
-39,Central Florida,10
+36,Ohio State,9
+37,Texas A&M,10
+38,Central Florida,10
+39,North Carolina State,10
 40,Missouri,10
-41,Texas,11
-42,Miami (Ohio),11
-43,SMU,11
-44,Santa Clara,11
+41,Miami (Ohio),11
+42,Texas,11
+43,Santa Clara,11
+44,SMU,11
 45,VCU,11
 46,Indiana,11
-47,Auburn,11
-48,South Florida,12
+47,South Florida,12
+48,Yale,12
 49,Stephen F. Austin,12
 50,High Point,12
-51,Yale,12
-52,Northern Iowa,13
+51,Northern Iowa,13
+52,Liberty,13
 53,Utah Valley,13
 54,Hofstra,13
-55,NC-Wilmington,13
-56,Liberty,13
+55,California Baptist,13
+56,UC Irvine,14
 57,Troy,14
-58,E. Tennessee State,14
+58,Portland State,14
 59,Hawaii,14
 60,North Dakota State,14
-61,California Baptist,14
-62,Navy,14
-63,Portland State,15
-64,Wright State,15
-65,Austin Peay,15
-66,Queens,15
-67,Merrimack,15
-68,Tennessee State,16
+61,Navy,14
+62,Central Arkansas,14
+63,Wright State,15
+64,Merrimack,15
+65,Southern Miss,15
+66,Tennessee State,15
+67,Furman,15
+68,Queens,16
 69,Lehigh,16
 70,Bethune-Cookman,16
-71,UMBC,16
-72,Howard,16
-73,Long Island,16
+71,Long Island,16
+72,UMBC,16
+73,Florida A&M,16
+74,Eastern Washington,16
+75,Howard,16
+76,Green Bay,16
+77,Western Carolina,16
