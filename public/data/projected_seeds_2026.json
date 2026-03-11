@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "updated": "2026-03-10 19:44:49",
+    "updated": "2026-03-11 10:51:01",
     "source": "bracketmatrix.com",
-    "teams_count": 75
+    "teams_count": 76
   },
   "teams": [
     {
@@ -61,12 +61,12 @@
       "seed_str": "03"
     },
     {
-      "team": "Alabama",
+      "team": "Gonzaga",
       "seed": 3,
       "seed_str": "03"
     },
     {
-      "team": "Gonzaga",
+      "team": "Alabama",
       "seed": 4,
       "seed_str": "04"
     },
@@ -126,12 +126,12 @@
       "seed_str": "06"
     },
     {
-      "team": "St. Mary's (CA)",
+      "team": "Kentucky",
       "seed": 7,
       "seed_str": "07"
     },
     {
-      "team": "Kentucky",
+      "team": "St. Mary's (CA)",
       "seed": 7,
       "seed_str": "07"
     },
@@ -151,12 +151,12 @@
       "seed_str": "08"
     },
     {
-      "team": "Clemson",
+      "team": "UCLA",
       "seed": 8,
       "seed_str": "08"
     },
     {
-      "team": "UCLA",
+      "team": "Clemson",
       "seed": 8,
       "seed_str": "08"
     },
@@ -171,12 +171,12 @@
       "seed_str": "09"
     },
     {
-      "team": "Saint Louis",
+      "team": "TCU",
       "seed": 9,
       "seed_str": "09"
     },
     {
-      "team": "TCU",
+      "team": "Saint Louis",
       "seed": 9,
       "seed_str": "09"
     },
@@ -211,12 +211,12 @@
       "seed_str": "11"
     },
     {
-      "team": "Texas",
+      "team": "Santa Clara",
       "seed": 11,
       "seed_str": "11"
     },
     {
-      "team": "Santa Clara",
+      "team": "Texas",
       "seed": 11,
       "seed_str": "11"
     },
@@ -246,12 +246,12 @@
       "seed_str": "12"
     },
     {
-      "team": "Stephen F. Austin",
+      "team": "High Point",
       "seed": 12,
       "seed_str": "12"
     },
     {
-      "team": "High Point",
+      "team": "Stephen F. Austin",
       "seed": 12,
       "seed_str": "12"
     },
@@ -291,12 +291,12 @@
       "seed_str": "14"
     },
     {
-      "team": "Portland State",
+      "team": "Wright State",
       "seed": 14,
       "seed_str": "14"
     },
     {
-      "team": "UC Irvine",
+      "team": "North Dakota State",
       "seed": 14,
       "seed_str": "14"
     },
@@ -316,22 +316,12 @@
       "seed_str": "14"
     },
     {
-      "team": "North Dakota State",
+      "team": "UC Irvine",
       "seed": 14,
       "seed_str": "14"
     },
     {
-      "team": "Wright State",
-      "seed": 15,
-      "seed_str": "15"
-    },
-    {
-      "team": "Merrimack",
-      "seed": 15,
-      "seed_str": "15"
-    },
-    {
-      "team": "E. Tennessee State",
+      "team": "Furman",
       "seed": 15,
       "seed_str": "15"
     },
@@ -341,22 +331,27 @@
       "seed_str": "15"
     },
     {
-      "team": "Furman",
+      "team": "Merrimack",
       "seed": 15,
       "seed_str": "15"
     },
     {
-      "team": "Lehigh",
-      "seed": 16,
-      "seed_str": "16"
+      "team": "Siena",
+      "seed": 15,
+      "seed_str": "15"
+    },
+    {
+      "team": "Idaho",
+      "seed": 15,
+      "seed_str": "15"
+    },
+    {
+      "team": "E. Tennessee State",
+      "seed": 15,
+      "seed_str": "15"
     },
     {
       "team": "Queens",
-      "seed": 16,
-      "seed_str": "16"
-    },
-    {
-      "team": "Howard",
       "seed": 16,
       "seed_str": "16"
     },
@@ -366,7 +361,12 @@
       "seed_str": "16"
     },
     {
-      "team": "Monmouth",
+      "team": "Howard",
+      "seed": 16,
+      "seed_str": "16"
+    },
+    {
+      "team": "Lehigh",
       "seed": 16,
       "seed_str": "16"
     },
@@ -377,6 +377,11 @@
     },
     {
       "team": "Bethune-Cookman",
+      "seed": 16,
+      "seed_str": "16"
+    },
+    {
+      "team": "Monmouth",
       "seed": 16,
       "seed_str": "16"
     }
