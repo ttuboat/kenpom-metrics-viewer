@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "updated": "2026-03-12 10:50:32",
+    "updated": "2026-03-13 10:47:09",
     "source": "bracketmatrix.com",
-    "teams_count": 75
+    "teams_count": 73
   },
   "teams": [
     {
@@ -56,12 +56,12 @@
       "seed_str": "03"
     },
     {
-      "team": "Purdue",
+      "team": "Gonzaga",
       "seed": 3,
       "seed_str": "03"
     },
     {
-      "team": "Gonzaga",
+      "team": "Purdue",
       "seed": 3,
       "seed_str": "03"
     },
@@ -131,12 +131,12 @@
       "seed_str": "07"
     },
     {
-      "team": "St. Mary's (CA)",
+      "team": "Miami (FLA.)",
       "seed": 7,
       "seed_str": "07"
     },
     {
-      "team": "Miami (FLA.)",
+      "team": "St. Mary's (CA)",
       "seed": 7,
       "seed_str": "07"
     },
@@ -166,22 +166,22 @@
       "seed_str": "08"
     },
     {
-      "team": "Iowa",
-      "seed": 9,
-      "seed_str": "09"
-    },
-    {
       "team": "TCU",
       "seed": 9,
       "seed_str": "09"
     },
     {
-      "team": "Saint Louis",
+      "team": "Iowa",
       "seed": 9,
       "seed_str": "09"
     },
     {
       "team": "Ohio State",
+      "seed": 9,
+      "seed_str": "09"
+    },
+    {
+      "team": "Saint Louis",
       "seed": 9,
       "seed_str": "09"
     },
@@ -201,12 +201,12 @@
       "seed_str": "10"
     },
     {
-      "team": "Missouri",
+      "team": "Miami (Ohio)",
       "seed": 10,
       "seed_str": "10"
     },
     {
-      "team": "Miami (Ohio)",
+      "team": "Missouri",
       "seed": 11,
       "seed_str": "11"
     },
@@ -231,17 +231,17 @@
       "seed_str": "11"
     },
     {
+      "team": "South Florida",
+      "seed": 11,
+      "seed_str": "11"
+    },
+    {
       "team": "Indiana",
       "seed": 11,
       "seed_str": "11"
     },
     {
-      "team": "South Florida",
-      "seed": 12,
-      "seed_str": "12"
-    },
-    {
-      "team": "Yale",
+      "team": "Akron",
       "seed": 12,
       "seed_str": "12"
     },
@@ -256,12 +256,12 @@
       "seed_str": "12"
     },
     {
-      "team": "Northern Iowa",
-      "seed": 13,
-      "seed_str": "13"
+      "team": "Yale",
+      "seed": 12,
+      "seed_str": "12"
     },
     {
-      "team": "Utah Valley",
+      "team": "Northern Iowa",
       "seed": 13,
       "seed_str": "13"
     },
@@ -276,12 +276,12 @@
       "seed_str": "13"
     },
     {
-      "team": "California Baptist",
+      "team": "Stephen F. Austin",
       "seed": 13,
       "seed_str": "13"
     },
     {
-      "team": "Stephen F. Austin",
+      "team": "Utah Valley",
       "seed": 13,
       "seed_str": "13"
     },
@@ -296,17 +296,12 @@
       "seed_str": "14"
     },
     {
-      "team": "North Dakota State",
-      "seed": 14,
-      "seed_str": "14"
-    },
-    {
       "team": "UC Irvine",
       "seed": 14,
       "seed_str": "14"
     },
     {
-      "team": "Hawaii",
+      "team": "North Dakota State",
       "seed": 14,
       "seed_str": "14"
     },
@@ -314,6 +309,11 @@
       "team": "Wright State",
       "seed": 14,
       "seed_str": "14"
+    },
+    {
+      "team": "Idaho",
+      "seed": 15,
+      "seed_str": "15"
     },
     {
       "team": "Tennessee State",
@@ -326,24 +326,14 @@
       "seed_str": "15"
     },
     {
-      "team": "Merrimack",
-      "seed": 15,
-      "seed_str": "15"
-    },
-    {
-      "team": "Idaho",
-      "seed": 15,
-      "seed_str": "15"
-    },
-    {
       "team": "Siena",
       "seed": 15,
       "seed_str": "15"
     },
     {
-      "team": "Queens",
-      "seed": 16,
-      "seed_str": "16"
+      "team": "Montana",
+      "seed": 15,
+      "seed_str": "15"
     },
     {
       "team": "UMBC",
@@ -351,17 +341,7 @@
       "seed_str": "16"
     },
     {
-      "team": "Lehigh",
-      "seed": 16,
-      "seed_str": "16"
-    },
-    {
-      "team": "Southern",
-      "seed": 16,
-      "seed_str": "16"
-    },
-    {
-      "team": "Long Island",
+      "team": "Queens",
       "seed": 16,
       "seed_str": "16"
     },
@@ -371,12 +351,22 @@
       "seed_str": "16"
     },
     {
+      "team": "Lehigh",
+      "seed": 16,
+      "seed_str": "16"
+    },
+    {
       "team": "Howard",
       "seed": 16,
       "seed_str": "16"
     },
     {
-      "team": "Eastern Washington",
+      "team": "Long Island",
+      "seed": 16,
+      "seed_str": "16"
+    },
+    {
+      "team": "Bethune-Cookman",
       "seed": 16,
       "seed_str": "16"
     }

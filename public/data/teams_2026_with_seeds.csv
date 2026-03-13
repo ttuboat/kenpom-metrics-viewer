@@ -9,8 +9,8 @@ team_id,team_name,seed
 8,Michigan State,2
 9,Iowa State,3
 10,Nebraska,3
-11,Purdue,3
-12,Gonzaga,3
+11,Gonzaga,3
+12,Purdue,3
 13,Alabama,4
 14,Virginia,4
 15,Kansas,4
@@ -24,53 +24,51 @@ team_id,team_name,seed
 23,Louisville,6
 24,BYU,6
 25,Kentucky,7
-26,St. Mary's (CA),7
-27,Miami (FLA.),7
+26,Miami (FLA.),7
+27,St. Mary's (CA),7
 28,Villanova,7
 29,Georgia,8
 30,UCLA,8
 31,Clemson,8
 32,Utah State,8
-33,Iowa,9
-34,TCU,9
-35,Saint Louis,9
-36,Ohio State,9
+33,TCU,9
+34,Iowa,9
+35,Ohio State,9
+36,Saint Louis,9
 37,Texas A&M,10
 38,Central Florida,10
 39,North Carolina State,10
-40,Missouri,10
-41,Miami (Ohio),11
+40,Miami (Ohio),10
+41,Missouri,11
 42,Santa Clara,11
 43,Texas,11
 44,SMU,11
 45,VCU,11
-46,Indiana,11
-47,South Florida,12
-48,Yale,12
+46,South Florida,11
+47,Indiana,11
+48,Akron,12
 49,McNeese State,12
 50,High Point,12
-51,Northern Iowa,13
-52,Utah Valley,13
+51,Yale,12
+52,Northern Iowa,13
 53,Hofstra,13
 54,Sam Houston State,13
-55,California Baptist,13
-56,Stephen F. Austin,13
+55,Stephen F. Austin,13
+56,Utah Valley,13
 57,Liberty,13
 58,Troy,14
-59,North Dakota State,14
-60,UC Irvine,14
-61,Hawaii,14
-62,Wright State,14
+59,UC Irvine,14
+60,North Dakota State,14
+61,Wright State,14
+62,Idaho,15
 63,Tennessee State,15
 64,Furman,15
-65,Merrimack,15
-66,Idaho,15
-67,Siena,15
+65,Siena,15
+66,Montana,15
+67,UMBC,16
 68,Queens,16
-69,UMBC,16
+69,Florida A&M,16
 70,Lehigh,16
-71,Southern,16
+71,Howard,16
 72,Long Island,16
-73,Florida A&M,16
-74,Howard,16
-75,Eastern Washington,16
+73,Bethune-Cookman,16
