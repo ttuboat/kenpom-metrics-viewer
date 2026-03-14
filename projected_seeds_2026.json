@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "updated": "2026-03-13 10:47:09",
+    "updated": "2026-03-14 10:36:49",
     "source": "bracketmatrix.com",
-    "teams_count": 73
+    "teams_count": 72
   },
   "teams": [
     {
@@ -36,12 +36,12 @@
       "seed_str": "02"
     },
     {
-      "team": "Illinois",
+      "team": "Michigan State",
       "seed": 2,
       "seed_str": "02"
     },
     {
-      "team": "Michigan State",
+      "team": "Illinois",
       "seed": 2,
       "seed_str": "02"
     },
@@ -81,12 +81,12 @@
       "seed_str": "04"
     },
     {
-      "team": "Texas Tech",
+      "team": "Vanderbilt",
       "seed": 4,
       "seed_str": "04"
     },
     {
-      "team": "Vanderbilt",
+      "team": "Texas Tech",
       "seed": 5,
       "seed_str": "05"
     },
@@ -101,12 +101,12 @@
       "seed_str": "05"
     },
     {
-      "team": "North Carolina",
+      "team": "Tennessee",
       "seed": 5,
       "seed_str": "05"
     },
     {
-      "team": "Tennessee",
+      "team": "North Carolina",
       "seed": 6,
       "seed_str": "06"
     },
@@ -141,9 +141,14 @@
       "seed_str": "07"
     },
     {
-      "team": "Villanova",
+      "team": "Clemson",
       "seed": 7,
       "seed_str": "07"
+    },
+    {
+      "team": "Villanova",
+      "seed": 8,
+      "seed_str": "08"
     },
     {
       "team": "Georgia",
@@ -156,24 +161,9 @@
       "seed_str": "08"
     },
     {
-      "team": "Clemson",
-      "seed": 8,
-      "seed_str": "08"
-    },
-    {
       "team": "Utah State",
       "seed": 8,
       "seed_str": "08"
-    },
-    {
-      "team": "TCU",
-      "seed": 9,
-      "seed_str": "09"
-    },
-    {
-      "team": "Iowa",
-      "seed": 9,
-      "seed_str": "09"
     },
     {
       "team": "Ohio State",
@@ -181,7 +171,17 @@
       "seed_str": "09"
     },
     {
+      "team": "TCU",
+      "seed": 9,
+      "seed_str": "09"
+    },
+    {
       "team": "Saint Louis",
+      "seed": 9,
+      "seed_str": "09"
+    },
+    {
+      "team": "Iowa",
       "seed": 9,
       "seed_str": "09"
     },
@@ -201,7 +201,7 @@
       "seed_str": "10"
     },
     {
-      "team": "Miami (Ohio)",
+      "team": "Santa Clara",
       "seed": 10,
       "seed_str": "10"
     },
@@ -211,12 +211,7 @@
       "seed_str": "11"
     },
     {
-      "team": "Santa Clara",
-      "seed": 11,
-      "seed_str": "11"
-    },
-    {
-      "team": "Texas",
+      "team": "Miami (Ohio)",
       "seed": 11,
       "seed_str": "11"
     },
@@ -231,17 +226,22 @@
       "seed_str": "11"
     },
     {
+      "team": "Texas",
+      "seed": 11,
+      "seed_str": "11"
+    },
+    {
       "team": "South Florida",
       "seed": 11,
       "seed_str": "11"
     },
     {
-      "team": "Indiana",
-      "seed": 11,
-      "seed_str": "11"
+      "team": "Akron",
+      "seed": 12,
+      "seed_str": "12"
     },
     {
-      "team": "Akron",
+      "team": "Yale",
       "seed": 12,
       "seed_str": "12"
     },
@@ -256,27 +256,7 @@
       "seed_str": "12"
     },
     {
-      "team": "Yale",
-      "seed": 12,
-      "seed_str": "12"
-    },
-    {
       "team": "Northern Iowa",
-      "seed": 13,
-      "seed_str": "13"
-    },
-    {
-      "team": "Hofstra",
-      "seed": 13,
-      "seed_str": "13"
-    },
-    {
-      "team": "Sam Houston State",
-      "seed": 13,
-      "seed_str": "13"
-    },
-    {
-      "team": "Stephen F. Austin",
       "seed": 13,
       "seed_str": "13"
     },
@@ -286,17 +266,32 @@
       "seed_str": "13"
     },
     {
-      "team": "Liberty",
+      "team": "Hofstra",
       "seed": 13,
       "seed_str": "13"
     },
     {
-      "team": "Troy",
+      "team": "UC Irvine",
+      "seed": 13,
+      "seed_str": "13"
+    },
+    {
+      "team": "California Baptist",
+      "seed": 13,
+      "seed_str": "13"
+    },
+    {
+      "team": "Sam Houston State",
+      "seed": 13,
+      "seed_str": "13"
+    },
+    {
+      "team": "Wright State",
       "seed": 14,
       "seed_str": "14"
     },
     {
-      "team": "UC Irvine",
+      "team": "Tennessee State",
       "seed": 14,
       "seed_str": "14"
     },
@@ -306,17 +301,17 @@
       "seed_str": "14"
     },
     {
-      "team": "Wright State",
+      "team": "Troy",
       "seed": 14,
       "seed_str": "14"
     },
     {
-      "team": "Idaho",
-      "seed": 15,
-      "seed_str": "15"
+      "team": "Hawaii",
+      "seed": 14,
+      "seed_str": "14"
     },
     {
-      "team": "Tennessee State",
+      "team": "Louisiana Tech",
       "seed": 15,
       "seed_str": "15"
     },
@@ -326,19 +321,14 @@
       "seed_str": "15"
     },
     {
+      "team": "Idaho",
+      "seed": 15,
+      "seed_str": "15"
+    },
+    {
       "team": "Siena",
       "seed": 15,
       "seed_str": "15"
-    },
-    {
-      "team": "Montana",
-      "seed": 15,
-      "seed_str": "15"
-    },
-    {
-      "team": "UMBC",
-      "seed": 16,
-      "seed_str": "16"
     },
     {
       "team": "Queens",
@@ -346,7 +336,12 @@
       "seed_str": "16"
     },
     {
-      "team": "Florida A&M",
+      "team": "UMBC",
+      "seed": 16,
+      "seed_str": "16"
+    },
+    {
+      "team": "Long Island",
       "seed": 16,
       "seed_str": "16"
     },
@@ -361,12 +356,12 @@
       "seed_str": "16"
     },
     {
-      "team": "Long Island",
+      "team": "Southern",
       "seed": 16,
       "seed_str": "16"
     },
     {
-      "team": "Bethune-Cookman",
+      "team": "Florida A&M",
       "seed": 16,
       "seed_str": "16"
     }
