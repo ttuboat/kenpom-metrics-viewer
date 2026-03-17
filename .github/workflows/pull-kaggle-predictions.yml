@@ -26,10 +26,16 @@ jobs:
           echo '{"username":"${{ secrets.KAGGLE_USERNAME }}","key":"${{ secrets.KAGGLE_KEY }}"}' > ~/.kaggle/kaggle.json
           chmod 600 ~/.kaggle/kaggle.json
       
-      - name: 📥 Download notebook output
+      - name: 📥 Download predictions dataset
         run: |
-          echo "Downloading output from marginalreturns/kaggle-submission-combined..."
-          kaggle kernels output marginalreturns/kaggle-submission-combined -p ./kaggle_output
+          # ============================================================
+          # UPDATE THIS SLUG to match your Kaggle dataset name
+          # Format: username/dataset-name
+          # ============================================================
+          DATASET_SLUG="marginalreturns/predictions-26"
+          
+          echo "Downloading dataset: ${DATASET_SLUG}..."
+          kaggle datasets download -d "${DATASET_SLUG}" -p ./kaggle_output --unzip
           
           echo ""
           echo "Downloaded files:"
@@ -44,9 +50,9 @@ jobs:
             cp ./kaggle_output/predictions_2026.json public/data/predictions_2026.json
             echo "✓ Updated predictions_2026.json"
           else
-            echo "❌ predictions_2026.json not found in notebook output!"
+            echo "❌ predictions_2026.json not found in dataset!"
             echo "Available files:"
-            ls -la ./kaggle_output/
+            find ./kaggle_output/ -type f
             exit 1
           fi
           
