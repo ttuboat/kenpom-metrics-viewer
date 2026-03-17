@@ -386,9 +386,9 @@
 
         <div class="about-section">
             <h3>About This Bracket</h3>
-            <p>This bracket shows AI predictions for the 2026 NCAA Tournament based on an ensemble model trained on historical tournament data (2003-2024). The model uses Four Factors, efficiency metrics, momentum indicators, and seed information to predict game outcomes. Seeds are updated daily from Bracket Matrix consensus rankings.</p>
+            <p>This bracket shows AI predictions for the 2026 NCAA Tournament based on an ensemble model trained on historical tournament data (2003-2025). The model uses Four Factors, efficiency metrics, momentum indicators, and seed information to predict game outcomes. Teams and regions reflect the official 2026 tournament bracket.</p>
             <p style="margin-top: 10px; font-size: 0.9em; color: #888;">
-                <strong>Note:</strong> Bracket Matrix includes play-in bubble teams. This display shows the top 4 teams for each seed (64 total), representing the tournament field after First Four play-in games are resolved.
+                <strong>Note:</strong> Play-in (First Four) games are resolved using model predictions. The predicted winner advances into the main bracket.
             </p>
         </div>
 
@@ -400,7 +400,7 @@
 
     <script>
     // Configuration
-    const PREDICTIONS_URL = './data/predictions_2026_all_matchups.csv';
+    const PREDICTIONS_URL = './data/predictions_2026.json';
     const TEAMS_URL = './data/teams_2026_with_seeds.csv';
 
     let predictions = {};
@@ -422,74 +422,56 @@
     }
 
     async function loadData() {
-        // Load predictions CSV
+        // Load predictions JSON (uses Kaggle IDs directly)
         const predResponse = await fetch(PREDICTIONS_URL);
-        const predText = await predResponse.text();
-        parsePredictions(predText);
+        const predJson = await predResponse.json();
+        
+        // Convert JSON to quick lookup: "id1_id2" -> probability
+        for (const [key, data] of Object.entries(predJson)) {
+            const t1 = data.team1_id;
+            const t2 = data.team2_id;
+            predictions[`${t1}_${t2}`] = data.team1_win_prob;
+            predictions[`${t2}_${t1}`] = data.team2_win_prob;
+        }
+        console.log(`Loaded ${Object.keys(predJson).length} matchup predictions`);
 
-        // Load teams CSV
+        // Load teams CSV (official bracket with regions)
         const teamsResponse = await fetch(TEAMS_URL);
         const teamsText = await teamsResponse.text();
         parseTeams(teamsText);
     }
 
-    function parsePredictions(csvText) {
-        const lines = csvText.trim().split('\n');
-        
-        // Parse header to find column indices
-        const header = lines[0].split(',');
-        const team1IdIdx = header.indexOf('team1_id');
-        const team2IdIdx = header.indexOf('team2_id');
-        const team1ProbIdx = header.indexOf('team1_win_prob');
-        
-        console.log('CSV columns:', header);
-        console.log(`Team1 ID index: ${team1IdIdx}, Team2 ID index: ${team2IdIdx}, Probability index: ${team1ProbIdx}`);
-        
-        for (let i = 1; i < lines.length; i++) {
-            const line = lines[i].trim();
-            if (!line) continue;
-            
-            const values = line.split(',');
-            
-            // Get team IDs and probability
-            const team1Id = parseInt(values[team1IdIdx]);
-            const team2Id = parseInt(values[team2IdIdx]);
-            const team1Prob = parseFloat(values[team1ProbIdx]);
-            
-            if (isNaN(team1Id) || isNaN(team2Id) || isNaN(team1Prob)) {
-                continue;
-            }
-            
-            // Store both directions
-            predictions[`${team1Id}_${team2Id}`] = team1Prob;
-            predictions[`${team2Id}_${team1Id}`] = 1 - team1Prob;
-        }
-        
-        console.log(`Loaded ${Object.keys(predictions).length / 2} matchup predictions`);
-        
-        // Debug: Show a few sample predictions
-        const sampleKeys = Object.keys(predictions).slice(0, 4);
-        console.log('Sample predictions:', sampleKeys.map(k => `${k}: ${(predictions[k] * 100).toFixed(1)}%`).join(', '));
-    }
-
     function parseTeams(csvText) {
         const lines = csvText.trim().split('\n');
+        const header = lines[0].split(',');
+        
+        // Find column indices by header name
+        const idIdx = header.indexOf('team_id');
+        const nameIdx = header.indexOf('team_name');
+        const seedIdx = header.indexOf('seed');
+        const regionIdx = header.indexOf('region');
+        const kaggleIdx = header.indexOf('kaggle_id');
+        const playInIdx = header.indexOf('play_in');
         
         for (let i = 1; i < lines.length; i++) {
             const line = lines[i].trim();
             if (!line) continue;
             
             const values = line.split(',');
-            const teamId = parseInt(values[0]);
-            const teamName = values[1];
-            const seed = parseInt(values[2]);
+            const teamId = parseInt(values[idIdx]);
+            const teamName = values[nameIdx];
+            const seed = parseInt(values[seedIdx]);
+            const region = values[regionIdx];
+            const kaggleId = parseInt(values[kaggleIdx]);
+            const playIn = values[playInIdx] || '';
             
-            if (teamId && teamName && seed) {
+            if (teamId && teamName && seed && region) {
                 teams[teamId] = {
-                    id: teamId,
+                    id: teamId,           // Kaggle ID (used for prediction lookup)
                     name: teamName,
                     seed: seed,
-                    region: null // Will be assigned
+                    region: region,
+                    playIn: playIn.trim()  // '' = locked in, 'a' or 'b' = play-in
                 };
             }
         }
@@ -501,83 +483,61 @@
         const key = `${team1Id}_${team2Id}`;
         const pred = predictions[key];
         
-        if (!pred && !predictions[`${team1Id}_${team2Id}`]) {
-            // Debug: Log missing prediction
-            if (Math.random() < 0.01) { // Only log 1% to avoid spam
+        if (pred === undefined) {
+            if (Math.random() < 0.05) {
                 console.warn(`Missing prediction for ${team1Id} vs ${team2Id}`);
-                console.log('Available prediction keys (first 10):', Object.keys(predictions).slice(0, 10));
-                console.log('Team IDs in use:', team1Id, team2Id);
             }
         }
         
-        return pred || 0.5;
+        return pred !== undefined ? pred : 0.5;
     }
 
     function assignRegions() {
-        // Get all teams and sort by seed, then by team_id for consistent ordering
-        const teamsList = Object.values(teams);
-        console.log(`Total teams loaded: ${teamsList.length}`);
-        
-        teamsList.sort((a, b) => {
-            if (a.seed !== b.seed) return a.seed - b.seed;
-            return a.id - b.id; // Secondary sort by ID for consistency
-        });
-        
-        // Group by seed
-        const bySeed = {};
-        teamsList.forEach(team => {
-            if (!bySeed[team.seed]) bySeed[team.seed] = [];
-            bySeed[team.seed].push(team);
-        });
-        
-        // Take exactly 4 teams for each seed 1-16 (64 teams total)
-        const tournamentTeams = [];
-        for (let seed = 1; seed <= 16; seed++) {
-            const teamsWithSeed = bySeed[seed] || [];
-            // Take first 4 teams (by team_id) - this handles play-ins by taking top 4
-            const selectedTeams = teamsWithSeed.slice(0, 4);
-            
-            if (selectedTeams.length < 4) {
-                console.warn(`⚠️ Seed ${seed}: Only ${selectedTeams.length} teams available (need 4)`);
-            } else if (teamsWithSeed.length > 4) {
-                console.log(`ℹ️ Seed ${seed}: Selected first 4 of ${teamsWithSeed.length} teams (play-in bubble)`);
-            }
-            
-            tournamentTeams.push(...selectedTeams);
-        }
-        
-        console.log(`Tournament teams selected: ${tournamentTeams.length}/64`);
-        
-        // Assign to regions (distribute evenly across 4 regions)
-        const regions = ['East', 'West', 'South', 'Midwest'];
+        // Use official region assignments from the data
         const regionTeams = { East: [], West: [], South: [], Midwest: [] };
         
-        // Re-group by seed (now with exactly 4 teams per seed)
-        const cleanBySeed = {};
-        tournamentTeams.forEach(team => {
-            if (!cleanBySeed[team.seed]) cleanBySeed[team.seed] = [];
-            cleanBySeed[team.seed].push(team);
-        });
+        const teamsList = Object.values(teams);
         
-        // Assign teams to regions (1 team per seed per region)
-        for (let seed = 1; seed <= 16; seed++) {
-            const teamsWithSeed = cleanBySeed[seed] || [];
+        // For play-in seeds, predict the winner and use them as the seed representative
+        // Group by region and seed to find play-in pairs
+        const byRegionSeed = {};
+        for (const team of teamsList) {
+            const key = `${team.region}_${team.seed}`;
+            if (!byRegionSeed[key]) byRegionSeed[key] = [];
+            byRegionSeed[key].push(team);
+        }
+        
+        for (const [key, seedTeams] of Object.entries(byRegionSeed)) {
+            const region = key.split('_')[0];
             
-            for (let i = 0; i < teamsWithSeed.length; i++) {
-                const region = regions[i % 4];
-                teamsWithSeed[i].region = region;
-                regionTeams[region].push(teamsWithSeed[i]);
+            if (seedTeams.length === 1) {
+                // No play-in, just add the team
+                regionTeams[region].push(seedTeams[0]);
+            } else if (seedTeams.length === 2) {
+                // Play-in game: predict winner
+                const teamA = seedTeams[0];
+                const teamB = seedTeams[1];
+                const prob = getPrediction(teamA.id, teamB.id);
+                const winner = prob > 0.5 ? teamA : teamB;
+                const loser = prob > 0.5 ? teamB : teamA;
+                
+                // Mark winner with play-in context
+                const winnerCopy = { ...winner, playInWinner: true, playInOpponent: loser.name, 
+                    playInProb: (Math.max(prob, 1 - prob) * 100).toFixed(1) };
+                regionTeams[region].push(winnerCopy);
+                
+                console.log(`Play-in: ${teamA.name} vs ${teamB.name} → ${winner.name} advances (${(Math.max(prob, 1-prob)*100).toFixed(1)}%)`);
             }
         }
         
         // Log final distribution
         console.log('Region distribution:');
-        Object.keys(regionTeams).forEach(region => {
-            console.log(`  ${region}: ${regionTeams[region].length} teams`);
-            if (regionTeams[region].length !== 16) {
+        for (const [region, rTeams] of Object.entries(regionTeams)) {
+            console.log(`  ${region}: ${rTeams.length} teams`);
+            if (rTeams.length !== 16) {
                 console.warn(`  ⚠️ ${region} should have 16 teams!`);
             }
-        });
+        }
         
         return regionTeams;
     }
@@ -828,22 +788,29 @@
         // Debug helper
         window.debugBracket = function() {
             console.log('=== BRACKET DEBUG INFO ===');
-            console.log('Total predictions loaded:', Object.keys(predictions).length);
+            console.log('Total predictions loaded:', Object.keys(predictions).length / 2);
             console.log('Total teams loaded:', Object.keys(teams).length);
             console.log('\nSample predictions:');
             Object.keys(predictions).slice(0, 10).forEach(key => {
                 console.log(`  ${key}: ${predictions[key].toFixed(4)}`);
             });
-            console.log('\nSample teams:');
-            Object.values(teams).slice(0, 5).forEach(team => {
-                console.log(`  ID ${team.id}: ${team.name} (seed ${team.seed})`);
+            console.log('\nTeams by region:');
+            const byRegion = {};
+            Object.values(teams).forEach(t => {
+                if (!byRegion[t.region]) byRegion[t.region] = [];
+                byRegion[t.region].push(t);
             });
+            for (const [region, rTeams] of Object.entries(byRegion)) {
+                const playIns = rTeams.filter(t => t.playIn);
+                console.log(`  ${region}: ${rTeams.length} teams (${playIns.length} play-in)`);
+            }
             console.log('\nTest prediction lookup:');
             const testTeam1 = Object.values(teams)[0];
             const testTeam2 = Object.values(teams)[1];
             if (testTeam1 && testTeam2) {
                 const testKey = `${testTeam1.id}_${testTeam2.id}`;
-                console.log(`  Looking up: ${testKey}`);
+                console.log(`  ${testTeam1.name} (${testTeam1.id}) vs ${testTeam2.name} (${testTeam2.id})`);
+                console.log(`  Key: ${testKey}`);
                 console.log(`  Found: ${predictions[testKey]}`);
                 console.log(`  getPrediction result: ${getPrediction(testTeam1.id, testTeam2.id)}`);
             }
