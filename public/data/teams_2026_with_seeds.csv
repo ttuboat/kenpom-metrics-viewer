@@ -1,73 +1,69 @@
-team_id,team_name,seed
-1,Duke,1
-2,Arizona,1
-3,Michigan,1
-4,Florida,1
-5,Houston,2
-6,Connecticut,2
-7,Iowa State,2
-8,Purdue,2
-9,Michigan State,3
-10,Illinois,3
-11,Gonzaga,3
-12,Virginia,3
-13,Nebraska,4
-14,Alabama,4
-15,Kansas,4
-16,Arkansas,4
-17,Vanderbilt,5
-18,St. John's,5
-19,Texas Tech,5
-20,Wisconsin,5
-21,Tennessee,6
-22,North Carolina,6
-23,Louisville,6
-24,BYU,6
-25,Kentucky,7
-26,Miami (FLA.),7
-27,UCLA,7
-28,St. Mary's (CA),7
-29,Clemson,8
-30,Georgia,8
-31,Villanova,8
-32,Ohio State,8
-33,Utah State,9
-34,TCU,9
-35,Iowa,9
-36,Saint Louis,9
-37,Central Florida,10
-38,Texas A&M,10
-39,Santa Clara,10
-40,Missouri,10
-41,North Carolina State,11
-42,VCU,11
-43,Miami (Ohio),11
-44,SMU,11
-45,Texas,11
-46,South Florida,11
-47,California,11
-48,Seton Hall,11
-49,Auburn,11
-50,New Mexico,11
-51,McNeese State,12
-52,Akron,12
-53,Northern Iowa,12
-54,High Point,12
-55,California Baptist,13
-56,Hofstra,13
-57,Hawaii,13
-58,Troy,13
-59,North Dakota State,14
-60,Pennsylvania,14
-61,Wright State,14
-62,Kennesaw State,14
-63,Tennessee State,15
-64,Idaho,15
-65,Queens,15
-66,Furman,15
-67,UMBC,16
-68,Siena,16
-69,Prairie View A&M,16
-70,Lehigh,16
-71,Howard,16
-72,Long Island,16
+team_id,team_name,seed,region,kaggle_id,kaggle_seed,play_in
+1181,Duke,1,East,1181,W01,
+1163,Connecticut,2,East,1163,W02,
+1277,Michigan St,3,East,1277,W03,
+1242,Kansas,4,East,1242,W04,
+1385,St John's,5,East,1385,W05,
+1257,Louisville,6,East,1257,W06,
+1417,UCLA,7,East,1417,W07,
+1326,Ohio St,8,East,1326,W08,
+1395,TCU,9,East,1395,W09,
+1416,UCF,10,East,1416,W10,
+1378,South Florida,11,East,1378,W11,
+1320,Northern Iowa,12,East,1320,W12,
+1465,Cal Baptist,13,East,1465,W13,
+1295,N Dakota St,14,East,1295,W14,
+1202,Furman,15,East,1202,W15,
+1373,Siena,16,East,1373,W16,
+1276,Michigan,1,Midwest,1276,Y01,
+1235,Iowa St,2,Midwest,1235,Y02,
+1438,Virginia,3,Midwest,1438,Y03,
+1104,Alabama,4,Midwest,1104,Y04,
+1403,Texas Tech,5,Midwest,1403,Y05,
+1397,Tennessee,6,Midwest,1397,Y06,
+1246,Kentucky,7,Midwest,1246,Y07,
+1208,Georgia,8,Midwest,1208,Y08,
+1387,St Louis,9,Midwest,1387,Y09,
+1365,Santa Clara,10,Midwest,1365,Y10,
+1275,Miami OH,11,Midwest,1275,Y11a,a
+1374,SMU,11,Midwest,1374,Y11b,b
+1103,Akron,12,Midwest,1103,Y12,
+1220,Hofstra,13,Midwest,1220,Y13,
+1460,Wright St,14,Midwest,1460,Y14,
+1398,Tennessee St,15,Midwest,1398,Y15,
+1224,Howard,16,Midwest,1224,Y16a,a
+1420,UMBC,16,Midwest,1420,Y16b,b
+1196,Florida,1,South,1196,X01,
+1222,Houston,2,South,1222,X02,
+1228,Illinois,3,South,1228,X03,
+1304,Nebraska,4,South,1304,X04,
+1435,Vanderbilt,5,South,1435,X05,
+1314,North Carolina,6,South,1314,X06,
+1388,St Mary's CA,7,South,1388,X07,
+1155,Clemson,8,South,1155,X08,
+1234,Iowa,9,South,1234,X09,
+1401,Texas A&M,10,South,1401,X10,
+1433,VCU,11,South,1433,X11,
+1270,McNeese St,12,South,1270,X12,
+1407,Troy,13,South,1407,X13,
+1335,Penn,14,South,1335,X14,
+1225,Idaho,15,South,1225,X15,
+1250,Lehigh,16,South,1250,X16a,a
+1341,Prairie View,16,South,1341,X16b,b
+1112,Arizona,1,West,1112,Z01,
+1345,Purdue,2,West,1345,Z02,
+1211,Gonzaga,3,West,1211,Z03,
+1116,Arkansas,4,West,1116,Z04,
+1458,Wisconsin,5,West,1458,Z05,
+1140,BYU,6,West,1140,Z06,
+1274,Miami FL,7,West,1274,Z07,
+1437,Villanova,8,West,1437,Z08,
+1429,Utah St,9,West,1429,Z09,
+1281,Missouri,10,West,1281,Z10,
+1301,NC State,11,West,1301,Z11a,a
+1400,Texas,11,West,1400,Z11b,b
+1219,High Point,12,West,1219,Z12,
+1218,Hawaii,13,West,1218,Z13,
+1244,Kennesaw,14,West,1244,Z14,
+1474,Queens NC,15,West,1474,Z15,
+1254,LIU Brooklyn,16,West,1254,Z16,
