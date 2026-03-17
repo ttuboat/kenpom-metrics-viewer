@@ -1,0 +1,84 @@
+name: Pull Predictions from Kaggle
+
+on:
+  # Manual trigger
+  workflow_dispatch:
+
+jobs:
+  pull-predictions:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 🏀 Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: 📦 Install Kaggle CLI
+        run: pip install kaggle
+      
+      - name: 🔑 Configure Kaggle credentials
+        run: |
+          mkdir -p ~/.kaggle
+          echo '{"username":"${{ secrets.KAGGLE_USERNAME }}","key":"${{ secrets.KAGGLE_KEY }}"}' > ~/.kaggle/kaggle.json
+          chmod 600 ~/.kaggle/kaggle.json
+      
+      - name: 📥 Download notebook output
+        run: |
+          echo "Downloading output from marginalreturns/kaggle-submission-combined..."
+          kaggle kernels output marginalreturns/kaggle-submission-combined -p ./kaggle_output
+          
+          echo ""
+          echo "Downloaded files:"
+          ls -lh ./kaggle_output/
+      
+      - name: 📂 Update predictions
+        run: |
+          mkdir -p public/data
+          
+          # Copy predictions JSON
+          if [ -f ./kaggle_output/predictions_2026.json ]; then
+            cp ./kaggle_output/predictions_2026.json public/data/predictions_2026.json
+            echo "✓ Updated predictions_2026.json"
+          else
+            echo "❌ predictions_2026.json not found in notebook output!"
+            echo "Available files:"
+            ls -la ./kaggle_output/
+            exit 1
+          fi
+          
+          # Copy teams JSON if present
+          if [ -f ./kaggle_output/teams_2026.json ]; then
+            cp ./kaggle_output/teams_2026.json public/data/teams_2026.json
+            echo "✓ Updated teams_2026.json"
+          fi
+          
+          # Show file sizes
+          echo ""
+          echo "Updated files:"
+          ls -lh public/data/predictions_2026.json public/data/teams_2026.json 2>/dev/null
+      
+      - name: 💾 Commit and push
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          git add public/data/predictions_2026.json
+          git add public/data/teams_2026.json 2>/dev/null || true
+          
+          git commit -m "🤖 Update predictions from Kaggle ($(date +'%Y-%m-%d %H:%M'))" || echo "No changes to commit"
+          git push || echo "Nothing to push"
+      
+      - name: ✅ Summary
+        run: |
+          echo "================================"
+          echo "Prediction Update Summary"
+          echo "================================"
+          if [ -f public/data/predictions_2026.json ]; then
+            MATCHUPS=$(python3 -c "import json; d=json.load(open('public/data/predictions_2026.json')); print(len(d))")
+            echo "✓ predictions_2026.json: ${MATCHUPS} matchups"
+          fi
+          echo "================================"
