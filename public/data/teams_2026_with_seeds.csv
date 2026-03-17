@@ -40,31 +40,34 @@ team_id,team_name,seed
 39,Santa Clara,10
 40,Missouri,10
 41,North Carolina State,11
-42,Miami (Ohio),11
-43,VCU,11
+42,VCU,11
+43,Miami (Ohio),11
 44,SMU,11
 45,Texas,11
 46,South Florida,11
-47,San Diego State,11
-48,McNeese State,12
-49,Northern Iowa,12
-50,High Point,12
-51,Akron,12
-52,California Baptist,13
-53,Hawaii,13
-54,Troy,13
-55,Hofstra,13
-56,North Dakota State,14
-57,Wright State,14
-58,Kennesaw State,14
-59,Pennsylvania,14
-60,Tennessee State,15
-61,Furman,15
-62,Queens,15
-63,Idaho,15
-64,Siena,16
-65,UMBC,16
-66,Long Island,16
-67,Lehigh,16
-68,Howard,16
+47,California,11
+48,Seton Hall,11
+49,Auburn,11
+50,New Mexico,11
+51,McNeese State,12
+52,Akron,12
+53,Northern Iowa,12
+54,High Point,12
+55,California Baptist,13
+56,Hofstra,13
+57,Hawaii,13
+58,Troy,13
+59,North Dakota State,14
+60,Pennsylvania,14
+61,Wright State,14
+62,Kennesaw State,14
+63,Tennessee State,15
+64,Idaho,15
+65,Queens,15
+66,Furman,15
+67,UMBC,16
+68,Siena,16
 69,Prairie View A&M,16
+70,Lehigh,16
+71,Howard,16
+72,Long Island,16

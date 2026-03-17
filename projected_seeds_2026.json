@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "updated": "2026-03-16 11:01:53",
+    "updated": "2026-03-17 10:58:04",
     "source": "bracketmatrix.com",
-    "teams_count": 69
+    "teams_count": 72
   },
   "teams": [
     {
@@ -211,12 +211,12 @@
       "seed_str": "11"
     },
     {
-      "team": "Miami (Ohio)",
+      "team": "VCU",
       "seed": 11,
       "seed_str": "11"
     },
     {
-      "team": "VCU",
+      "team": "Miami (Ohio)",
       "seed": 11,
       "seed_str": "11"
     },
@@ -236,12 +236,32 @@
       "seed_str": "11"
     },
     {
-      "team": "San Diego State",
+      "team": "California",
+      "seed": 11,
+      "seed_str": "11"
+    },
+    {
+      "team": "Seton Hall",
+      "seed": 11,
+      "seed_str": "11"
+    },
+    {
+      "team": "Auburn",
+      "seed": 11,
+      "seed_str": "11"
+    },
+    {
+      "team": "New Mexico",
       "seed": 11,
       "seed_str": "11"
     },
     {
       "team": "McNeese State",
+      "seed": 12,
+      "seed_str": "12"
+    },
+    {
+      "team": "Akron",
       "seed": 12,
       "seed_str": "12"
     },
@@ -256,12 +276,12 @@
       "seed_str": "12"
     },
     {
-      "team": "Akron",
-      "seed": 12,
-      "seed_str": "12"
+      "team": "California Baptist",
+      "seed": 13,
+      "seed_str": "13"
     },
     {
-      "team": "California Baptist",
+      "team": "Hofstra",
       "seed": 13,
       "seed_str": "13"
     },
@@ -276,12 +296,12 @@
       "seed_str": "13"
     },
     {
-      "team": "Hofstra",
-      "seed": 13,
-      "seed_str": "13"
+      "team": "North Dakota State",
+      "seed": 14,
+      "seed_str": "14"
     },
     {
-      "team": "North Dakota State",
+      "team": "Pennsylvania",
       "seed": 14,
       "seed_str": "14"
     },
@@ -296,22 +316,7 @@
       "seed_str": "14"
     },
     {
-      "team": "Pennsylvania",
-      "seed": 14,
-      "seed_str": "14"
-    },
-    {
       "team": "Tennessee State",
-      "seed": 15,
-      "seed_str": "15"
-    },
-    {
-      "team": "Furman",
-      "seed": 15,
-      "seed_str": "15"
-    },
-    {
-      "team": "Queens",
       "seed": 15,
       "seed_str": "15"
     },
@@ -321,9 +326,14 @@
       "seed_str": "15"
     },
     {
-      "team": "Siena",
-      "seed": 16,
-      "seed_str": "16"
+      "team": "Queens",
+      "seed": 15,
+      "seed_str": "15"
+    },
+    {
+      "team": "Furman",
+      "seed": 15,
+      "seed_str": "15"
     },
     {
       "team": "UMBC",
@@ -331,7 +341,12 @@
       "seed_str": "16"
     },
     {
-      "team": "Long Island",
+      "team": "Siena",
+      "seed": 16,
+      "seed_str": "16"
+    },
+    {
+      "team": "Prairie View A&M",
       "seed": 16,
       "seed_str": "16"
     },
@@ -346,7 +361,7 @@
       "seed_str": "16"
     },
     {
-      "team": "Prairie View A&M",
+      "team": "Long Island",
       "seed": 16,
       "seed_str": "16"
     }
