@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matchup Builder</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Navigation (matches other pages) */
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .nav-title {
+            font-size: 24px; font-weight: bold; color: #2c3e50;
+            margin-bottom: 15px; display: flex; align-items: center; gap: 10px;
+        }
+        .nav-links { display: flex; gap: 15px; flex-wrap: wrap; }
+        .nav-links a {
+            padding: 10px 20px; background: #667eea; color: white;
+            text-decoration: none; border-radius: 8px; font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .nav-links a:hover { background: #764ba2; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .nav-links a.active { background: #764ba2; }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        h1 {
+            color: white; text-align: center; margin-bottom: 30px;
+            font-size: 2.5em; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .panel {
+            background: white; border-radius: 10px; padding: 30px;
+            margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .teams-row {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+        .team-box { display: flex; flex-direction: column; gap: 10px; }
+        .team-box h3 { color: #2c3e50; font-size: 15px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .vs {
+            align-self: center; font-weight: 800; color: #764ba2; font-size: 20px;
+            padding-top: 24px;
+        }
+
+        label { font-weight: 600; color: #333; font-size: 14px; }
+        select {
+            width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 5px;
+            font-size: 16px; background: white; transition: border-color 0.3s;
+        }
+        select:focus { outline: none; border-color: #667eea; }
+
+        .site-row { margin-top: 25px; }
+        .site-toggle { display: flex; gap: 0; margin-top: 8px; border-radius: 6px; overflow: hidden; border: 2px solid #e0e0e0; }
+        .site-toggle button {
+            flex: 1; padding: 11px 10px; border: none; background: #f6f6f6; color: #333;
+            font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s;
+        }
+        .site-toggle button + button { border-left: 2px solid #e0e0e0; }
+        .site-toggle button.active { background: #764ba2; color: white; }
+
+        .help-text { color: #666; font-size: 13px; margin-top: 15px; text-align: center; line-height: 1.5; }
+
+        .status { text-align: center; color: #667eea; font-size: 15px; margin-top: 15px; min-height: 20px; }
+        .status.error { color: #c33; }
+
+        /* Results */
+        #results { display: none; }
+        #results.active { display: block; }
+
+        .scoreline {
+            display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+            gap: 20px; text-align: center;
+        }
+        .score-team .name { font-size: 18px; font-weight: 700; color: #2c3e50; }
+        .score-team .season { font-size: 13px; color: #888; margin-top: 2px; }
+        .score-team .pts { font-size: 56px; font-weight: 800; color: #333; line-height: 1.1; margin-top: 8px; font-variant-numeric: tabular-nums; }
+        .score-team.fav .pts { color: #764ba2; }
+        .score-mid { color: #999; font-size: 14px; font-weight: 600; }
+
+        .prob-bar {
+            display: flex; height: 34px; border-radius: 6px; overflow: hidden; margin-top: 25px;
+            font-weight: 700; font-size: 14px; color: white;
+        }
+        .prob-bar div { display: flex; align-items: center; padding: 0 12px; white-space: nowrap; transition: width 0.4s ease; }
+        .prob-a { background: #667eea; justify-content: flex-start; }
+        .prob-b { background: #764ba2; justify-content: flex-end; }
+
+        .summary-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 25px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 16px; border-radius: 8px; text-align: center;
+        }
+        .stat-label { font-size: 13px; color: #666; margin-bottom: 6px; font-weight: 600; }
+        .stat-value { font-size: 24px; font-weight: bold; color: #333; font-variant-numeric: tabular-nums; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-variant-numeric: tabular-nums; }
+        th, td { padding: 11px 8px; text-align: center; border-bottom: 1px solid #eee; }
+        th { font-size: 13px; color: #666; text-transform: uppercase; letter-spacing: 0.4px; }
+        td.metric { text-align: center; color: #888; font-weight: 600; font-size: 14px; }
+        td .rank { color: #999; font-size: 12px; margin-left: 4px; }
+        td.edge { font-weight: 700; color: #764ba2; }
+        .panel h2 { color: #2c3e50; font-size: 18px; margin-bottom: 8px; }
+
+        .note { color: #888; font-size: 12px; margin-top: 15px; line-height: 1.5; }
+
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .nav-container { padding: 15px; }
+            .nav-title { font-size: 20px; }
+            .nav-links { gap: 10px; }
+            .nav-links a { padding: 8px 15px; font-size: 14px; }
+            .panel { padding: 15px; }
+            h1 { font-size: 1.8em; margin-bottom: 20px; }
+            .teams-row { grid-template-columns: 1fr; gap: 10px; }
+            .vs { padding-top: 0; text-align: center; }
+            .score-team .pts { font-size: 40px; }
+            .summary-grid { grid-template-columns: repeat(2, 1fr); }
+            .site-toggle button { font-size: 13px; padding: 10px 4px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-container">
+        <div class="nav-title">🏀 KenPom Metrics Viewer</div>
+        <div class="nav-links">
+            <a href="index.html">Season Trends</a>
+            <a href="compare.html">Compare Teams</a>
+            <a href="matchup.html" class="active">Matchup Builder</a>
+            <a href="predictor.html">Matchup Predictor</a>
+            <a href="bracket.html">Bracket</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>🏀 Matchup Builder</h1>
+
+        <div class="panel">
+            <div class="teams-row">
+                <div class="team-box">
+                    <h3>Team A</h3>
+                    <label for="seasonA">Season</label>
+                    <select id="seasonA"></select>
+                    <label for="teamA">Team</label>
+                    <select id="teamA"><option value="">Loading teams…</option></select>
+                </div>
+                <div class="vs">vs</div>
+                <div class="team-box">
+                    <h3>Team B</h3>
+                    <label for="seasonB">Season</label>
+                    <select id="seasonB"></select>
+                    <label for="teamB">Team</label>
+                    <select id="teamB"><option value="">Loading teams…</option></select>
+                </div>
+            </div>
+
+            <div class="site-row">
+                <label>Site</label>
+                <div class="site-toggle" id="siteToggle">
+                    <button data-site="A">Team A home</button>
+                    <button data-site="N" class="active">Neutral</button>
+                    <button data-site="B">Team B home</button>
+                </div>
+            </div>
+
+            <div id="status" class="status"></div>
+            <p class="help-text">
+                Uses KenPom adjusted efficiency and tempo. Pick teams from different seasons to compare across eras.
+            </p>
+        </div>
+
+        <div id="results">
+            <div class="panel">
+                <div class="scoreline">
+                    <div class="score-team" id="scoreA">
+                        <div class="name"></div><div class="season"></div><div class="pts"></div>
+                    </div>
+                    <div class="score-mid">projected</div>
+                    <div class="score-team" id="scoreB">
+                        <div class="name"></div><div class="season"></div><div class="pts"></div>
+                    </div>
+                </div>
+
+                <div class="prob-bar">
+                    <div class="prob-a" id="probA"></div>
+                    <div class="prob-b" id="probB"></div>
+                </div>
+
+                <div class="summary-grid">
+                    <div class="stat-card"><div class="stat-label">Spread</div><div class="stat-value" id="statSpread"></div></div>
+                    <div class="stat-card"><div class="stat-label">Total</div><div class="stat-value" id="statTotal"></div></div>
+                    <div class="stat-card"><div class="stat-label">Possessions</div><div class="stat-value" id="statTempo"></div></div>
+                    <div class="stat-card"><div class="stat-label">Favorite win %</div><div class="stat-value" id="statProb"></div></div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h2>Tale of the tape</h2>
+                <table>
+                    <thead>
+                        <tr><th id="thA">Team A</th><th></th><th id="thB">Team B</th></tr>
+                    </thead>
+                    <tbody id="tapeBody"></tbody>
+                </table>
+                <p class="note">
+                    Method: possessions = Tempo<sub>A</sub> × Tempo<sub>B</sub> ÷ avg tempo; points per 100 = AdjO × opponent AdjD ÷ avg efficiency;
+                    home court worth <span id="hcaNote"></span> points; win probability from a normal distribution with σ = <span id="sdNote"></span> points.
+                    Cross-season matchups normalize each team to its own season's averages. Approximates KenPom's framework — expect small differences from his published lines.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const CONFIG = {
+            BACKEND_URL: 'https://kenpom-metrics-viewer.onrender.com',
+            CURRENT_SEASON: (() => { const now = new Date(); return now.getMonth() >= 9 ? now.getFullYear() + 1 : now.getFullYear(); })(),
+            FIRST_SEASON: 2003,
+            HOME_COURT: 3.5,   // points added to home team's margin
+            MARGIN_SD: 11.0    // std dev of actual margin around projection
+        };
+
+        const ratingsCache = {};      // year -> { teams: Map(name -> row), avgEff, avgTempo }
+        const ratingsPending = {};
+        let site = 'N';
+
+        // ---------- data ----------
+
+        const num = v => (v === null || v === undefined || v === '') ? NaN : Number(v);
+        const tempoOf = t => num(t.AdjTempo ?? t.AdjT ?? t.Tempo);
+        const tempoRankOf = t => num(t.RankAdjTempo ?? t.RankAdjT ?? t.RankTempo);
+
+        function loadSeason(year) {
+            if (ratingsCache[year]) return Promise.resolve(ratingsCache[year]);
+            if (ratingsPending[year]) return ratingsPending[year];
+            ratingsPending[year] = (async () => {
+                const res = await fetch(`${CONFIG.BACKEND_URL}/api/ratings/current?y=${year}`);
+                if (!res.ok) throw new Error(`KenPom returned ${res.status} for ${year - 1}-${String(year).slice(2)}`);
+                const rows = (await res.json()).filter(t => t.TeamName && !isNaN(num(t.AdjOE)) && !isNaN(num(t.AdjDE)));
+                if (rows.length < 100) throw new Error(`No ratings published yet for ${year - 1}-${String(year).slice(2)}`);
+                const tempos = rows.map(tempoOf).filter(v => !isNaN(v));
+                const season = {
+                    teams: new Map(rows.map(t => [t.TeamName, t])),
+                    avgEff: rows.reduce((s, t) => s + num(t.AdjOE), 0) / rows.length,
+                    avgTempo: tempos.length ? tempos.reduce((s, v) => s + v, 0) / tempos.length : 68
+                };
+                ratingsCache[year] = season;
+                return season;
+            })();
+            ratingsPending[year].catch(() => delete ratingsPending[year]);
+            return ratingsPending[year];
+        }
+
+        // ---------- model ----------
+
+        // Abramowitz–Stegun normal CDF approximation
+        function normCdf(x) {
+            const t = 1 / (1 + 0.2316419 * Math.abs(x));
+            const d = 0.3989423 * Math.exp(-x * x / 2);
+            const p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+            return x > 0 ? 1 - p : p;
+        }
+
+        function project(a, sA, b, sB, siteCode) {
+            // Reference environment: average of the two seasons (identical to standard formula when same season)
+            const refEff = (sA.avgEff + sB.avgEff) / 2;
+            const refTempo = (sA.avgTempo + sB.avgTempo) / 2;
+
+            const tA = tempoOf(a), tB = tempoOf(b);
+            const poss = refTempo * (tA / sA.avgTempo) * (tB / sB.avgTempo);
+
+            const effA = refEff * (num(a.AdjOE) / sA.avgEff) * (num(b.AdjDE) / sB.avgEff);
+            const effB = refEff * (num(b.AdjOE) / sB.avgEff) * (num(a.AdjDE) / sA.avgEff);
+
+            const hca = siteCode === 'A' ? CONFIG.HOME_COURT : siteCode === 'B' ? -CONFIG.HOME_COURT : 0;
+            const ptsA = effA * poss / 100 + hca / 2;
+            const ptsB = effB * poss / 100 - hca / 2;
+            const margin = ptsA - ptsB;
+
+            return { poss, ptsA, ptsB, margin, total: ptsA + ptsB, probA: normCdf(margin / CONFIG.MARGIN_SD) };
+        }
+
+        // ---------- UI ----------
+
+        const $ = id => document.getElementById(id);
+        const seasonLabel = y => `${y - 1}-${String(y).slice(2)}`;
+
+        function setStatus(msg, isError = false) {
+            $('status').textContent = msg;
+            $('status').className = 'status' + (isError ? ' error' : '');
+        }
+
+        function fillSeasons(select, selected) {
+            for (let y = CONFIG.CURRENT_SEASON; y >= CONFIG.FIRST_SEASON; y--) {
+                const o = document.createElement('option');
+                o.value = y; o.textContent = seasonLabel(y);
+                select.appendChild(o);
+            }
+            select.value = selected;
+        }
+
+        function fillTeams(select, season, preferred) {
+            const keep = preferred || select.value;
+            select.innerHTML = '<option value="">Choose a team...</option>';
+            [...season.teams.keys()].sort((x, y) => x.localeCompare(y)).forEach(name => {
+                const o = document.createElement('option');
+                o.value = name; o.textContent = name;
+                select.appendChild(o);
+            });
+            if (keep && season.teams.has(keep)) select.value = keep;
+        }
+
+        async function refreshSide(side, preferredTeam) {
+            const year = parseInt($('season' + side).value);
+            const teamSel = $('team' + side);
+            teamSel.disabled = true;
+            setStatus('Loading ratings… (first load can take ~30s while the server wakes up)');
+            try {
+                const season = await loadSeason(year);
+                if (parseInt($('season' + side).value) !== year) return; // user changed it mid-load
+                fillTeams(teamSel, season, preferredTeam);
+                setStatus('');
+            } catch (err) {
+                teamSel.innerHTML = '<option value="">Unavailable</option>';
+                setStatus(err.message, true);
+            } finally {
+                teamSel.disabled = false;
+            }
+            render();
+        }
+
+        function fmt(v, d = 1) { return isNaN(v) ? '—' : v.toFixed(d); }
+
+        function render() {
+            const yA = parseInt($('seasonA').value), yB = parseInt($('seasonB').value);
+            const nA = $('teamA').value, nB = $('teamB').value;
+            const sA = ratingsCache[yA], sB = ratingsCache[yB];
+            updateUrl();
+
+            if (!nA || !nB || !sA || !sB || !sA.teams.has(nA) || !sB.teams.has(nB)) {
+                $('results').classList.remove('active');
+                return;
+            }
+            if (nA === nB && yA === yB) {
+                $('results').classList.remove('active');
+                setStatus('Pick two different teams.', true);
+                return;
+            }
+
+            const a = sA.teams.get(nA), b = sB.teams.get(nB);
+            const crossSeason = yA !== yB;
+            const labelA = crossSeason ? `${nA} '${String(yA).slice(2)}` : nA;
+            const labelB = crossSeason ? `${nB} '${String(yB).slice(2)}` : nB;
+            const p = project(a, sA, b, sB, site);
+            const aFav = p.margin >= 0;
+
+            // Scoreline
+            const venue = n => site === 'N' ? 'neutral' : (site === n ? 'home' : 'away');
+            $('scoreA').querySelector('.name').textContent = nA;
+            $('scoreA').querySelector('.season').textContent = `${seasonLabel(yA)} · ${venue('A')}`;
+            $('scoreA').querySelector('.pts').textContent = Math.round(p.ptsA);
+            $('scoreB').querySelector('.name').textContent = nB;
+            $('scoreB').querySelector('.season').textContent = `${seasonLabel(yB)} · ${venue('B')}`;
+            $('scoreB').querySelector('.pts').textContent = Math.round(p.ptsB);
+            $('scoreA').classList.toggle('fav', aFav);
+            $('scoreB').classList.toggle('fav', !aFav);
+
+            // Probability bar
+            const pctA = p.probA * 100, pctB = 100 - pctA;
+            $('probA').style.width = `${Math.max(pctA, 0)}%`;
+            $('probB').style.width = `${Math.max(pctB, 0)}%`;
+            $('probA').textContent = pctA >= 12 ? `${labelA} ${pctA.toFixed(0)}%` : '';
+            $('probB').textContent = pctB >= 12 ? `${pctB.toFixed(0)}% ${labelB}` : '';
+
+            // Summary
+            const favName = aFav ? labelA : labelB;
+            const spread = Math.abs(p.margin);
+            $('statSpread').textContent = spread < 0.25 ? 'Pick' : `${favName} −${spread.toFixed(1)}`;
+            $('statSpread').style.fontSize = $('statSpread').textContent.length > 14 ? '18px' : '';
+            $('statTotal').textContent = p.total.toFixed(1);
+            $('statTempo').textContent = p.poss.toFixed(1);
+            $('statProb').textContent = `${Math.max(pctA, pctB).toFixed(1)}%`;
+
+            // Tale of the tape
+            $('thA').textContent = labelA;
+            $('thB').textContent = labelB;
+            const rows = [
+                ['AdjEM', num(a.AdjEM ?? (a.AdjOE - a.AdjDE)), num(a.RankAdjEM), num(b.AdjEM ?? (b.AdjOE - b.AdjDE)), num(b.RankAdjEM), true],
+                ['AdjO', num(a.AdjOE), num(a.RankAdjOE), num(b.AdjOE), num(b.RankAdjOE), true],
+                ['AdjD', num(a.AdjDE), num(a.RankAdjDE), num(b.AdjDE), num(b.RankAdjDE), false],
+                ['Tempo', tempoOf(a), tempoRankOf(a), tempoOf(b), tempoRankOf(b), null]
+            ];
+            $('tapeBody').innerHTML = rows.map(([label, vA, rA, vB, rB, higherBetter]) => {
+                // Compare ranks within season (or raw values cross-season would be misleading, so use ranks when available)
+                let edgeA = false, edgeB = false;
+                if (higherBetter !== null) {
+                    if (!isNaN(rA) && !isNaN(rB) && rA !== rB) { edgeA = rA < rB; edgeB = rB < rA; }
+                    else if (vA !== vB) { edgeA = higherBetter ? vA > vB : vA < vB; edgeB = !edgeA; }
+                }
+                const cell = (v, r, edge) =>
+                    `<td class="${edge ? 'edge' : ''}">${fmt(v)}${isNaN(r) ? '' : `<span class="rank">#${r}</span>`}</td>`;
+                return `<tr>${cell(vA, rA, edgeA)}<td class="metric">${label}</td>${cell(vB, rB, edgeB)}</tr>`;
+            }).join('');
+
+            $('results').classList.add('active');
+            if ($('status').classList.contains('error')) setStatus('');
+        }
+
+        // Shareable URLs: ?a=Houston&ay=2026&b=Duke&by=2026&site=N
+        function updateUrl() {
+            const params = new URLSearchParams();
+            if ($('teamA').value) params.set('a', $('teamA').value);
+            params.set('ay', $('seasonA').value);
+            if ($('teamB').value) params.set('b', $('teamB').value);
+            params.set('by', $('seasonB').value);
+            params.set('site', site);
+            history.replaceState(null, '', `${location.pathname}?${params}`);
+        }
+
+        function init() {
+            $('hcaNote').textContent = CONFIG.HOME_COURT;
+            $('sdNote').textContent = CONFIG.MARGIN_SD;
+
+            const q = new URLSearchParams(location.search);
+            const validYear = y => (y >= CONFIG.FIRST_SEASON && y <= CONFIG.CURRENT_SEASON) ? y : CONFIG.CURRENT_SEASON;
+            fillSeasons($('seasonA'), validYear(parseInt(q.get('ay'))));
+            fillSeasons($('seasonB'), validYear(parseInt(q.get('by'))));
+            if (['A', 'N', 'B'].includes(q.get('site'))) site = q.get('site');
+
+            document.querySelectorAll('#siteToggle button').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.site === site);
+                btn.addEventListener('click', () => {
+                    site = btn.dataset.site;
+                    document.querySelectorAll('#siteToggle button').forEach(b => b.classList.toggle('active', b === btn));
+                    render();
+                });
+            });
+
+            $('seasonA').addEventListener('change', () => refreshSide('A'));
+            $('seasonB').addEventListener('change', () => refreshSide('B'));
+            $('teamA').addEventListener('change', render);
+            $('teamB').addEventListener('change', render);
+
+            refreshSide('A', q.get('a'));
+            refreshSide('B', q.get('b'));
+        }
+
+        init();
+    </script>
+</body>
+</html>
