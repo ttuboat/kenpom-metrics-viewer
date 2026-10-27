@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conference Odds</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .nav-container {
+            max-width: 1200px; margin: 0 auto 30px;
+            background: rgba(255, 255, 255, 0.95); border-radius: 15px;
+            padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .nav-title {
+            font-size: 24px; font-weight: bold; color: #2c3e50;
+            margin-bottom: 15px; display: flex; align-items: center; gap: 10px;
+        }
+        .nav-links { display: flex; gap: 15px; flex-wrap: wrap; }
+        .nav-links a {
+            padding: 10px 20px; background: #667eea; color: white;
+            text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.3s ease;
+        }
+        .nav-links a:hover { background: #764ba2; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .nav-links a.active { background: #764ba2; }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 {
+            color: white; text-align: center; margin-bottom: 30px;
+            font-size: 2.5em; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .panel {
+            background: white; border-radius: 10px; padding: 30px;
+            margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .form-row { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        label { font-weight: 600; color: #333; font-size: 14px; }
+        select {
+            width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 5px;
+            font-size: 16px; background: white; transition: border-color 0.3s;
+        }
+        select:focus { outline: none; border-color: #667eea; }
+
+        .status { text-align: center; color: #667eea; font-size: 15px; margin-top: 15px; min-height: 20px; }
+        .status.error { color: #c33; }
+
+        #results { display: none; }
+        #results.active { display: block; }
+
+        .results-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+        .results-head h2 { color: #2c3e50; font-size: 20px; }
+        .results-head .meta { color: #888; font-size: 13px; }
+
+        .sort-toggle { display: inline-flex; border: 2px solid #e0e0e0; border-radius: 6px; overflow: hidden; }
+        .sort-toggle button {
+            padding: 7px 12px; border: none; background: #f6f6f6; color: #333;
+            font-size: 13px; font-weight: 600; cursor: pointer;
+        }
+        .sort-toggle button + button { border-left: 2px solid #e0e0e0; }
+        .sort-toggle button.active { background: #764ba2; color: white; }
+
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; min-width: 620px; }
+        th, td { padding: 10px 8px; border-bottom: 1px solid #eee; text-align: right; white-space: nowrap; }
+        th { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.4px; }
+        th:nth-child(1), td:nth-child(1), th:nth-child(2), td:nth-child(2) { text-align: left; }
+        td.rank { color: #999; width: 32px; }
+        td.team { font-weight: 600; color: #2c3e50; }
+        td.team .kp { color: #999; font-weight: 400; font-size: 12px; margin-left: 6px; }
+
+        td.pct { width: 170px; }
+        .bar-cell { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
+        .bar { height: 10px; border-radius: 5px; background: #eceaf7; width: 90px; overflow: hidden; }
+        .bar span { display: block; height: 100%; border-radius: 5px; }
+        .bar.reg span { background: #667eea; }
+        .bar.tourn span { background: #764ba2; }
+        .pct-num { min-width: 46px; display: inline-block; }
+
+        .note { color: #888; font-size: 12px; margin-top: 15px; line-height: 1.6; }
+
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .nav-container { padding: 15px; }
+            .nav-title { font-size: 20px; }
+            .nav-links { gap: 10px; }
+            .nav-links a { padding: 8px 15px; font-size: 14px; }
+            .panel { padding: 15px; }
+            h1 { font-size: 1.8em; margin-bottom: 20px; }
+            .form-row { grid-template-columns: 1fr; gap: 12px; }
+            .bar { width: 50px; }
+            td.pct { width: auto; }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-container">
+        <div class="nav-title">🏀 KenPom Metrics Viewer</div>
+        <div class="nav-links">
+            <a href="index.html">Season Trends</a>
+            <a href="compare.html">Compare Teams</a>
+            <a href="matchup.html">Matchup Builder</a>
+            <a href="conference.html" class="active">Conference Odds</a>
+            <a href="predictor.html">Matchup Predictor</a>
+            <a href="bracket.html">Bracket</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>🏀 Conference Odds</h1>
+
+        <div class="panel">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="seasonSelect">Season</label>
+                    <select id="seasonSelect"></select>
+                </div>
+                <div class="form-group">
+                    <label for="confSelect">Conference</label>
+                    <select id="confSelect"><option value="">Loading…</option></select>
+                </div>
+            </div>
+            <div id="status" class="status"></div>
+        </div>
+
+        <div id="results">
+            <div class="panel">
+                <div class="results-head">
+                    <div>
+                        <h2 id="confTitle"></h2>
+                        <div class="meta" id="confMeta"></div>
+                    </div>
+                    <div class="sort-toggle" id="sortToggle">
+                        <button data-sort="tourn" class="active">Sort: tournament</button>
+                        <button data-sort="reg">regular season</button>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Team</th>
+                                <th>AdjEM</th>
+                                <th>Proj. conf</th>
+                                <th>Reg. season title</th>
+                                <th>Tournament title</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+                <p class="note" id="methodNote"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const CONFIG = {
+            BACKEND_URL: 'https://kenpom-metrics-viewer.onrender.com',
+            CURRENT_SEASON: (() => { const now = new Date(); return now.getMonth() >= 9 ? now.getFullYear() + 1 : now.getFullYear(); })(),
+            FIRST_SEASON: 2003,
+            HOME_COURT: 3.5,
+            MARGIN_SD: 11.0,
+            SIMS: 10000,
+            MAX_DOUBLE_RR_GAMES: 20   // play home-and-away if that's ≤ this many games; otherwise single round-robin
+        };
+
+        const CONF_NAMES = {
+            A10: 'Atlantic 10', ACC: 'ACC', AE: 'America East', Amer: 'American', ASun: 'ASUN',
+            B10: 'Big Ten', B12: 'Big 12', BE: 'Big East', BSky: 'Big Sky', BSth: 'Big South',
+            BW: 'Big West', CAA: 'CAA', CUSA: 'Conference USA', Horz: 'Horizon', Ivy: 'Ivy League',
+            MAAC: 'MAAC', MAC: 'MAC', MEAC: 'MEAC', MVC: 'Missouri Valley', MWC: 'Mountain West',
+            NEC: 'NEC', OVC: 'Ohio Valley', Pat: 'Patriot', SB: 'Sun Belt', SC: 'Southern',
+            SEC: 'SEC', Slnd: 'Southland', Sum: 'Summit', SWAC: 'SWAC', WAC: 'WAC', WCC: 'WCC',
+            P12: 'Pac-12', GWC: 'Great West'
+        };
+        const confName = c => CONF_NAMES[c] || c;
+
+        const ratingsCache = {};
+        let lastResult = null;
+        let sortKey = 'tourn';
+
+        const $ = id => document.getElementById(id);
+        const num = v => (v === null || v === undefined || v === '') ? NaN : Number(v);
+        const tempoOf = t => num(t.AdjTempo ?? t.Tempo);
+        const seasonLabel = y => `${y - 1}-${String(y).slice(2)}`;
+
+        function setStatus(msg, isError = false) {
+            $('status').textContent = msg;
+            $('status').className = 'status' + (isError ? ' error' : '');
+        }
+
+        // ---------- data ----------
+
+        async function loadSeason(year) {
+            if (ratingsCache[year]) return ratingsCache[year];
+            const res = await fetch(`${CONFIG.BACKEND_URL}/api/ratings/current?y=${year}`);
+            if (!res.ok) throw new Error(`KenPom returned ${res.status} for ${seasonLabel(year)}`);
+            const rows = (await res.json()).filter(t => t.TeamName && !isNaN(num(t.AdjOE)) && !isNaN(num(t.AdjDE)));
+            if (rows.length < 100) throw new Error(`No ratings published yet for ${seasonLabel(year)}`);
+            const tempos = rows.map(tempoOf).filter(v => !isNaN(v));
+            const season = {
+                rows,
+                avgEff: rows.reduce((s, t) => s + num(t.AdjOE), 0) / rows.length,
+                avgTempo: tempos.length ? tempos.reduce((s, v) => s + v, 0) / tempos.length : 68,
+                dataThrough: rows[0].DataThrough || ''
+            };
+            ratingsCache[year] = season;
+            return season;
+        }
+
+        // ---------- model ----------
+
+        function normCdf(x) {
+            const t = 1 / (1 + 0.2316419 * Math.abs(x));
+            const d = 0.3989423 * Math.exp(-x * x / 2);
+            const p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+            return x > 0 ? 1 - p : p;
+        }
+
+        // Projected margin for i vs j (positive favors i). hca: +1 i home, -1 j home, 0 neutral.
+        function margin(a, b, season, hca) {
+            const poss = tempoOf(a) * tempoOf(b) / season.avgTempo;
+            const ptsA = num(a.AdjOE) * num(b.AdjDE) / season.avgEff * poss / 100;
+            const ptsB = num(b.AdjOE) * num(a.AdjDE) / season.avgEff * poss / 100;
+            return ptsA - ptsB + hca * CONFIG.HOME_COURT;
+        }
+
+        // Standard bracket order for a power-of-two field, e.g. 8 -> [1,8,4,5,2,7,3,6]
+        function bracketOrder(size) {
+            let order = [1];
+            while (order.length < size) {
+                const n = order.length * 2;
+                order = order.flatMap(s => [s, n + 1 - s]);
+            }
+            return order;
+        }
+
+        function simulate(teams, season) {
+            const n = teams.length;
+            const doubleRR = 2 * (n - 1) <= CONFIG.MAX_DOUBLE_RR_GAMES;
+            const gamesPerTeam = doubleRR ? 2 * (n - 1) : n - 1;
+
+            // Precompute win probabilities: home[i][j] = P(i beats j with i at home), neutral[i][j]
+            const pHome = [], pNeutral = [];
+            for (let i = 0; i < n; i++) {
+                pHome.push(new Float64Array(n)); pNeutral.push(new Float64Array(n));
+                for (let j = 0; j < n; j++) {
+                    if (i === j) continue;
+                    pHome[i][j] = normCdf(margin(teams[i], teams[j], season, 1) / CONFIG.MARGIN_SD);
+                    pNeutral[i][j] = normCdf(margin(teams[i], teams[j], season, 0) / CONFIG.MARGIN_SD);
+                }
+            }
+
+            const size = 1 << Math.ceil(Math.log2(Math.max(n, 2)));
+            const order = bracketOrder(size);
+
+            const regTitle = new Float64Array(n), regOutright = new Float64Array(n);
+            const tournTitle = new Float64Array(n), totalWins = new Float64Array(n);
+            const wins = new Int32Array(n);
+
+            for (let s = 0; s < CONFIG.SIMS; s++) {
+                wins.fill(0);
+                for (let i = 0; i < n; i++) {
+                    for (let j = i + 1; j < n; j++) {
+                        if (doubleRR) {
+                            if (Math.random() < pHome[i][j]) wins[i]++; else wins[j]++;
+                            if (Math.random() < pHome[j][i]) wins[j]++; else wins[i]++;
+                        } else {
+                            // single meeting, random venue
+                            const p = Math.random() < 0.5 ? pHome[i][j] : 1 - pHome[j][i];
+                            if (Math.random() < p) wins[i]++; else wins[j]++;
+                        }
+                    }
+                }
+
+                // Regular-season title (shared titles split)
+                let best = -1, leaders = [];
+                for (let i = 0; i < n; i++) {
+                    totalWins[i] += wins[i];
+                    if (wins[i] > best) { best = wins[i]; leaders = [i]; }
+                    else if (wins[i] === best) leaders.push(i);
+                }
+                for (const i of leaders) regTitle[i] += 1 / leaders.length;
+                if (leaders.length === 1) regOutright[leaders[0]] += 1;
+
+                // Seed by wins, random tiebreak; single elimination at neutral site, top seeds get byes
+                const seeds = [...Array(n).keys()]
+                    .map(i => [i, wins[i] + Math.random() * 0.5])
+                    .sort((x, y) => y[1] - x[1])
+                    .map(x => x[0]);
+                let field = order.map(seed => seed <= n ? seeds[seed - 1] : -1);
+                while (field.length > 1) {
+                    const next = [];
+                    for (let k = 0; k < field.length; k += 2) {
+                        const a = field[k], b = field[k + 1];
+                        if (a < 0) next.push(b);
+                        else if (b < 0) next.push(a);
+                        else next.push(Math.random() < pNeutral[a][b] ? a : b);
+                    }
+                    field = next;
+                }
+                tournTitle[field[0]] += 1;
+            }
+
+            return teams.map((t, i) => ({
+                name: t.TeamName,
+                adjEM: num(t.AdjEM ?? (num(t.AdjOE) - num(t.AdjDE))),
+                rankEM: num(t.RankAdjEM),
+                expWins: totalWins[i] / CONFIG.SIMS,
+                games: gamesPerTeam,
+                reg: regTitle[i] / CONFIG.SIMS,
+                regOutright: regOutright[i] / CONFIG.SIMS,
+                tourn: tournTitle[i] / CONFIG.SIMS
+            }));
+        }
+
+        // ---------- UI ----------
+
+        function pctText(p) {
+            if (p >= 0.995) return '>99%';
+            if (p > 0 && p < 0.005) return '<1%';
+            return `${(p * 100).toFixed(0)}%`;
+        }
+
+        function barCell(p, cls, max) {
+            const w = max > 0 ? (p / max) * 100 : 0;
+            return `<td class="pct"><div class="bar-cell"><div class="bar ${cls}"><span style="width:${w}%"></span></div><span class="pct-num">${pctText(p)}</span></div></td>`;
+        }
+
+        function renderTable() {
+            if (!lastResult) return;
+            const { rows, conf, year, n, games, doubleRR } = lastResult;
+            const sorted = [...rows].sort((a, b) =>
+                (b[sortKey] - a[sortKey]) || (b[sortKey === 'tourn' ? 'reg' : 'tourn'] - a[sortKey === 'tourn' ? 'reg' : 'tourn']) || (b.adjEM - a.adjEM));
+            const maxReg = Math.max(...rows.map(r => r.reg)), maxTourn = Math.max(...rows.map(r => r.tourn));
+
+            $('tableBody').innerHTML = sorted.map((r, i) => {
+                const w = r.expWins, l = r.games - r.expWins;
+                return `<tr>
+                    <td class="rank">${i + 1}</td>
+                    <td class="team">${r.name}${isNaN(r.rankEM) ? '' : `<span class="kp">#${r.rankEM}</span>`}</td>
+                    <td>${r.adjEM >= 0 ? '+' : ''}${r.adjEM.toFixed(1)}</td>
+                    <td>${w.toFixed(1)}–${l.toFixed(1)}</td>
+                    ${barCell(r.reg, 'reg', maxReg)}
+                    ${barCell(r.tourn, 'tourn', maxTourn)}
+                </tr>`;
+            }).join('');
+
+            $('confTitle').textContent = `${confName(conf)} · ${seasonLabel(year)}`;
+            const through = ratingsCache[year].dataThrough;
+            $('confMeta').textContent = `${n} teams · ${CONFIG.SIMS.toLocaleString()} simulations${through ? ` · ratings through ${through}` : ''}`;
+            $('methodNote').innerHTML =
+                `Each simulation plays a ${doubleRR ? 'home-and-away' : 'single'} round-robin (${games} games per team) using KenPom adjusted efficiency and tempo, ` +
+                `${CONFIG.HOME_COURT}-point home court, and σ = ${CONFIG.MARGIN_SD} for game outcomes. Shared regular-season titles are split among co-champions. ` +
+                `The tournament seeds every team by simulated record (ties broken randomly), plays single elimination at a neutral site, and gives byes to top seeds when the field isn't a power of two. ` +
+                `KenPom's API has no schedules, so real unbalanced schedules, games already played, and each league's actual tournament format (field size, double byes, home sites) aren't modeled. ` +
+                `Ratings are held fixed for the whole season.`;
+
+            $('results').classList.add('active');
+        }
+
+        function runConference() {
+            const year = parseInt($('seasonSelect').value);
+            const conf = $('confSelect').value;
+            const season = ratingsCache[year];
+            if (!season || !conf) return;
+            const teams = season.rows.filter(t => t.ConfShort === conf);
+            updateUrl();
+            if (teams.length < 2) {
+                $('results').classList.remove('active');
+                setStatus('Not enough teams in this conference to simulate.', true);
+                return;
+            }
+            setStatus('Simulating…');
+            // let the status paint before the sim runs
+            setTimeout(() => {
+                const n = teams.length;
+                const doubleRR = 2 * (n - 1) <= CONFIG.MAX_DOUBLE_RR_GAMES;
+                const rows = simulate(teams, season);
+                lastResult = { rows, conf, year, n, games: rows[0].games, doubleRR };
+                renderTable();
+                setStatus('');
+            }, 20);
+        }
+
+        function fillConferences(season, preferred) {
+            const counts = {}, emSum = {};
+            season.rows.forEach(t => {
+                const c = t.ConfShort;
+                if (!c || c.toLowerCase() === 'ind') return;
+                counts[c] = (counts[c] || 0) + 1;
+                emSum[c] = (emSum[c] || 0) + num(t.AdjEM ?? (num(t.AdjOE) - num(t.AdjDE)));
+            });
+            // order by average AdjEM, strongest first
+            const confs = Object.keys(counts).filter(c => counts[c] >= 2)
+                .sort((a, b) => emSum[b] / counts[b] - emSum[a] / counts[a]);
+            const sel = $('confSelect');
+            const keep = preferred || sel.value;
+            sel.innerHTML = confs.map(c =>
+                `<option value="${c}">${confName(c)} (${counts[c]})</option>`).join('');
+            sel.value = (keep && confs.includes(keep)) ? keep : confs[0];
+        }
+
+        async function loadAndRun(preferredConf) {
+            const year = parseInt($('seasonSelect').value);
+            $('confSelect').disabled = true;
+            setStatus('Loading ratings… (first load can take ~30s while the server wakes up)');
+            try {
+                const season = await loadSeason(year);
+                if (parseInt($('seasonSelect').value) !== year) return;
+                fillConferences(season, preferredConf);
+                $('confSelect').disabled = false;
+                runConference();
+            } catch (err) {
+                $('confSelect').innerHTML = '<option value="">Unavailable</option>';
+                $('results').classList.remove('active');
+                setStatus(err.message, true);
+            }
+        }
+
+        function updateUrl() {
+            const params = new URLSearchParams({ y: $('seasonSelect').value, c: $('confSelect').value });
+            history.replaceState(null, '', `${location.pathname}?${params}`);
+        }
+
+        function init() {
+            const q = new URLSearchParams(location.search);
+            const yq = parseInt(q.get('y'));
+            const year = (yq >= CONFIG.FIRST_SEASON && yq <= CONFIG.CURRENT_SEASON) ? yq : CONFIG.CURRENT_SEASON;
+            const sel = $('seasonSelect');
+            for (let y = CONFIG.CURRENT_SEASON; y >= CONFIG.FIRST_SEASON; y--) {
+                const o = document.createElement('option');
+                o.value = y; o.textContent = seasonLabel(y);
+                sel.appendChild(o);
+            }
+            sel.value = year;
+
+            sel.addEventListener('change', () => loadAndRun());
+            $('confSelect').addEventListener('change', runConference);
+            document.querySelectorAll('#sortToggle button').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    sortKey = btn.dataset.sort;
+                    document.querySelectorAll('#sortToggle button').forEach(b => b.classList.toggle('active', b === btn));
+                    renderTable();
+                });
+            });
+
+            loadAndRun(q.get('c'));
+        }
+
+        init();
+    </script>
+</body>
+</html>
