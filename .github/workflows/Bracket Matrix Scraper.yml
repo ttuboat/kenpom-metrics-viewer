@@ -1,10 +1,10 @@
 name: Daily Bracket Matrix Scraper
 
 on:
-  schedule:
-    # Runs at 6 AM EST daily (10:00 UTC)
-    #- cron: '0 10 * * *'
-  
+  # Daily schedule is paused for the offseason. To re-enable, uncomment both lines:
+  # schedule:
+  #   - cron: '0 10 * * *'   # 6 AM EST daily (10:00 UTC)
+
   # Allows manual triggering from GitHub Actions tab
   workflow_dispatch:
 
